@@ -60,7 +60,7 @@
             <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
         </div>
     </footer>
-
+    
 <script>
 async function fetchPrices() {
     try {
@@ -70,8 +70,8 @@ async function fetchPrices() {
         document.getElementById("btc-price").textContent = `$${cryptoData.bitcoin.usd.toLocaleString()}`;
         document.getElementById("eth-price").textContent = `$${cryptoData.ethereum.usd.toLocaleString()}`;
 
-        // Fetch gold and silver prices (replace with your Metals-API key)
-        const metalsResponse = await fetch("https://metals-api.com/api/latest?access_key=YOUR_API_KEY&base=USD&symbols=XAU,XAG");
+        // Fetch gold and silver prices from MetalpriceAPI
+        const metalsResponse = await fetch("https://api.metalpriceapi.com/v1/latest?access_key=4a96f5ce49cbfba1888db64a88e93aca&base=USD&symbols=XAU,XAG");
         const metalsData = await metalsResponse.json();
         document.getElementById("gold-price").textContent = `$${metalsData.rates.XAU.toLocaleString()}`;
         document.getElementById("silver-price").textContent = `$${metalsData.rates.XAG.toLocaleString()}`;
