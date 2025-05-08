@@ -115,6 +115,21 @@ footer a:hover {
     color: #555555;
 }
 
+/* Elegant Dividers */
+.divider {
+    margin: 40px 0;
+    border-bottom: 1px solid #d4c9b4;
+    opacity: 0.6;
+}
+
+/* Tighten up spacing */
+main section {
+    margin-bottom: 30px;
+}
+
+main section:last-of-type {
+    margin-bottom: 0;
+}
 
 /* Smooth Scrolling */
 html {
