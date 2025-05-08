@@ -145,8 +145,14 @@ footer a:hover {
     z-index: -1;
     overflow: hidden;
     background: radial-gradient(circle, #0072ff, #00bfa6);
-    opacity: 0.15;
+    opacity: 0.08;  /* Softer effect */
     animation: gradientMove 15s infinite alternate;
+    transition: opacity 1s ease;
+}
+
+/* Fade In on Scroll */
+body.scrolled .background-animation {
+    opacity: 0.15;  /* Bring back some of the effect */
 }
 
 /* Background Gradient Animation */
