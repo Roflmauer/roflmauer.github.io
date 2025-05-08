@@ -44,18 +44,18 @@
         <hr class="divider">
 
 <section>
-          <h2>Live Market Prices</h2>
-        <div id="price-container">
-            <div class="price-card" id="bitcoin">
-                <h3>Bitcoin (BTC)</h3>
-                <p>Price: <span id="btc-price">Loading...</span></p>
+        <h2>Live Market Prices</h2>
+        <div id="price-ticker">
+            <div class="ticker-item" id="btc-ticker">
+                <span>Bitcoin (BTC):</span>
+                <span id="btc-price">Loading...</span>
             </div>
-            <div class="price-card" id="ethereum">
-                <h3>Ethereum (ETH)</h3>
-                <p>Price: <span id="eth-price">Loading...</span></p>
+            <div class="ticker-item" id="eth-ticker">
+                <span>Ethereum (ETH):</span>
+                <span id="eth-price">Loading...</span>
             </div>
         </div>
-</section>
+    </section>
 
         <hr class="divider">
         
@@ -83,8 +83,19 @@ async function fetchPrices() {
         // Fetch crypto prices from CoinGecko
         const cryptoResponse = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
         const cryptoData = await cryptoResponse.json();
+
+        // Update ticker prices
         document.getElementById("btc-price").textContent = `$${cryptoData.bitcoin.usd.toLocaleString()}`;
         document.getElementById("eth-price").textContent = `$${cryptoData.ethereum.usd.toLocaleString()}`;
+
+        // Small animation on price change
+        document.getElementById("btc-ticker").classList.add("price-flash");
+        document.getElementById("eth-ticker").classList.add("price-flash");
+        setTimeout(() => {
+            document.getElementById("btc-ticker").classList.remove("price-flash");
+            document.getElementById("eth-ticker").classList.remove("price-flash");
+        }, 500);
+
     } catch (error) {
         console.error("Error fetching prices:", error);
     }
