@@ -1,5 +1,6 @@
 /* Background Gradient */
 body {
+    <div class="background-animation"></div>
     font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #00bfa6, #0072ff);
     color: #ffffff;
@@ -133,4 +134,31 @@ footer a:hover {
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(50px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Background Animation */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(circle, #0072ff, #00bfa6);
+    opacity: 0.15;
+    animation: gradientMove 15s infinite alternate;
+}
+
+/* Background Gradient Animation */
+@keyframes gradientMove {
+    0% {
+        background: radial-gradient(circle at 0% 0%, #0072ff, #00bfa6);
+    }
+    50% {
+        background: radial-gradient(circle at 50% 50%, #00bfa6, #0072ff);
+    }
+    100% {
+        background: radial-gradient(circle at 100% 100%, #0072ff, #00bfa6);
+    }
 }
