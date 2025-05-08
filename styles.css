@@ -1,6 +1,5 @@
 /* Background Gradient */
 body {
-    <div class="background-animation"></div>
     font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #00bfa6, #0072ff);
     color: #ffffff;
