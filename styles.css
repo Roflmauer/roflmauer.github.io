@@ -84,12 +84,13 @@ footer a:hover {
 }
 
 .profile-pic {
-    width: 100px;  /* Set the exact size you want */
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     margin: 20px auto;
     display: block;
     border: 4px solid #fff;
+    background-color: #444;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    object-fit: cover;  /* Keeps the image from stretching */
+    object-fit: cover;
 }
