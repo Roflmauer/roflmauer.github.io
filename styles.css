@@ -71,6 +71,7 @@ header p {
 .btn:hover {
     background-color: #0072ff;
     color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Section Headers */
@@ -112,7 +113,8 @@ footer {
 /* Link Styles */
 footer a {
     color: #00bfa6;
-    text-decoration: underline;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 footer a:hover {
