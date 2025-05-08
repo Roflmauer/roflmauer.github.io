@@ -21,25 +21,27 @@ body {
 }
 
 /* Header */
-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 40px 0;
-}
-
 header h1 {
     margin: 0;
     font-size: 3em;
     font-weight: 700;
     color: #ffffff;
-    animation: fadeInDown 1s ease-out;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
 }
 
 header p {
     font-size: 1.2em;
     font-weight: 300;
     color: #cce7ff;
-    animation: fadeInDown 1.2s ease-out;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Simple Fade-In */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Profile Picture */
