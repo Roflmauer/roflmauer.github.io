@@ -60,6 +60,31 @@
             <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
         </div>
     </footer>
+
+<script>
+async function fetchPrices() {
+    try {
+        // Fetch crypto prices from CoinGecko
+        const cryptoResponse = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
+        const cryptoData = await cryptoResponse.json();
+        document.getElementById("btc-price").textContent = `$${cryptoData.bitcoin.usd.toLocaleString()}`;
+        document.getElementById("eth-price").textContent = `$${cryptoData.ethereum.usd.toLocaleString()}`;
+
+        // Fetch gold and silver prices (replace with your Metals-API key)
+        const metalsResponse = await fetch("https://metals-api.com/api/latest?access_key=YOUR_API_KEY&base=USD&symbols=XAU,XAG");
+        const metalsData = await metalsResponse.json();
+        document.getElementById("gold-price").textContent = `$${metalsData.rates.XAU.toLocaleString()}`;
+        document.getElementById("silver-price").textContent = `$${metalsData.rates.XAG.toLocaleString()}`;
+
+    } catch (error) {
+        console.error("Error fetching prices:", error);
+    }
+}
+
+// Refresh prices every 60 seconds
+fetchPrices();
+setInterval(fetchPrices, 60000);
+</script>
     
 </body>
 </html>
