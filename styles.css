@@ -169,3 +169,8 @@ body.scrolled .background-animation {
         background: radial-gradient(circle at 100% 100%, #0072ff, #00bfa6);
     }
 }
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
