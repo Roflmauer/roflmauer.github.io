@@ -31,9 +31,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Prevent multiple root creation
-    if (!document.getElementById("chartdiv")) return;
-
     // Create the root element
     var root = am5.Root.new("chartdiv");
     root.setThemes([am5themes_Animated.new(root)]);
@@ -71,18 +68,23 @@ document.addEventListener("DOMContentLoaded", function() {
     // Center the map
     chart.appear(1000, 100);
 
-    // Fetch real-time data
+    // Fetch real-time data from Twelve Data
+    const API_KEY = "YOUR_API_KEY_HERE";  // Replace with your Twelve Data API key
+    const indices = {
+        "DAX": "GDAXI",
+        "TAIEX": "TWII"
+    };
+
     async function fetchIndexData(symbol) {
         try {
-            const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1m`);
+            const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${API_KEY}`);
             const data = await response.json();
-            const lastClose = data.chart.result[0].meta.regularMarketPreviousClose;
-            const currentPrice = data.chart.result[0].meta.regularMarketPrice;
-            const change = currentPrice - lastClose;
-            const changePercent = ((change / lastClose) * 100).toFixed(2);
+            const price = data.close;
+            const change = data.change;
+            const changePercent = data.percent_change;
             return {
-                price: currentPrice.toFixed(2),
-                change: change.toFixed(2),
+                price: price,
+                change: change,
                 changePercent: changePercent
             };
         } catch (error) {
@@ -90,12 +92,6 @@ document.addEventListener("DOMContentLoaded", function() {
             return null;
         }
     }
-
-    // Example symbols
-    const indices = {
-        "DAX": "^GDAXI",
-        "TAIEX": "^TWII"
-    };
 
     // Display data
     Object.keys(indices).forEach(async (name) => {
