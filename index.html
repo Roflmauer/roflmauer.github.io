@@ -124,7 +124,7 @@ setInterval(fetchPrices, 60000);
 </script>
 
 <script>
-am5.ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     // Create the root element
     var root = am5.Root.new("chartdiv");
     root.setThemes([am5themes_Animated.new(root)]);
@@ -133,6 +133,7 @@ am5.ready(function() {
     var chart = root.container.children.push(
         am5map.MapChart.new(root, {
             panX: "rotateX",
+            panY: "rotateY",
             projection: am5map.geoMercator()
         })
     );
