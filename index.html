@@ -122,6 +122,47 @@ function updatePrice(element, arrow, lastPrice, newPrice) {
 fetchPrices();
 setInterval(fetchPrices, 60000);
 </script>
+
+<script>
+am5.ready(function() {
+    // Create the root element
+    var root = am5.Root.new("chartdiv");
+    root.setThemes([am5themes_Animated.new(root)]);
+
+    // Create the map chart
+    var chart = root.container.children.push(
+        am5map.MapChart.new(root, {
+            panX: "rotateX",
+            projection: am5map.geoMercator()
+        })
+    );
+
+    // Load world map data
+    var polygonSeries = chart.series.push(
+        am5map.MapPolygonSeries.new(root, {
+            geoJSON: am5geodata_worldLow
+        })
+    );
+
+    polygonSeries.mapPolygons.template.setAll({
+        tooltipText: "{name}",
+        interactive: true,
+        fill: am5.color("#f3efe0"),
+        stroke: am5.color("#bbbbbb")
+    });
+
+    polygonSeries.mapPolygons.template.states.create("hover", {
+        fill: am5.color("#c8871e")
+    });
+
+    // Add zoom control
+    chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+
+    // Center the map
+    chart.appear(1000, 100);
+});
+</script>
+
     
 </body>
 </html>
