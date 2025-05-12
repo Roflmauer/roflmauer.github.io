@@ -37,25 +37,25 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const indices = {
-        "S&P 500 (USA)": "SPX",
-        "DAX (Germany)": "GDAXI",
-        "Nikkei 225 (Japan)": "N225"
+        "S&P 500 (USA)": "^GSPC",
+        "DAX (Germany)": "^GDAXI",
+        "Nikkei 225 (Japan)": "^N225"
     };
 
-    const apiKey = "a1a07421230e434985b70d6f8a5e9532";  // Replace with your Twelve Data API key
+    const apiKey = "d0gm5mhr01qhao4ufv3gd0gm5mhr01qhao4ufv40";  // Replace with your Finnhub API key
 
     async function fetchIndexData(symbol) {
         try {
-            const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${apiKey}`);
+            const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`);
             const data = await response.json();
 
-            if (data.status === "error" || !data.close || !data.previous_close) {
-                console.error(`Error fetching data for ${symbol}:`, data.message || "Unexpected data format");
+            if (!data || !data.c || !data.pc) {
+                console.error(`Error fetching data for ${symbol}:`, data);
                 return null;
             }
 
-            const currentPrice = parseFloat(data.close);
-            const previousClose = parseFloat(data.previous_close);
+            const currentPrice = parseFloat(data.c);
+            const previousClose = parseFloat(data.pc);
             const change = currentPrice - previousClose;
             const changePercent = ((change / previousClose) * 100).toFixed(2);
 
