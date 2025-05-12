@@ -15,9 +15,20 @@
 </header>
 
 <main class="container">
+    <!-- Inline the SVG for better control -->
     <div id="map-container">
-        <!-- Embed the SVG directly for better styling -->
-        <object id="world-map" type="image/svg+xml" data="world-map.svg"></object>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1001">
+            <path id="Germany" data-country="Germany" d="..." />
+            <path id="Taiwan" data-country="Taiwan" d="..." />
+            <path id="UnitedStates" data-country="United States" d="..." />
+            <path id="UnitedKingdom" data-country="United Kingdom" d="..." />
+            <path id="Japan" data-country="Japan" d="..." />
+            <path id="France" data-country="France" d="..." />
+            <path id="HongKong" data-country="Hong Kong" d="..." />
+            <path id="India" data-country="India" d="..." />
+            <path id="Australia" data-country="Australia" d="..." />
+            <path id="China" data-country="China" d="..." />
+        </svg>
     </div>
     <div id="index-data"></div>
 </main>
@@ -47,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1m`);
             const data = await response.json();
+            if (!data.chart.result || !data.chart.result[0].meta) throw new Error("Invalid API response");
+            
             const lastClose = data.chart.result[0].meta.regularMarketPreviousClose;
             const currentPrice = data.chart.result[0].meta.regularMarketPrice;
             const change = currentPrice - lastClose;
@@ -57,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 changePercent: changePercent
             };
         } catch (error) {
-            console.error("Error fetching index data:", error);
+            console.error("Error fetching index data for " + symbol + ":", error);
             return null;
         }
     }
@@ -69,10 +82,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const region = document.querySelector(`[data-country="${country}"]`);
             if (region) {
                 region.innerHTML = `
-                    <strong>${country}</strong><br>
-                    $${data.price} (${data.change} / ${data.changePercent}%)
+                    <title>${country} - $${data.price} (${data.change} / ${data.changePercent}%)</title>
                 `;
-                region.classList.add(data.change > 0 ? "positive" : "negative");
+                region.style.fill = data.change > 0 ? "#00bfa6" : "#ff5252";
             }
         }
     });
