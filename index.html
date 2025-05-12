@@ -9,6 +9,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ... (rest of your existing inline styles) ... */
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f4f4f4;
@@ -87,6 +88,12 @@
             max-width: 400px;
             margin: 15px auto;
         }
+        .graph-title {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
         .btn {
             display: inline-block;
             background-color: #444;
@@ -142,9 +149,11 @@
                     <div class="current-price" id="btc-price">Loading...</div>
                     <div class="price-change" id="btc-change">-</div>
                     <div class="graph-container">
+                        <h4 class="graph-title">Last 7 Days</h4>
                         <canvas id="btc-chart-7d"></canvas>
                     </div>
                     <div class="graph-container">
+                        <h4 class="graph-title">Last 30 Days</h4>
                         <canvas id="btc-chart-30d"></canvas>
                     </div>
                 </div>
@@ -153,9 +162,11 @@
                     <div class="current-price" id="eth-price">Loading...</div>
                     <div class="price-change" id="eth-change">-</div>
                     <div class="graph-container">
+                        <h4 class="graph-title">Last 7 Days</h4>
                         <canvas id="eth-chart-7d"></canvas>
                     </div>
                     <div class="graph-container">
+                        <h4 class="graph-title">Last 30 Days</h4>
                         <canvas id="eth-chart-30d"></canvas>
                     </div>
                 </div>
@@ -215,13 +226,19 @@ async function fetchHistoricalData(coinId, currency, days, chartId) {
         const historicalData = await response.json();
         const prices = historicalData.prices.map(price => price[1]);
         const timestamps = historicalData.prices.map(price => new Date(price[0]).toLocaleDateString());
-        renderChart(chartId, timestamps, prices);
+
+        // Determine trend for color
+        const firstPrice = prices[0];
+        const lastPrice = prices[prices.length - 1];
+        const trendColor = lastPrice >= firstPrice ? '#3fb950' : '#f85149';
+
+        renderChart(chartId, timestamps, prices, trendColor);
     } catch (error) {
         console.error(`Error fetching historical data for ${coinId} (${days} days):`, error);
     }
 }
 
-function renderChart(chartId, labels, data) {
+function renderChart(chartId, labels, data, borderColor) {
     const ctx = document.getElementById(chartId).getContext('2d');
     if (chartId.includes('7d')) {
         if (chartId === 'btc-chart-7d' && btcChart7d) {
@@ -244,9 +261,10 @@ function renderChart(chartId, labels, data) {
             datasets: [{
                 label: 'Price (USD)',
                 data: data,
-                borderColor: '#58a6ff',
+                borderColor: borderColor,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                tension: 0.4 // This makes the line smoother
             }]
         },
         options: {
@@ -300,7 +318,7 @@ function renderChart(chartId, labels, data) {
 // Initial load
 fetchMarketData();
 
-// Real-time updates every 5 seconds (for price only, fetching historical data less frequently might be better for performance)
+// Real-time updates every 5 seconds (for price only)
 setInterval(async () => {
     try {
         const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true");
@@ -318,8 +336,8 @@ setInterval(async () => {
     }
 }, 5000);
 
-// Optionally, fetch historical data less frequently (e.g., every hour or when the page loads)
-// This can be done by calling fetchHistoricalData() outside the setInterval if needed.
+// You might want to refresh historical data periodically as well, but less frequently than the price.
+// For example, you could call fetchMarketData() every hour or so.
 </script>
 
 </body>
