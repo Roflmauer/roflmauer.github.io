@@ -16,8 +16,8 @@
 
 <main class="container">
     <div id="map-container">
-        <!-- SVG Map will go here -->
-        <img src="world-map.svg" alt="World Map" id="world-map">
+        <!-- Embed the SVG directly for better styling -->
+        <object id="world-map" type="image/svg+xml" data="world-map.svg"></object>
     </div>
     <div id="index-data"></div>
 </main>
@@ -29,7 +29,7 @@
 </footer>
 
 <script>
-// Placeholder for adding interactive data points
+// Fetch real-time index data
 document.addEventListener("DOMContentLoaded", function() {
     const indices = {
         "DAX": "^GDAXI",
@@ -40,8 +40,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const data = await fetchIndexData(indices[name]);
         if (data) {
             const info = `${name}: $${data.price} (${data.change} / ${data.changePercent}%)`;
+
+            // Update the map with real-time data
+            const elementId = name === "DAX" ? "DE" : "TW";
+            const countryElement = document.getElementById(elementId);
+            if (countryElement) {
+                countryElement.setAttribute("fill", data.change >= 0 ? "#4caf50" : "#f44336");
+                countryElement.setAttribute("title", info);
+            }
+
+            // Add to the sidebar
             const dataElement = document.createElement("div");
             dataElement.textContent = info;
+            dataElement.style.color = data.change >= 0 ? "#4caf50" : "#f44336";
             document.getElementById("index-data").appendChild(dataElement);
         }
     });
