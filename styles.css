@@ -162,7 +162,7 @@ h2 {
     margin: 20px auto;
     width: fit-content;
     display: flex;
-    gap: 30px;
+    gap: 60px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
 
@@ -170,10 +170,12 @@ h2 {
     color: #c9d1d9;
     font-weight: 600;
     font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .price-arrow {
-    margin-left: 10px;
     font-weight: bold;
 }
 
