@@ -15,22 +15,19 @@
 </header>
 
 <main class="container">
-    <!-- Inline the SVG for better control -->
-    <div id="map-container">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1001">
-            <path id="Germany" data-country="Germany" d="..." />
-            <path id="Taiwan" data-country="Taiwan" d="..." />
-            <path id="UnitedStates" data-country="United States" d="..." />
-            <path id="UnitedKingdom" data-country="United Kingdom" d="..." />
-            <path id="Japan" data-country="Japan" d="..." />
-            <path id="France" data-country="France" d="..." />
-            <path id="HongKong" data-country="Hong Kong" d="..." />
-            <path id="India" data-country="India" d="..." />
-            <path id="Australia" data-country="Australia" d="..." />
-            <path id="China" data-country="China" d="..." />
-        </svg>
-    </div>
-    <div id="index-data"></div>
+    <table id="index-table">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Price</th>
+                <th>Change</th>
+                <th>% Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be filled dynamically -->
+        </tbody>
+    </table>
 </main>
 
 <footer>
@@ -42,24 +39,24 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const indices = {
-        "Germany": "^GDAXI",
-        "Taiwan": "^TWII",
-        "United States": "^GSPC",
-        "United Kingdom": "^FTSE",
-        "Japan": "^N225",
-        "France": "^FCHI",
-        "Hong Kong": "^HSI",
-        "India": "^BSESN",
-        "Australia": "^AXJO",
-        "China": "000001.SS"
+        "DAX (Germany)": "^GDAXI",
+        "TAIEX (Taiwan)": "^TWII",
+        "S&P 500 (US)": "^GSPC",
+        "FTSE 100 (UK)": "^FTSE",
+        "Nikkei 225 (Japan)": "^N225",
+        "CAC 40 (France)": "^FCHI",
+        "Hang Seng (Hong Kong)": "^HSI",
+        "Sensex (India)": "^BSESN",
+        "ASX 200 (Australia)": "^AXJO",
+        "Shanghai Composite (China)": "000001.SS"
     };
+
+    const tableBody = document.querySelector("#index-table tbody");
 
     async function fetchIndexData(symbol) {
         try {
             const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1m`);
             const data = await response.json();
-            if (!data.chart.result || !data.chart.result[0].meta) throw new Error("Invalid API response");
-            
             const lastClose = data.chart.result[0].meta.regularMarketPreviousClose;
             const currentPrice = data.chart.result[0].meta.regularMarketPrice;
             const change = currentPrice - lastClose;
@@ -70,24 +67,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 changePercent: changePercent
             };
         } catch (error) {
-            console.error("Error fetching index data for " + symbol + ":", error);
+            console.error("Error fetching index data:", error);
             return null;
         }
     }
 
-    // Update map with data
-    Object.keys(indices).forEach(async (country) => {
-        const data = await fetchIndexData(indices[country]);
-        if (data) {
-            const region = document.querySelector(`[data-country="${country}"]`);
-            if (region) {
-                region.innerHTML = `
-                    <title>${country} - $${data.price} (${data.change} / ${data.changePercent}%)</title>
+    function updateTable() {
+        tableBody.innerHTML = ""; // Clear existing rows
+        Object.keys(indices).forEach(async (name) => {
+            const data = await fetchIndexData(indices[name]);
+            if (data) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${name}</td>
+                    <td>$${data.price}</td>
+                    <td class="${data.change >= 0 ? 'positive' : 'negative'}">${data.change}</td>
+                    <td class="${data.changePercent >= 0 ? 'positive' : 'negative'}">${data.changePercent}%</td>
                 `;
-                region.style.fill = data.change > 0 ? "#00bfa6" : "#ff5252";
+                tableBody.appendChild(row);
             }
-        }
-    });
+        });
+    }
+
+    updateTable();
+    setInterval(updateTable, 60000); // Refresh every 60 seconds
 });
 </script>
 
