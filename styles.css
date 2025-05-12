@@ -194,38 +194,66 @@ html {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 #index-table th, #index-table td {
     padding: 15px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #dddddd;
 }
 
 #index-table th {
     background-color: #f3efe0;
-    color: #333;
+    color: #333333;
     font-weight: 700;
 }
 
 #index-table tr:nth-child(even) {
-    background-color: #ffffff;
+    background-color: #f9f9f9;
 }
 
 #index-table tr:last-child td {
     border-bottom: none;
 }
 
+/* Positive and Negative Changes */
 .positive {
-    color: #008000; /* Green for positive change */
+    color: #4caf50;
     font-weight: bold;
 }
 
 .negative {
-    color: #B22222; /* Red for negative change */
+    color: #f44336;
     font-weight: bold;
+}
+
+/* Hover Effect for Rows */
+#index-table tbody tr:hover {
+    background-color: #f3efe0;
+    cursor: pointer;
+}
+
+/* Loading Spinner */
+.loading {
+    display: block;
+    margin: 40px auto;
+    border: 4px solid #f3efe0;
+    border-top: 4px solid #333333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
