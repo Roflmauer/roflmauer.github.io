@@ -9,7 +9,6 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ... (rest of your existing inline styles) ... */
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f4f4f4;
@@ -87,6 +86,12 @@
             width: 90%;
             max-width: 400px;
             margin: 15px auto;
+            height: 200px; /* Set a fixed height for the graphs */
+        }
+        .graph-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block; /* Ensure canvas takes up the container space */
         }
         .graph-title {
             font-size: 0.9em;
@@ -264,7 +269,7 @@ function renderChart(chartId, labels, data, borderColor) {
                 borderColor: borderColor,
                 borderWidth: 2,
                 fill: false,
-                tension: 0.4 // This makes the line smoother
+                tension: 0.4
             }]
         },
         options: {
@@ -274,7 +279,7 @@ function renderChart(chartId, labels, data, borderColor) {
                 y: {
                     beginAtZero: false,
                     ticks: {
-                        display: false // Hide y-axis labels to keep it cleaner
+                        display: false
                     },
                     grid: {
                         display: false
@@ -282,7 +287,7 @@ function renderChart(chartId, labels, data, borderColor) {
                 },
                 x: {
                     ticks: {
-                        display: false // Hide x-axis labels for simplicity
+                        display: false
                     },
                     grid: {
                         display: false
