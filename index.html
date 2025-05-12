@@ -160,6 +160,7 @@
 
    // Initialize Charts
    const charts = {};
+   const FETCH_INTERVAL = 15000; // 15 seconds (increased to avoid rate limit)
 
    function formatPrice(price) {
     return `$${price.toLocaleString(undefined, {
@@ -178,7 +179,12 @@
      console.error('Could not find .current-price element');
     }
     if (priceChangeElement) {
-     priceChangeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+     if (typeof change === 'number') {
+      priceChangeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+     } else {
+      priceChangeElement.textContent = 'N/A';
+      console.warn('change is not a number:', change);
+     }
      priceChangeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
     } else {
      console.error('Could not find .price-change element');
@@ -186,57 +192,62 @@
    }
 
    function createChart(ctx, labels, data, borderColor) {
-    return new Chart(ctx, {
-     type: 'line',
-     data: {
-      labels: labels,
-      datasets: [
-       {
-        label: 'Price (USD)',
-        data: data,
-        borderColor: borderColor,
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4,
-       },
-      ],
-     },
-     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-       y: {
-        beginAtZero: false,
-        ticks: {
-         display: false,
+    try {
+     return new Chart(ctx, {
+      type: 'line',
+      data: {
+       labels: labels,
+       datasets: [
+        {
+         label: 'Price (USD)',
+         data: data,
+         borderColor: borderColor,
+         borderWidth: 2,
+         fill: false,
+         tension: 0.4,
         },
-        grid: {
-         display: false,
-        },
-       },
-       x: {
-        ticks: {
-         display: false,
-        },
-        grid: {
-         display: false,
-        },
-       },
+       ],
       },
-      plugins: {
-       legend: {
-        display: false,
+      options: {
+       responsive: true,
+       maintainAspectRatio: false,
+       scales: {
+        y: {
+         beginAtZero: false,
+         ticks: {
+          display: false,
+         },
+         grid: {
+          display: false,
+         },
+        },
+        x: {
+         ticks: {
+          display: false,
+         },
+         grid: {
+          display: false,
+         },
+        },
        },
-       tooltip: {
-        callbacks: {
-         label: function (context) {
-          return `Price: $${context.parsed.y.toFixed(2)}`;
+       plugins: {
+        legend: {
+         display: false,
+        },
+        tooltip: {
+         callbacks: {
+          label: function (context) {
+           return `Price: $${context.parsed.y.toFixed(2)}`;
+          },
          },
         },
        },
       },
-     },
-    });
+     });
+    } catch (error) {
+     console.error('Error creating chart:', error);
+     return null; // Return null if chart creation fails
+    }
    }
 
    async function fetchMarketData() {
@@ -248,10 +259,12 @@
       throw new Error(`HTTP error! Status: ${response.status}`);
      }
      const priceData = await response.json();
+     console.log('API Response (Price Data):', priceData); // Log the response
 
      marketSection.querySelectorAll('.market-card').forEach((card) => {
       const coin = card.dataset.coin;
       const coinData = priceData[coin];
+      console.log(`Processing ${coin} data:`, coinData); // Log data for each coin
 
       const volumeElement = card.querySelector(`#${coin}-volume`);
       const marketCapElement = card.querySelector(`#${coin}-market-cap`);
@@ -316,6 +329,7 @@
       throw new Error(`HTTP error! Status: ${response.status}`);
      }
      const historicalData = await response.json();
+     console.log(`API Response (Historical ${coin}, ${days} days):`, historicalData); // Log the response
      const prices = historicalData.prices.map((price) => price[1]);
      const timestamps = historicalData.prices.map((price) =>
       new Date(price[0]).toLocaleDateString()
@@ -327,13 +341,20 @@
 
      const ctx = chartContainer.querySelector('canvas').getContext('2d');
      if (!ctx) {
-      console.error('Could not find canvas element within chartContainer');
+      console.error('Could not find canvas element within chartContainer', chartContainer);
       return; // Exit if canvas is not found
      }
      if (charts[coin + days]) {
-      charts[coin + days].destroy();
+      if (charts[coin + days] instanceof Chart) {
+       charts[coin + days].destroy();
+      }
      }
      charts[coin + days] = createChart(ctx, timestamps, prices, trendColor);
+     if (!charts[coin + days]) {
+      console.error(`Chart creation failed for ${coin} ${days}`);
+      chartContainer.innerHTML = '<p class="error-message">Failed to load data</p>';
+      return; // Exit if chart creation failed
+     }
 
      if (days === 7) {
       calculateAndDisplaySMA(prices, chartContainer.closest('.market-card'), coin);
@@ -415,7 +436,7 @@
     });
 
     fetchMarketData();
-    setInterval(fetchMarketData, 5000);
+    setInterval(fetchMarketData, FETCH_INTERVAL); // Use the defined interval
    }
 
    document.addEventListener('DOMContentLoaded', () => {
