@@ -35,7 +35,7 @@ header {
     padding: 60px 0;
     margin-bottom: 40px;
     border-bottom: 2px solid #30363d;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 header h1 {
@@ -56,7 +56,7 @@ header p {
     height: 150px;
     border-radius: 50%;
     border: 4px solid #30363d;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     margin: 20px auto;
     display: block;
     animation: zoomIn 1.2s ease-in-out;
@@ -80,13 +80,13 @@ h2 {
     text-decoration: none;
     margin-bottom: 20px;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn:hover {
     background-color: #30363d;
     color: #c9d1d9;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 /* Divider */
@@ -109,21 +109,20 @@ h2 {
 /* Market Card */
 .market-card {
     flex: 1 1 350px;
-    background: #161b22; /* Slightly darker background for the cards */
+    background: linear-gradient(145deg, #161b22, #21262d);
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     padding: 20px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
-    animation: fadeInUp 1s ease-in-out;
     position: relative;
     overflow: hidden;
-    border: 1px solid #30363d; /* Subtle border */
+    border: 1px solid #30363d;
 }
 
 .market-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 .market-title {
@@ -136,7 +135,7 @@ h2 {
 .current-price {
     font-size: 1.8em;
     font-weight: bold;
-    color: #c9d1d9; /* Lighter color for price */
+    color: #c9d1d9;
     margin-bottom: 5px;
 }
 
@@ -161,6 +160,20 @@ h2 {
     width: 90%;
     max-width: 400px;
     margin: 15px auto;
+    height: 200px;
+}
+
+.graph-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.graph-title {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 5px;
+    font-style: italic;
 }
 
 /* Footer */
@@ -169,7 +182,7 @@ footer {
     padding: 20px 0;
     color: #8b949e;
     border-top: 2px solid #30363d;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
 }
 
 footer a {
@@ -187,6 +200,7 @@ footer a:hover {
         opacity: 0;
         transform: translateY(-50px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -198,6 +212,7 @@ footer a:hover {
         opacity: 0;
         transform: translateY(50px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -209,6 +224,7 @@ footer a:hover {
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -219,30 +235,45 @@ footer a:hover {
     from {
         background: radial-gradient(circle at 50% 50%, #0d1117 0%, #21262d 100%);
     }
+
     to {
         background: radial-gradient(circle at 0% 0%, #21262d 0%, #0d1117 100%);
     }
 }
 
-/* ... (rest of your existing styles.css) ... */
-
-/* Graph Container */
-.graph-container {
-    width: 90%;
-    max-width: 400px; /* Or a size that fits well on desktop */
-    margin: 15px auto;
-    height: 200px; /* Set a fixed or minimum height to maintain aspect ratio */
+/* Timeframe Selector */
+.timeframe-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-.graph-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block; /* Ensure canvas takes up the container space */
+.timeframe-btn {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.graph-title {
+.timeframe-btn:hover {
+    background-color: #30363d;
+    color: #c9d1d9;
+}
+
+/* Analysis Section */
+.analysis {
+    margin-top: 15px;
+    color: #8b949e;
     font-size: 0.9em;
-    color: #777;
-    margin-bottom: 5px;
-    font-style: italic;
+}
+
+/* Additional Data */
+.additional-data {
+    margin-top: 10px;
+    color: #8b949e;
+    font-size: 0.85em;
 }
