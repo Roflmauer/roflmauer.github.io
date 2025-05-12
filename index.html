@@ -48,59 +48,103 @@
 
   <hr class="divider">
 
-  <section>
+  <section class="market-section">
    <h2>Live Market Prices</h2>
-   <p>Here's a quick look at the current prices and trends for Bitcoin and Ethereum. You can select different
-    timeframes to see historical data.</p>
-   <div class="market-data-container">
-   <div class="market-card">
-     <h3 class="market-title">Bitcoin (BTC)</h3>
-     <div class="current-price" id="btc-price">Loading...</div>
-     <div class="price-change" id="btc-change">-</div>
-     <div class="timeframe-selector">
-     <button data-timeframe="7" class="timeframe-btn active-timeframe">7D</button>
-     <button data-timeframe="30" class="timeframe-btn">30D</button>
+   <p class="market-description">
+    Here's a quick look at the current prices and trends for Bitcoin and
+    Ethereum. Select a timeframe to view historical data.
+   </p>
+
+   <div class="market-grid">
+    <article class="market-card" data-coin="bitcoin">
+     <header class="market-card-header">
+      <h3 class="market-card-title">Bitcoin (BTC)</h3>
+     </header>
+     <div class="market-card-body">
+      <div class="market-price-display">
+       <div class="current-price" id="btc-price">Loading...</div>
+       <div class="price-change" id="btc-change">-</div>
+      </div>
+
+      <div class="market-timeframe-selector">
+       <button data-timeframe="7" class="timeframe-btn active-timeframe">
+        7D
+       </button>
+       <button data-timeframe="30" class="timeframe-btn">30D</button>
+      </div>
+
+      <div class="market-chart-container">
+       <div class="graph-container" data-timeframe="7" id="btc-chart-7d">
+        <h4 class="graph-title">Last 7 Days</h4>
+        <canvas></canvas>
+       </div>
+       <div
+        class="graph-container"
+        data-timeframe="30"
+        id="btc-chart-30d"
+        style="display: none;"
+       >
+        <h4 class="graph-title">Last 30 Days</h4>
+        <canvas></canvas>
+       </div>
+      </div>
+
+      <div class="market-data-details">
+       <p class="analysis" id="btc-analysis">Analysis loading...</p>
+       <p class="additional-data" id="btc-volume">
+        Volume (24h): Loading...
+       </p>
+       <p class="additional-data" id="btc-market-cap">
+        Market Cap: Loading...
+       </p>
+      </div>
      </div>
-     <div class="graph-container">
-     <h4 class="graph-title">Last 7 Days</h4>
-     <canvas id="btc-chart-7d"></canvas>
+    </article>
+
+    <article class="market-card" data-coin="ethereum">
+     <header class="market-card-header">
+      <h3 class="market-card-title">Ethereum (ETH)</h3>
+     </header>
+     <div class="market-card-body">
+      <div class="market-price-display">
+       <div class="current-price" id="eth-price">Loading...</div>
+       <div class="price-change" id="eth-change">-</div>
+      </div>
+
+      <div class="market-timeframe-selector">
+       <button data-timeframe="7" class="timeframe-btn active-timeframe">
+        7D
+       </button>
+       <button data-timeframe="30" class="timeframe-btn">30D</button>
+      </div>
+
+      <div class="market-chart-container">
+       <div class="graph-container" data-timeframe="7" id="eth-chart-7d">
+        <h4 class="graph-title">Last 7 Days</h4>
+        <canvas></canvas>
+       </div>
+       <div
+        class="graph-container"
+        data-timeframe="30"
+        id="eth-chart-30d"
+        style="display: none;"
+       >
+        <h4 class="graph-title">Last 30 Days</h4>
+        <canvas></canvas>
+       </div>
+      </div>
+
+      <div class="market-data-details">
+       <p class="analysis" id="eth-analysis">Analysis loading...</p>
+       <p class="additional-data" id="eth-volume">
+        Volume (24h): Loading...
+       </p>
+       <p class="additional-data" id="eth-market-cap">
+        Market Cap: Loading...
+       </p>
+      </div>
      </div>
-     <div class="graph-container" style="display: none;">
-     <h4 class="graph-title">Last 30 Days</h4>
-     <canvas id="btc-chart-30d"></canvas>
-     </div>
-     <div class="analysis">
-     <p id="btc-analysis">Analysis loading...</p>
-     </div>
-     <div class="additional-data">
-     <p id="btc-volume">Volume (24h): Loading...</p>
-     <p id="btc-market-cap">Market Cap: Loading...</p>
-     </div>
-   </div>
-   <div class="market-card">
-     <h3 class="market-title">Ethereum (ETH)</h3>
-     <div class="current-price" id="eth-price">Loading...</div>
-     <div class="price-change" id="eth-change">-</div>
-     <div class="timeframe-selector">
-     <button data-timeframe="7" class="timeframe-btn active-timeframe">7D</button>
-     <button data-timeframe="30" class="timeframe-btn">30D</button>
-     </div>
-     <div class="graph-container">
-     <h4 class="graph-title">Last 7 Days</h4>
-     <canvas id="eth-chart-7d"></canvas>
-     </div>
-     <div class="graph-container" style="display: none;">
-     <h4 class="graph-title">Last 30 Days</h4>
-     <canvas id="eth-chart-30d"></canvas>
-     </div>
-     <div class="analysis">
-     <p id="eth-analysis">Analysis loading...</p>
-     </div>
-     <div class="additional-data">
-     <p id="eth-volume">Volume (24h): Loading...</p>
-     <p id="eth-market-cap">Market Cap: Loading...</p>
-     </div>
-   </div>
+    </article>
    </div>
   </section>
   </main>
@@ -112,303 +156,222 @@
   </footer>
 
   <script>
-  let btcChart7d, ethChart7d, btcChart30d, ethChart30d;
-  let currentBtcTimeframe = '7d';
-  let currentEthTimeframe = '7d';
+   const marketSection = document.querySelector('.market-section');
 
-  function formatPrice(price) {
-   return `$${price.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-   })}`;
-  }
+   // Initialize Charts
+   const charts = {};
 
-  function updatePriceCard(elementId, price, change) {
-   const priceElement = document.getElementById(`${elementId}-price`);
-   const changeElement = document.getElementById(`${elementId}-change`);
-
-   priceElement.textContent = formatPrice(price);
-   changeElement.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
-   changeElement.className = `price-change ${change >= 0 ? "positive" : "negative"}`;
-  }
-
-  async function fetchMarketData() {
-   try {
-    const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_24h_vol=true&include_market_cap=true");
-    if (!response.ok) {
-     throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const priceData = await response.json();
-
-    //  Bitcoin data
-    if (priceData.bitcoin) {
-     const btcPrice = priceData.bitcoin.usd;
-     const btcChange = priceData.bitcoin.usd_24h_change;
-     const btcVolume = priceData.bitcoin.usd_24h_volume;
-     const btcMarketCap = priceData.bitcoin.market_cap;
-     updatePriceCard("btc", btcPrice, btcChange);
-     document.getElementById("btc-volume").textContent = `Volume (24h): ${btcVolume ? btcVolume.toLocaleString() : 'N/A'}`;
-     document.getElementById("btc-market-cap").textContent = `Market Cap: ${btcMarketCap ? btcMarketCap.toLocaleString() : 'N/A'}`;
-     document.getElementById("btc-price").classList.remove('data-unavailable');
-     document.getElementById("btc-change").classList.remove('data-unavailable');
-     document.getElementById("btc-volume").classList.remove('data-unavailable');
-     document.getElementById("btc-market-cap").classList.remove('data-unavailable');
-
-    } else {
-     console.error("Bitcoin data not available in API response");
-     document.getElementById("btc-price").textContent = "N/A";
-     document.getElementById("btc-change").textContent = "N/A";
-     document.getElementById("btc-volume").textContent = "N/A";
-     document.getElementById("btc-market-cap").textContent = "N/A";
-     document.getElementById("btc-price").classList.add('data-unavailable');
-     document.getElementById("btc-change").classList.add('data-unavailable');
-     document.getElementById("btc-volume").classList.add('data-unavailable');
-     document.getElementById("btc-market-cap").classList.add('data-unavailable');
-    }
-
-    //  Ethereum data
-    if (priceData.ethereum) {
-     const ethPrice = priceData.ethereum.usd;
-     const ethChange = priceData.ethereum.usd_24h_change;
-     const ethVolume = priceData.ethereum.usd_24h_volume;
-     const ethMarketCap = priceData.ethereum.market_cap;
-     updatePriceCard("eth", ethPrice, ethChange);
-     document.getElementById("eth-volume").textContent = `Volume (24h): ${ethVolume ? ethVolume.toLocaleString() : 'N/A'}`;
-     document.getElementById("eth-market-cap").textContent = `Market Cap: ${ethMarketCap ? ethMarketCap.toLocaleString() : 'N/A'}`;
-     document.getElementById("eth-price").classList.remove('data-unavailable');
-     document.getElementById("eth-change").classList.remove('data-unavailable');
-     document.getElementById("eth-volume").classList.remove('data-unavailable');
-     document.getElementById("eth-market-cap").classList.remove('data-unavailable');
-
-    } else {
-     console.error("Ethereum data not available in API response");
-     document.getElementById("eth-price").textContent = "N/A";
-     document.getElementById("eth-change").textContent = "N/A";
-     document.getElementById("eth-volume").textContent = "N/A";
-     document.getElementById("eth-market-cap").textContent = "N/A";
-     document.getElementById("eth-price").classList.add('data-unavailable');
-     document.getElementById("eth-change").classList.add('data-unavailable');
-     document.getElementById("eth-volume").classList.add('data-unavailable');
-     document.getElementById("eth-market-cap").classList.add('data-unavailable');
-    }
-
-    //  Fetch historical data for graphs
-    await fetchHistoricalData('bitcoin', 'usd', 7, 'btc-chart-7d');
-    await fetchHistoricalData('ethereum', 'usd', 7, 'eth-chart-7d');
-    await fetchHistoricalData('bitcoin', 'usd', 30, 'btc-chart-30d');
-    await fetchHistoricalData('ethereum', 'usd', 30, 'eth-chart-30d');
-
-   } catch (error) {
-    console.error("Error fetching market data:", error);
-    //  Display "N/A" for all values in case of an error
-    document.getElementById("btc-price").textContent = "N/A";
-    document.getElementById("btc-change").textContent = "N/A";
-    document.getElementById("btc-volume").textContent = "N/A";
-    document.getElementById("btc-market-cap").textContent = "N/A";
-    document.getElementById("eth-price").textContent = "N/A";
-    document.getElementById("eth-change").textContent = "N/A";
-    document.getElementById("eth-volume").textContent = "N/A";
-    document.getElementById("eth-market-cap").textContent = "N/A";
-
-    document.getElementById("btc-price").classList.add('data-unavailable');
-    document.getElementById("btc-change").classList.add('data-unavailable');
-    document.getElementById("btc-volume").classList.add('data-unavailable');
-    document.getElementById("btc-market-cap").classList.add('data-unavailable');
-    document.getElementById("eth-price").classList.add('data-unavailable');
-    document.getElementById("eth-change").classList.add('data-unavailable');
-    document.getElementById("eth-volume").classList.add('data-unavailable');
-    document.getElementById("eth-market-cap").classList.add('data-unavailable');
-   }
-  }
-
-  async function fetchHistoricalData(coinId, currency, days, chartId) {
-   try {
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
-    if (!response.ok) {
-     throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const historicalData = await response.json();
-    const prices = historicalData.prices.map(price => price[1]);
-    const timestamps = historicalData.prices.map(price => new Date(price[0]).toLocaleDateString());
-
-    //  Determine trend for color
-    const firstPrice = prices[0];
-    const lastPrice = prices[prices.length - 1];
-    const trendColor = lastPrice >= firstPrice ? '#3fb950' : '#f85149';
-
-    renderChart(chartId, timestamps, prices, trendColor);
-    if (coinId === 'bitcoin' && days === 7) {
-     calculateAndDisplaySMA(prices, 'btc-analysis');
-    } else if (coinId === 'ethereum' && days === 7) {
-     calculateAndDisplaySMA(prices, 'eth-analysis');
-    }
-
-   } catch (error) {
-    console.error(`Error fetching historical data for ${coinId} (${days} days):`, error);
-    //  Clear chart and display error message
-    const ctx = document.getElementById(chartId).getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#8b949e";
-    ctx.textAlign = "center";
-    ctx.fillText("Failed to load data", ctx.canvas.width / 2, ctx.canvas.height / 2);
-   }
-  }
-
-  function renderChart(chartId, labels, data, borderColor) {
-   const ctx = document.getElementById(chartId).getContext('2d');
-   let chartToDestroy = null;
-   if (chartId === 'btc-chart-7d') {
-    chartToDestroy = btcChart7d;
-   } else if (chartId === 'eth-chart-7d') {
-    chartToDestroy = ethChart7d;
-   } else if (chartId === 'btc-chart-30d') {
-    chartToDestroy = btcChart30d;
-   } else if (chartId === 'eth-chart-30d') {
-    chartToDestroy = ethChart30d;
+   function formatPrice(price) {
+    return `$${price.toLocaleString(undefined, {
+     minimumFractionDigits: 2,
+     maximumFractionDigits: 2,
+    })}`;
    }
 
-   if (chartToDestroy) {
-    chartToDestroy.destroy();
+   function updatePriceCard(card, price, change) {
+    card.querySelector('.current-price').textContent = formatPrice(price);
+    const changeElement = card.querySelector('.price-change');
+    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+    changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
    }
 
-   const newChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-     labels: labels,
-     datasets: [{
-      label: 'Price (USD)',
-      data: data,
-      borderColor: borderColor,
-      borderWidth: 2,
-      fill: false,
-      tension: 0.4
-     }]
-    },
-    options: {
-     responsive: true,
-     maintainAspectRatio: false,
-     scales: {
-      y: {
-       beginAtZero: false,
-       ticks: {
-        display: false
+   function createChart(ctx, labels, data, borderColor) {
+    return new Chart(ctx, {
+     type: 'line',
+     data: {
+      labels: labels,
+      datasets: [
+       {
+        label: 'Price (USD)',
+        data: data,
+        borderColor: borderColor,
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4,
        },
-       grid: {
-        display: false
-       }
-      },
-      x: {
-       ticks: {
-        display: false
-       },
-       grid: {
-        display: false
-       }
-      }
+      ],
      },
-     plugins: {
-      legend: {
-       display: false
+     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+       y: {
+        beginAtZero: false,
+        ticks: {
+         display: false,
+        },
+        grid: {
+         display: false,
+        },
+       },
+       x: {
+        ticks: {
+         display: false,
+        },
+        grid: {
+         display: false,
+        },
+       },
       },
-      tooltip: {
-       callbacks: {
-        label: function (context) {
-         return `Price: $${context.parsed.y.toFixed(2)}`;
-        }
-       }
-      }
+      plugins: {
+       legend: {
+        display: false,
+       },
+       tooltip: {
+        callbacks: {
+         label: function (context) {
+          return `Price: $${context.parsed.y.toFixed(2)}`;
+         },
+        },
+       },
+      },
+     },
+    });
+   }
+
+   async function fetchMarketData() {
+    try {
+     const response = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true&include_24h_vol=true&include_market_cap=true'
+     );
+     if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
      }
+     const priceData = await response.json();
+
+     marketSection.querySelectorAll('.market-card').forEach((card) => {
+      const coin = card.dataset.coin;
+      const coinData = priceData[coin];
+
+      if (coinData) {
+       updatePriceCard(card, coinData.usd, coinData.usd_24h_change);
+       card.querySelector('#' + coin + '-volume').textContent = `Volume (24h): ${
+        coinData.usd_24h_vol ? coinData.usd_24h_vol.toLocaleString() : 'N/A'
+       }`;
+       card.querySelector('#' + coin + '-market-cap').textContent = `Market Cap: ${
+        coinData.market_cap ? coinData.market_cap.toLocaleString() : 'N/A'
+       }`;
+       card.querySelectorAll('.data-unavailable').forEach((el) =>
+        el.classList.remove('data-unavailable')
+       );
+      } else {
+       console.error(`${coin} data not available in API response`);
+       card.querySelector('.current-price').textContent = 'N/A';
+       card.querySelector('.price-change').textContent = 'N/A';
+       card.querySelector('#' + coin + '-volume').textContent = 'N/A';
+       card.querySelector('#' + coin + '-market-cap').textContent = 'N/A';
+       card.querySelectorAll('.current-price, .price-change, .additional-data').forEach(
+        (el) => el.classList.add('data-unavailable')
+       );
+      }
+     });
+    } catch (error) {
+     console.error('Error fetching market data:', error);
+     marketSection.querySelectorAll('.market-card').forEach((card) => {
+      card.querySelector('.current-price').textContent = 'N/A';
+      card.querySelector('.price-change').textContent = 'N/A';
+      card.querySelector('#' + card.dataset.coin + '-volume').textContent = 'N/A';
+      card.querySelector('#' + card.dataset.coin + '-market-cap').textContent =
+       'N/A';
+      card.querySelectorAll('.current-price, .price-change, .additional-data').forEach(
+       (el) => elclassList.add('data-unavailable')
+      );
+     });
     }
-   });
-
-   if (chartId === 'btc-chart-7d') {
-    btcChart7d = newChart;
-   } else if (chartId === 'eth-chart-7d') {
-    ethChart7d = newChart;
-   } else if (chartId === 'btc-chart-30d') {
-    btcChart30d = newChart;
-   } else if (chartId === 'eth-chart-30d') {
-    ethChart30d = newChart;
-   }
-  }
-
-  function calculateSMA(data, period) {
-   if (data.length < period) return null;
-   let sum = 0;
-   for (let i = data.length - period; i < data.length; i++) {
-    sum += data[i];
-   }
-   return sum / period;
-  }
-
-  function calculateAndDisplaySMA(prices, elementId) {
-   const sma7 = calculateSMA(prices, 7);
-   if (sma7) {
-    const analysisElement = document.getElementById(elementId);
-    analysisElement.textContent = `7-day SMA: ${sma7.toFixed(2)}`;
-   }
-  }
-
-  //  Function to handle timeframe changes
-  async function changeTimeframe(coin, days) {
-   const chartId7d = `${coin}-chart-7d`;
-   const chartId30d = `${coin}-chart-30d`;
-
-   if (days === 7) {
-    document.getElementById(chartId30d).style.display = 'none';
-    document.getElementById(chartId7d).style.display = 'block';
-   } else if (days === 30) {
-    document.getElementById(chartId7d).style.display = 'none';
-    document.getElementById(chartId30d).style.display = 'block';
    }
 
-   await fetchHistoricalData(coin, 'usd', days, days === 7 ? chartId7d : chartId30d);
-   if (coin === 'btc') {
-    currentBtcTimeframe = days === 7 ? '7d' : '30d';
-   } else if (coin === 'eth') {
-    currentEthTimeframe = days === 7 ? '7d' : '30d';
-   }
+   async function fetchHistoricalData(coin, currency, days, chartContainer) {
+    try {
+     const response = await fetch(
+      `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${currency}&days=${days}`
+     );
+     if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+     }
+     const historicalData = await response.json();
+     const prices = historicalData.prices.map((price) => price[1]);
+     const timestamps = historicalData.prices.map((price) =>
+      new Date(price[0]).toLocaleDateString()
+     );
 
-   //  Update active button state
-   document.querySelectorAll(`.timeframe-btn`).forEach(btn => btn.classList.remove('active-timeframe'));
-   document.querySelector(`.timeframe-btn[data-timeframe="${days}"]`).classList.add('active-timeframe');
-  }
+     const firstPrice = prices[0];
+     const lastPrice = prices[prices.length - 1];
+     const trendColor = lastPrice >= firstPrice ? '#3fb950' : '#f85149';
 
-  //  Event listeners for timeframe buttons
-  document.querySelectorAll('.timeframe-btn').forEach(button => {
-   button.addEventListener('click', function () {
-    const coin = this.closest('.market-card').querySelector('.market-title').textContent.split(' ')[0].toLowerCase();
-    const days = parseInt(this.getAttribute('data-timeframe'));
-    changeTimeframe(coin, days);
-   });
-  });
+     const ctx = chartContainer.querySelector('canvas').getContext('2d');
+     if (charts[coin + days]) {
+      charts[coin + days].destroy();
+     }
+     charts[coin + days] = createChart(ctx, timestamps, prices, trendColor);
 
-
-  //  Initial load
-  fetchMarketData();
-
-  //  Real-time updates every 5 seconds (for price only)
-  setInterval(async () => {
-   try {
-    const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true");
-    if (!response.ok) {
-     throw new Error(`HTTP error! Status: ${response.status}`);
+     if (days === 7) {
+      calculateAndDisplaySMA(prices, chartContainer.closest('.market-card'), coin);
+     }
+    } catch (error) {
+     console.error(
+      `Error fetching historical data for ${coin} (${days} days):`,
+      error
+     );
+     chartContainer.innerHTML = '<p class="error-message">Failed to load data</p>';
     }
-    const priceData = await response.json();
-
-    const btcPrice = priceData.bitcoin.usd;
-    const btcChange = priceData.bitcoin.usd_24h_change;
-    updatePriceCard("btc", btcPrice, btcChange);
-
-    const ethPrice = priceData.ethereum.usd;
-    const ethChange = priceData.ethereum.usd_24h_change;
-    updatePriceCard("eth", ethPrice, ethChange);
-   } catch (error) {
-    console.error("Error fetching live prices:", error);
    }
-  }, 5000);
 
+   function calculateSMA(data, period) {
+    if (data.length < period) return null;
+    let sum = 0;
+    for (let i = data.length - period; i < data.length; i++) {
+     sum += data[i];
+    }
+    return sum / period;
+   }
+
+   function calculateAndDisplaySMA(prices, card, coin) {
+    const sma7 = calculateSMA(prices, 7);
+    if (sma7) {
+     card.querySelector('#' + coin + '-analysis').textContent = `7-day SMA: ${sma7.toFixed(
+      2
+     )}`;
+    } else {
+     card.querySelector('#' + coin + '-analysis').textContent = 'N/A';
+    }
+   }
+
+   function changeTimeframe(card, days) {
+    card.querySelectorAll('.graph-container').forEach((container) => {
+     container.style.display = container.dataset.timeframe === String(days)
+      ? 'block'
+      : 'none';
+    });
+
+    card.querySelectorAll('.timeframe-btn').forEach((btn) =>
+     btn.classList.remove('active-timeframe')
+    );
+    card.querySelector(`.timeframe-btn[data-timeframe="${days}"]`).classList.add(
+     'active-timeframe'
+    );
+
+    const coin = card.dataset.coin;
+    fetchHistoricalData(coin, 'usd', days, card.querySelector(`#${coin}-chart-${days}d`));
+   }
+
+   // Initialize
+   function initializeMarketCards() {
+    marketSection.querySelectorAll('.market-card').forEach((card) => {
+     const buttons = card.querySelectorAll('.timeframe-btn');
+     buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+       changeTimeframe(card, button.dataset.timeframe);
+      });
+     });
+
+     fetchHistoricalData(card.dataset.coin, 'usd', 7, card.querySelector(`#${card.dataset.coin}-chart-7d`));
+    });
+
+    fetchMarketData();
+    setInterval(fetchMarketData, 5000);
+   }
+
+   initializeMarketCards();
   </script>
  </body>
 
