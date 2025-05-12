@@ -189,35 +189,43 @@ html {
     margin-top: 20px;
 }
 
-#world-map {
+/* Financial Table Styles */
+#index-table {
     width: 100%;
-    max-width: 1000px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
-#index-data {
-    margin-top: 20px;
+#index-table th, #index-table td {
     padding: 15px;
-    background-color: #f8f8f8;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
 }
 
-/* Index Data Styling */
-.index-data {
-    font-weight: bold;
-    font-size: 0.9em;
-    margin-top: 5px;
-    padding: 5px;
-    border-radius: 5px;
+#index-table th {
+    background-color: #f3efe0;
+    color: #333;
+    font-weight: 700;
+}
+
+#index-table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+#index-table tr:last-child td {
+    border-bottom: none;
 }
 
 .positive {
-    color: #4CAF50;  /* Green */
+    color: #008000; /* Green for positive change */
+    font-weight: bold;
 }
 
 .negative {
-    color: #F44336;  /* Red */
+    color: #B22222; /* Red for negative change */
+    font-weight: bold;
 }
