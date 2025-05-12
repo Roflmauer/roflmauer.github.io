@@ -552,7 +552,7 @@
 
  .currency-exchange-container select,
  .currency-exchange-container input {
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
   border: 1px solid #30363d;
   border-radius: 5px;
