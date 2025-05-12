@@ -223,3 +223,26 @@ footer a:hover {
         background: radial-gradient(circle at 0% 0%, #21262d 0%, #0d1117 100%);
     }
 }
+
+/* ... (rest of your existing styles.css) ... */
+
+/* Graph Container */
+.graph-container {
+    width: 90%;
+    max-width: 400px; /* Or a size that fits well on desktop */
+    margin: 15px auto;
+    height: 200px; /* Set a fixed or minimum height to maintain aspect ratio */
+}
+
+.graph-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block; /* Ensure canvas takes up the container space */
+}
+
+.graph-title {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 5px;
+    font-style: italic;
+}
