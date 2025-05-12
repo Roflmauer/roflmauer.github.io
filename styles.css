@@ -204,3 +204,20 @@ html {
     border: 1px solid #ddd;
     font-family: 'Roboto', sans-serif;
 }
+
+/* Index Data Styling */
+.index-data {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.positive {
+    color: #4CAF50;  /* Green */
+}
+
+.negative {
+    color: #F44336;  /* Red */
+}
