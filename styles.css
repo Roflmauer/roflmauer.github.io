@@ -529,10 +529,12 @@
   font-size: 2em;
   color: #58a6ff;
   margin-bottom: 25px;
+  text-align: left;
  }
 
  .currency-exchange-container .form-group {
   margin-bottom: 20px;
+  text-align: left;
  }
 
  .currency-exchange-container label {
