@@ -1,4 +1,4 @@
-/* Normalize.css (or a similar reset) */
+ /* Normalize.css (or a similar reset) */
  /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
  html {
   line-height: 1.15;
@@ -297,162 +297,64 @@
   overflow-x: hidden;
  }
 
- /* Container */
  .container {
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  text-align: center;
  }
 
- /* Background Animation */
- .background-animation {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 50%, #0d1117 0%, #21262d 100%);
-  z-index: -1;
-  overflow: hidden;
-  animation: gradientShift 15s ease-in-out infinite alternate;
- }
-
- /* Header */
- header {
-  background: linear-gradient(145deg, #161b22, #21262d);
-  padding: 60px 0;
-  margin-bottom: 40px;
-  border-bottom: 2px solid #30363d;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
- }
-
- header h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
-  color: #58a6ff;
-  animation: fadeInDown 1s ease-in-out;
- }
-
- header p {
-  color: #8b949e;
-  animation: fadeInUp 1.5s ease-in-out;
- }
-
- /* Profile Picture */
- .profile-pic {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 4px solid #30363d;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  margin: 20px auto;
-  display: block;
-  animation: zoomIn 1.2s ease-in-out;
- }
-
- /* Section Headings */
  h2 {
   font-size: 2em;
-  margin-bottom: 15px;
-  color: #58a6ff;
- }
-
- /* Buttons */
- .btn {
-  display: inline-block;
-  background-color: #21262d;
-  color: #58a6ff;
-  padding: 12px 30px;
-  border-radius: 5px;
-  font-weight: 600;
-  text-decoration: none;
   margin-bottom: 20px;
-  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: #58a6ff;
+  text-align: left;
  }
 
- .btn:hover {
-  background-color: #30363d;
-  color: #c9d1d9;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
- }
-
- /* Divider */
- .divider {
-  border: 0;
-  height: 1px;
-  background-color: #30363d;
-  margin: 40px 0;
- }
-
- /* Market Section */
- .market-section {
-  margin-bottom: 40px;
- }
-
- .market-description {
-  color: #8b949e;
-  text-align: center;
-  margin-bottom: 20px;
- }
-
- /* Market Grid */
- .market-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px;
- }
-
- /* Market Card */
- .market-card {
-  background: linear-gradient(145deg, #161b22, #21262d);
+ .market-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
  }
 
- .market-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
- }
-
- /* Market Card Header */
- .market-card-header {
-  padding: 20px;
-  text-align: center;
+ .market-table thead th {
+  background-color: #161b22;
+  color: #8b949e;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
   border-bottom: 1px solid #30363d;
  }
 
- .market-card-title {
-  font-size: 1.2em;
-  color: #8b949e;
+ .market-table tbody tr {
+  background-color: #21262d;
+  transition: background-color 0.3s;
  }
 
- /* Market Card Body */
- .market-card-body {
-  padding: 20px;
+ .market-table tbody tr:hover {
+  background-color: #30363d;
  }
 
- /* Price Display */
- .market-price-display {
-  text-align: center;
-  margin-bottom: 15px;
+ .market-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #30363d;
  }
 
- .current-price {
-  font-size: 1.8em;
+ .market-table td:nth-child(2),
+ .market-table td:nth-child(3) {
   font-weight: bold;
   color: #c9d1d9;
  }
 
  .price-change {
-  display: inline-block;
-  font-size: 0.8em;
   padding: 5px 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   color: #fff;
-  margin-top: 5px;
+  display: inline-block;
+  font-size: 0.9em;
  }
 
  .positive {
@@ -463,137 +365,23 @@
   background-color: #f85149;
  }
 
- /* Timeframe Selector */
- .market-timeframe-selector {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
- }
-
- .timeframe-btn {
-  background-color: #21262d;
-  border: 1px solid #30363d;
-  color: #8b949e;
-  padding: 5px 10px;
+ .graph-container {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
- }
-
- .timeframe-btn:hover {
-  background-color: #30363d;
-  color: #c9d1d9;
- }
-
- .timeframe-btn.active-timeframe {
-  background-color: #58a6ff;
-  color: #fff;
-  border-color: #58a6ff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
- }
-
- /* Chart Container */
- .market-chart-container {
-  position: relative;
-  height: 200px;
-  margin-bottom: 15px;
   overflow: hidden;
  }
 
- .graph-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
- }
-
  .graph-container canvas {
-  display: block;
   width: 100% !important;
   height: 100% !important;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  display: block;
  }
 
- .graph-title {
-  font-size: 0.9em;
-  color: #777;
-  font-style: italic;
-  text-align: center;
-  margin-bottom: 5px;
- }
-
- /* Data Details */
- .market-data-details {
-  color: #8b949e;
-  font-size: 0.9em;
- }
-
- .analysis {
-  margin-bottom: 10px;
- }
-
- .additional-data {
-  margin-top: 5px;
- }
-
- .data-unavailable {
-  color: #8b949e;
-  font-style: italic;
- }
-
- /* Animations */
- @keyframes fadeInDown {
-  from {
-   opacity: 0;
-   transform: translateY(-50px);
-  }
-
-  to {
-   opacity: 1;
-   transform: translateY(0);
-  }
- }
-
- @keyframes fadeInUp {
-  from {
-   opacity: 0;
-   transform: translateY(50px);
-  }
-
-  to {
-   opacity: 1;
-   transform: translateY(0);
-  }
- }
-
- @keyframes zoomIn {
-  from {
-   opacity: 0;
-   transform: scale(0.8);
-  }
-
-  to {
-   opacity: 1;
-   transform: scale(1);
-  }
- }
-
- @keyframes gradientShift {
-  from {
-   background: radial-gradient(circle at 50% 50%, #0d1117 0%, #21262d 100%);
-  }
-
-  to {
-   background: radial-gradient(circle at 0% 0%, #21262d 0%, #0d1117 100%);
+ @media (max-width: 768px) {
+  .market-table {
+   display: block;
+   overflow-x: auto;
   }
  }
