@@ -498,7 +498,7 @@
   position: relative;
   height: 200px;
   margin-bottom: 15px;
-  overflow: hidden; /* Important: Prevent potential overflow */
+  overflow: hidden;
  }
 
  .graph-container {
@@ -507,17 +507,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex; /* Use flexbox for layout */
+  display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
+  justify-content: center;
+  align-items: center;
  }
 
  .graph-container canvas {
-  display: block; /* Ensure canvas is a block-level element */
-  width: 100% !important; /* Important: Override any other width styles */
-  height: 100% !important; /* Important: Override any other height styles */
-  box-sizing: border-box; /* Include padding and border in the element's total height and width */
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   padding: 0;
