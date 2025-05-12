@@ -8,12 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-eYNu0jb43IMkTn2+Nxgu6xzDzYZPGCmRUpZxyxvgz6wS7NczPdQK1yUpSbtDsGCsP/amxhjvUYK0ouwFgag=="
-          crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJx1qWndGzgGcRJTHWCVBS0kJxqJmCPGko3o0yrnAo0I1+KtKLiKs6utvXkduZPIWmPcwIg=="
-            crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -423,8 +419,9 @@
                 for (let j = 0; j < headers.length; j++) {
                     obj[headers[j].trim()] = currentLine[j].trim();
                 }
-                // We only care about real airports with IATA codes
-                if (obj.iata_code && obj.iata_code.length === 3) {
+                // We only care about real airports with IATA codes and
+                // valid latitude and longitude
+                if (obj.iata_code && obj.iata_code.length === 3 && obj.latitude_deg && obj.longitude_deg) {
                     result.push(obj);
                 }
             }
