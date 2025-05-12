@@ -1,303 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+ <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pierre Meyer - Personal Website</title>
-    <link href="styles.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-            line-height: 1.6;
-            overflow-x: hidden;
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pierre Meyer - Personal Website</title>
+  <link href="styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ </head>
+
+ <body>
+  <div class="background-animation"></div>
+  <header>
+  <div class="container">
+   <h1>Pierre Meyer</h1>
+   <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
+   <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+  </div>
+  </header>
+
+  <main class="container">
+  <section>
+   <h2>About Me</h2>
+   <p>
+    Hey there! I’m Pierre Meyer, a business development professional with a passion for connecting cultures
+    and driving growth. I’ve had the unique experience of building my career across Germany and Taiwan,
+    working at the intersection of global business strategy and relationship management.
+   </p>
+   <p>
+    My background spans regulatory affairs, project assistance, and business strategy, with a knack for
+    finding creative solutions in fast-paced environments. I thrive in international settings, leveraging
+    my fluency in English, German, and Chinese to bridge communication gaps and build meaningful
+    connections.
+   </p>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+   <h2>My CV</h2>
+   <p>
+    <a href="CV.pdf" target="_blank" class="btn">Download My CV</a>
+   </p>
+  </section>
+
+  <hr class="divider">
+
+  <section class="market-section">
+   <h2>Live Market Prices</h2>
+   <table class="market-table">
+    <thead>
+     <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>24h Change</th>
+      <th>Price Graph (7D)</th>
+     </tr>
+    </thead>
+    <tbody id="market-table-body">
+     <tr>
+      <td>1</td>
+      <td>
+       <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501457" alt="Bitcoin" width="24" style="margin-right: 5px;">
+       Bitcoin (BTC)
+      </td>
+      <td id="btc-price">Loading...</td>
+      <td id="btc-change" class="price-change">-</td>
+      <td>
+       <div class="graph-container">
+        <canvas id="btc-chart"></canvas>
+       </div>
+      </td>
+     </tr>
+     <tr>
+      <td>2</td>
+      <td>
+       <img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628" alt="Ethereum" width="24" style="margin-right: 5px;">
+       Ethereum (ETH)
+      </td>
+      <td id="eth-price">Loading...</td>
+      <td id="eth-change" class="price-change">-</td>
+      <td>
+       <div class="graph-container">
+        <canvas id="eth-chart"></canvas>
+       </div>
+      </td>
+     </tr>
+    </tbody>
+   </table>
+  </section>
+  </main>
+
+  <footer>
+  <div class="container">
+   <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+  </div>
+  </footer>
+
+  <script>
+   const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
+   const marketTableBody = document.getElementById('market-table-body');
+
+   async function fetchMarketData() {
+    try {
+     const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true`);
+     const data = await response.json();
+
+     if (!response.ok) {
+      throw new Error(`Failed to fetch market data: ${response.status}`);
+     }
+
+     updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
+     updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
+
+     fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
+     fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
+
+    } catch (error) {
+     console.error('Error fetching market data:', error);
+     marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
+    }
+   }
+
+   function updatePrice(coin, price, change) {
+    const priceElement = document.getElementById(`${coin}-price`);
+    const changeElement = document.getElementById(`${coin}-change`);
+
+    priceElement.textContent = `$${price.toFixed(2)}`;
+    changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
+    changeElement.className = `price-change ${change > 0 ? 'positive' : 'negative'}`;
+   }
+
+   async function fetchAndRenderChart(coinId, currency, days, chartId) {
+    try {
+     const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
+     const historicalData = await response.json();
+
+     if (!response.ok) {
+      throw new Error(`Failed to fetch historical data for ${coinId}: ${response.status}`);
+     }
+
+     const prices = historicalData.prices.map(p => p[1]);
+     const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
+
+     renderChart(chartId, timestamps, prices, coinId);
+
+    } catch (error) {
+     console.error(`Error fetching chart data for ${coinId}:`, error);
+     const chartContainer = document.getElementById(chartId);
+     chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+    }
+   }
+
+   function renderChart(chartId, labels, data, coin) {
+    const ctx = document.getElementById(chartId).getContext('2d');
+    new Chart(ctx, {
+     type: 'line',
+     data: {
+      labels: labels,
+      datasets: [{
+       label: `${coin.toUpperCase()} Price (USD)`,
+       data: data,
+       borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
+       borderWidth: 2,
+       fill: false,
+       pointRadius: 0
+      }]
+     },
+     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      scales: {
+       x: { display: false },
+       y: {
+        display: true,
+        ticks: {
+         callback: function(value) {
+          return '$' + value;
+         }
         }
+       },
+      },
+      plugins: {
+       legend: {
+        display: false,
+       }
+      }
+     }
+    });
+   }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-        }
+   fetchMarketData();
+   setInterval(fetchMarketData, 120000);
+  </script>
+ </body>
 
-        h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #58a6ff;
-            text-align: left;
-        }
-
-        /* Market Data Container */
-        .market-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .market-table thead th {
-            background-color: #161b22;
-            color: #8b949e;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 1px solid #30363d;
-        }
-
-        .market-table tbody tr {
-            background-color: #21262d;
-            transition: background-color 0.3s;
-        }
-
-        .market-table tbody tr:hover {
-            background-color: #30363d;
-        }
-
-        .market-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #30363d;
-        }
-
-        .market-table td:nth-child(2),
-        .market-table td:nth-child(3) {
-            font-weight: bold;
-            color: #c9d1d9;
-        }
-
-        .price-change {
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: #fff;
-            display: inline-block;
-            font-size: 0.9em;
-        }
-
-        .positive {
-            background-color: #3fb950;
-        }
-
-        .negative {
-            background-color: #f85149;
-        }
-
-        .graph-container {
-            width: 100%;
-            height: 80px;
-            margin-top: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .graph-container canvas {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .market-table {
-                display: block;
-                overflow-x: auto;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="background-animation"></div>
-    <header>
-        <div class="container">
-            <h1>Pierre Meyer</h1>
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
-            <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
-        </div>
-    </header>
-
-    <main class="container">
-        <section>
-            <h2>About Me</h2>
-            <p>
-                Hey there! I’m Pierre Meyer, a business development professional with a passion for connecting cultures
-                and driving growth. I’ve had the unique experience of building my career across Germany and Taiwan,
-                working at the intersection of global business strategy and relationship management.
-            </p>
-            <p>
-                My background spans regulatory affairs, project assistance, and business strategy, with a knack for
-                finding creative solutions in fast-paced environments. I thrive in international settings, leveraging
-                my fluency in English, German, and Chinese to bridge communication gaps and build meaningful
-                connections.
-            </p>
-        </section>
-
-        <hr class="divider">
-
-        <section>
-            <h2>My CV</h2>
-            <p>
-                <a href="CV.pdf" target="_blank" class="btn">Download My CV</a>
-            </p>
-        </section>
-
-        <hr class="divider">
-
-        <section class="market-section">
-            <h2>Live Market Prices</h2>
-            <table class="market-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>24h Change</th>
-                        <th>Price Graph (7D)</th>
-                    </tr>
-                </thead>
-                <tbody id="market-table-body">
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501457" alt="Bitcoin" width="24" style="margin-right: 5px;">
-                            Bitcoin (BTC)
-                        </td>
-                        <td id="btc-price">Loading...</td>
-                        <td id="btc-change" class="price-change">-</td>
-                        <td>
-                            <div class="graph-container">
-                                <canvas id="btc-chart"></canvas>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            <img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628" alt="Ethereum" width="24" style="margin-right: 5px;">
-                            Ethereum (ETH)
-                        </td>
-                        <td id="eth-price">Loading...</td>
-                        <td id="eth-change" class="price-change">-</td>
-                        <td>
-                            <div class="graph-container">
-                                <canvas id="eth-chart"></canvas>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
-        </div>
-    </footer>
-
-    <script>
-        const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
-        const marketTableBody = document.getElementById('market-table-body');
-
-        async function fetchMarketData() {
-            try {
-                const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true`);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch market data: ${response.status}`);
-                }
-
-                updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
-                updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
-
-                fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
-                fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
-
-            } catch (error) {
-                console.error('Error fetching market data:', error);
-                marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
-            }
-        }
-
-        function updatePrice(coin, price, change) {
-            const priceElement = document.getElementById(`${coin}-price`);
-            const changeElement = document.getElementById(`${coin}-change`);
-
-            priceElement.textContent = `$${price.toFixed(2)}`;
-            changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
-            changeElement.className = `price-change ${change > 0 ? 'positive' : 'negative'}`;
-        }
-
-        async function fetchAndRenderChart(coinId, currency, days, chartId) {
-            try {
-                const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
-                const historicalData = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch historical data for ${coinId}: ${response.status}`);
-                }
-
-                const prices = historicalData.prices.map(p => p[1]);
-                const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
-
-                renderChart(chartId, timestamps, prices, coinId);
-
-            } catch (error) {
-                console.error(`Error fetching chart data for ${coinId}:`, error);
-                const chartContainer = document.getElementById(chartId);
-                chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
-            }
-        }
-
-        function renderChart(chartId, labels, data, coin) {
-            const ctx = document.getElementById(chartId).getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: `${coin.toUpperCase()} Price (USD)`,
-                        data: data,
-                        borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
-                        borderWidth: 2,
-                        fill: false,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: false,
-                    scales: {
-                        x: { display: false },
-                        y: { 
-                            display: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value;
-                                }
-                            }
-                        },
-                    },
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    }
-                }
-            });
-        }
-
-        fetchMarketData();
-        setInterval(fetchMarketData, 120000);
-    </script>
-</body>
-
-</html>
+ </html>
