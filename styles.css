@@ -515,3 +515,84 @@
   animation: fadeInUp 1.5s ease-in-out;
   margin-bottom: 0;
  }
+
+ .currency-exchange-container {
+  background-color: #161b22;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  text-align: left;
+ }
+
+ .currency-exchange-container h2 {
+  font-size: 2em;
+  color: #58a6ff;
+  margin-bottom: 25px;
+ }
+
+ .currency-exchange-container .form-group {
+  margin-bottom: 20px;
+ }
+
+ .currency-exchange-container label {
+  display: block;
+  margin-bottom: 8px;
+  color: #8b949e;
+  font-weight: 600;
+  font-size: 0.9em;
+ }
+
+ .currency-exchange-container select,
+ .currency-exchange-container input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #30363d;
+  border-radius: 5px;
+  background-color: #21262d;
+  color: #c9d1d9;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+ }
+
+ .currency-exchange-container select:focus,
+ .currency-exchange-container input:focus {
+  outline: none;
+  border-color: #58a6ff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+ }
+
+ .currency-exchange-container .btn {
+  padding: 12px 30px;
+  background-color: #58a6ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 20px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+ }
+
+ .currency-exchange-container .btn:hover {
+  background-color: #3d78b3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+ }
+
+ .currency-exchange-container #result {
+  margin-top: 25px;
+  font-size: 1.2em;
+  color: #c9d1d9;
+  font-weight: bold;
+  text-align: center;
+ }
+
+ .currency-exchange-container .error-message {
+  color: #f85149;
+  margin-top: 10px;
+  font-size: 0.9em;
+  text-align: center;
+ }
