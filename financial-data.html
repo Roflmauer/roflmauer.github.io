@@ -10,7 +10,7 @@
 <header>
     <div class="container">
         <h1>Financial Data</h1>
-        <p>Real-time global index performances</p>
+        <p>Real-time index performances</p>
     </div>
 </header>
 
@@ -37,10 +37,9 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const indices = {
-        "DAX (Germany)": "DEU30",
-        "TAIEX (Taiwan)": "TWII",
-        "S&P 500 (USA)": "SPX",
-        "FTSE 100 (UK)": "UKX",
+        "S&P 500 (USA)": "^GSPC",
+        "DAX (Germany)": "^GDAXI",
+        "Nikkei 225 (Japan)": "^N225"
     };
 
     const apiKey = "a1a07421230e434985b70d6f8a5e9532";  // Replace with your Twelve Data API key
