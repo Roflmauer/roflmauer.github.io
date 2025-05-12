@@ -284,3 +284,8 @@ footer a:hover {
     color: #8b949e;
     font-size: 0.85em;
 }
+
+.data-unavailable{
+    color: #8b949e;
+    font-style: italic;
+}
