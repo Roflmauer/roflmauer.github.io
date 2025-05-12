@@ -385,3 +385,14 @@
    overflow-x: auto;
   }
  }
+
+/* Updated CSS for Profile Picture */
+.profile-pic {
+    width: 100px; /* Smaller width */
+    height: 100px; /* Smaller height */
+    border-radius: 50%; /* Make it round */
+    border: 4px solid #30363d;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin: 20px auto; /* Center horizontally */
+    display: block; /* Ensure it behaves as a block element */
+}
