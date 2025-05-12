@@ -169,10 +169,20 @@
    }
 
    function updatePriceCard(card, price, change) {
-    card.querySelector('.current-price').textContent = formatPrice(price);
-    const changeElement = card.querySelector('.price-change');
-    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-    changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+    const currentPriceElement = card.querySelector('.current-price');
+    const priceChangeElement = card.querySelector('.price-change');
+
+    if (currentPriceElement) {
+     currentPriceElement.textContent = formatPrice(price);
+    } else {
+     console.error('Could not find .current-price element');
+    }
+    if (priceChangeElement) {
+     priceChangeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+     priceChangeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+    } else {
+     console.error('Could not find .price-change element');
+    }
    }
 
    function createChart(ctx, labels, data, borderColor) {
@@ -243,39 +253,56 @@
       const coin = card.dataset.coin;
       const coinData = priceData[coin];
 
+      const volumeElement = card.querySelector(`#${coin}-volume`);
+      const marketCapElement = card.querySelector(`#${coin}-market-cap`);
+
       if (coinData) {
        updatePriceCard(card, coinData.usd, coinData.usd_24h_change);
-       card.querySelector('#' + coin + '-volume').textContent = `Volume (24h): ${
-        coinData.usd_24h_vol ? coinData.usd_24h_vol.toLocaleString() : 'N/A'
-       }`;
-       card.querySelector('#' + coin + '-market-cap').textContent = `Market Cap: ${
-        coinData.market_cap ? coinData.market_cap.toLocaleString() : 'N/A'
-       }`;
+       if (volumeElement) {
+        volumeElement.textContent = `Volume (24h): ${
+         coinData.usd_24h_vol ? coinData.usd_24h_vol.toLocaleString() : 'N/A'
+        }`;
+       } else {
+        console.error(`Could not find #${coin}-volume element`);
+       }
+       if (marketCapElement) {
+        marketCapElement.textContent = `Market Cap: ${
+         coinData.market_cap ? coinData.market_cap.toLocaleString() : 'N/A'
+        }`;
+       } else {
+        console.error(`Could not find #${coin}-market-cap element`);
+       }
+
        card.querySelectorAll('.data-unavailable').forEach((el) =>
         el.classList.remove('data-unavailable')
        );
       } else {
        console.error(`${coin} data not available in API response`);
-       card.querySelector('.current-price').textContent = 'N/A';
-       card.querySelector('.price-change').textContent = 'N/A';
-       card.querySelector('#' + coin + '-volume').textContent = 'N/A';
-       card.querySelector('#' + coin + '-market-cap').textContent = 'N/A';
-       card.querySelectorAll('.current-price, .price-change, .additional-data').forEach(
-        (el) => el.classList.add('data-unavailable')
-       );
+       updatePriceCard(card, 'N/A', 'N/A');
+       if (volumeElement) {
+        volumeElement.textContent = 'N/A';
+        volumeElement.classList.add('data-unavailable');
+       }
+       if (marketCapElement) {
+        marketCapElement.textContent = 'N/A';
+        marketCapElement.classList.add('data-unavailable');
+       }
       }
      });
     } catch (error) {
      console.error('Error fetching market data:', error);
      marketSection.querySelectorAll('.market-card').forEach((card) => {
-      card.querySelector('.current-price').textContent = 'N/A';
-      card.querySelector('.price-change').textContent = 'N/A';
-      card.querySelector('#' + card.dataset.coin + '-volume').textContent = 'N/A';
-      card.querySelector('#' + card.dataset.coin + '-market-cap').textContent =
-       'N/A';
-      card.querySelectorAll('.current-price, .price-change, .additional-data').forEach(
-       (el) => elclassList.add('data-unavailable')
-      );
+      updatePriceCard(card, 'N/A', 'N/A');
+      const volumeElement = card.querySelector(`#${card.dataset.coin}-volume`);
+      const marketCapElement = card.querySelector(`#${card.dataset.coin}-market-cap`);
+      if (volumeElement) {
+       volumeElement.textContent = 'N/A';
+       volumeElement.classList.add('data-unavailable');
+      }
+      if (marketCapElement) {
+       marketCapElement.textContent = 'N/A';
+       marketCapElement.classList.add('data-unavailable');
+      }
      });
     }
    }
@@ -299,6 +326,10 @@
      const trendColor = lastPrice >= firstPrice ? '#3fb950' : '#f85149';
 
      const ctx = chartContainer.querySelector('canvas').getContext('2d');
+     if (!ctx) {
+      console.error('Could not find canvas element within chartContainer');
+      return; // Exit if canvas is not found
+     }
      if (charts[coin + days]) {
       charts[coin + days].destroy();
      }
@@ -312,7 +343,9 @@
       `Error fetching historical data for ${coin} (${days} days):`,
       error
      );
-     chartContainer.innerHTML = '<p class="error-message">Failed to load data</p>';
+     if (chartContainer) {
+      chartContainer.innerHTML = '<p class="error-message">Failed to load data</p>';
+     }
     }
    }
 
@@ -326,13 +359,17 @@
    }
 
    function calculateAndDisplaySMA(prices, card, coin) {
+    const analysisElement = card.querySelector(`#${coin}-analysis`);
+    if (!analysisElement) {
+     console.error(`Could not find #${coin}-analysis element`);
+     return; // Exit if analysis element is not found
+    }
+
     const sma7 = calculateSMA(prices, 7);
     if (sma7) {
-     card.querySelector('#' + coin + '-analysis').textContent = `7-day SMA: ${sma7.toFixed(
-      2
-     )}`;
+     analysisElement.textContent = `7-day SMA: ${sma7.toFixed(2)}`;
     } else {
-     card.querySelector('#' + coin + '-analysis').textContent = 'N/A';
+     analysisElement.textContent = 'N/A';
     }
    }
 
@@ -351,7 +388,12 @@
     );
 
     const coin = card.dataset.coin;
-    fetchHistoricalData(coin, 'usd', days, card.querySelector(`#${coin}-chart-${days}d`));
+    const chartContainer = card.querySelector(`#${coin}-chart-${days}d`);
+    if (chartContainer) {
+     fetchHistoricalData(coin, 'usd', days, chartContainer);
+    } else {
+     console.error(`Could not find #${coin}-chart-${days}d`);
+    }
    }
 
    // Initialize
@@ -364,14 +406,21 @@
       });
      });
 
-     fetchHistoricalData(card.dataset.coin, 'usd', 7, card.querySelector(`#${card.dataset.coin}-chart-7d`));
+     const initialChartContainer = card.querySelector(`#${card.dataset.coin}-chart-7d`);
+     if (initialChartContainer) {
+      fetchHistoricalData(card.dataset.coin, 'usd', 7, initialChartContainer);
+     } else {
+      console.error(`Could not find #${card.dataset.coin}-chart-7d`);
+     }
     });
 
     fetchMarketData();
     setInterval(fetchMarketData, 5000);
    }
 
-   initializeMarketCards();
+   document.addEventListener('DOMContentLoaded', () => {
+    initializeMarketCards();
+   });
   </script>
  </body>
 
