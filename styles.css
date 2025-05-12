@@ -264,6 +264,13 @@ footer a:hover {
     color: #c9d1d9;
 }
 
+.timeframe-btn.active-timeframe {
+    background-color: #58a6ff;
+    color: #fff;
+    border-color: #58a6ff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 /* Analysis Section */
 .analysis {
     margin-top: 15px;
