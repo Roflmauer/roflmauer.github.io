@@ -15,17 +15,16 @@
 </header>
 
 <main class="container">
-    <table id="index-table">
+    <table>
         <thead>
             <tr>
                 <th>Index</th>
-                <th>Price</th>
+                <th>Current Price</th>
                 <th>Change</th>
-                <th>% Change</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Rows will be filled dynamically -->
+        <tbody id="index-data">
+            <!-- Data will be inserted here -->
         </tbody>
     </table>
 </main>
@@ -37,61 +36,72 @@
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const indices = {
-        "DAX (Germany)": "^GDAXI",
-        "TAIEX (Taiwan)": "^TWII",
-        "S&P 500 (US)": "^GSPC",
-        "FTSE 100 (UK)": "^FTSE",
-        "Nikkei 225 (Japan)": "^N225",
-        "CAC 40 (France)": "^FCHI",
-        "Hang Seng (Hong Kong)": "^HSI",
-        "Sensex (India)": "^BSESN",
-        "ASX 200 (Australia)": "^AXJO",
-        "Shanghai Composite (China)": "000001.SS"
-    };
+// Replace 'YOUR_API_KEY' with your actual Twelve Data API key
+const API_KEY = 'a1a07421230e434985b70d6f8a5e9532';
 
-    const tableBody = document.querySelector("#index-table tbody");
+const indices = {
+    "Germany (DAX)": "DAX",
+    "Taiwan (TAIEX)": "TWII",
+    "United States (S&P 500)": "SPX",
+    "United Kingdom (FTSE 100)": "FTSE",
+    "Japan (Nikkei 225)": "N225",
+    "France (CAC 40)": "FCHI",
+    "Hong Kong (Hang Seng Index)": "HSI",
+    "India (Sensex)": "SENSEX",
+    "Australia (ASX 200)": "AXJO",
+    "China (SSE Composite Index)": "000001.SS"
+};
 
-    async function fetchIndexData(symbol) {
-        try {
-            const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1m`);
-            const data = await response.json();
-            const lastClose = data.chart.result[0].meta.regularMarketPreviousClose;
-            const currentPrice = data.chart.result[0].meta.regularMarketPrice;
-            const change = currentPrice - lastClose;
-            const changePercent = ((change / lastClose) * 100).toFixed(2);
-            return {
-                price: currentPrice.toFixed(2),
-                change: change.toFixed(2),
-                changePercent: changePercent
-            };
-        } catch (error) {
-            console.error("Error fetching index data:", error);
+async function fetchIndexData(symbol) {
+    try {
+        const response = await fetch(`https://api.twelvedata.com/quote?symbol=${symbol}&apikey=${API_KEY}`);
+        const data = await response.json();
+
+        // Check if the response has the expected structure
+        if (!data || !data.close || !data.price) {
+            console.error("Unexpected data format:", data);
             return null;
         }
-    }
 
-    function updateTable() {
-        tableBody.innerHTML = ""; // Clear existing rows
-        Object.keys(indices).forEach(async (name) => {
-            const data = await fetchIndexData(indices[name]);
-            if (data) {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${name}</td>
-                    <td>$${data.price}</td>
-                    <td class="${data.change >= 0 ? 'positive' : 'negative'}">${data.change}</td>
-                    <td class="${data.changePercent >= 0 ? 'positive' : 'negative'}">${data.changePercent}%</td>
-                `;
-                tableBody.appendChild(row);
-            }
-        });
-    }
+        const lastClose = parseFloat(data.close);
+        const currentPrice = parseFloat(data.price);
+        const change = currentPrice - lastClose;
+        const changePercent = ((change / lastClose) * 100).toFixed(2);
 
-    updateTable();
-    setInterval(updateTable, 60000); // Refresh every 60 seconds
-});
+        return {
+            price: currentPrice.toFixed(2),
+            change: change.toFixed(2),
+            changePercent: changePercent
+        };
+    } catch (error) {
+        console.error("Error fetching index data:", error);
+        return null;
+    }
+}
+
+async function updateTable() {
+    const tableBody = document.getElementById("index-data");
+    tableBody.innerHTML = "";
+
+    for (const [country, symbol] of Object.entries(indices)) {
+        const data = await fetchIndexData(symbol);
+        if (data) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${country}</td>
+                <td>$${data.price}</td>
+                <td class="${data.change > 0 ? 'positive' : 'negative'}">${data.change} (${data.changePercent}%)</td>
+            `;
+            tableBody.appendChild(row);
+        }
+    }
+}
+
+// Initial load
+updateTable();
+
+// Update every 60 seconds
+setInterval(updateTable, 60000);
 </script>
 
 </body>
