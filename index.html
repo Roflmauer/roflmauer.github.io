@@ -5,22 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pierre Meyer - Personal Website</title>
     <link href="styles.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        header, footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 15px;
+        }
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .ticker-card {
+            flex: 1 1 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .ticker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .ticker-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #444;
+        }
+        .ticker-price {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .ticker-change {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #fff;
+        }
+        .positive {
+            background-color: #28a745;
+        }
+        .negative {
+            background-color: #dc3545;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #444;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background-color: #666;
+        }
+    </style>
 </head>
 <body>
-    <div class="background-animation"></div>
-    
     <header>
         <div class="container">
             <h1>Pierre Meyer</h1>
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
             <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
         </div>
     </header>
 
     <main class="container">
-        
         <section>
             <h2>About Me</h2>
             <p>
@@ -44,16 +117,16 @@
 
         <section>
             <h2>Live Market Prices</h2>
-            <div id="price-ticker">
-                <div class="ticker-item" id="btc-ticker">
-                    <span>Bitcoin (BTC):</span>
-                    <span id="btc-price">Loading...</span>
-                    <span id="btc-arrow" class="price-arrow"></span>
+            <div class="dashboard" id="price-ticker">
+                <div class="ticker-card" id="btc-card">
+                    <div class="ticker-title">Bitcoin (BTC)</div>
+                    <div class="ticker-price" id="btc-price">Loading...</div>
+                    <div class="ticker-change" id="btc-change">-</div>
                 </div>
-                <div class="ticker-item" id="eth-ticker">
-                    <span>Ethereum (ETH):</span>
-                    <span id="eth-price">Loading...</span>
-                    <span id="eth-arrow" class="price-arrow"></span>
+                <div class="ticker-card" id="eth-card">
+                    <div class="ticker-title">Ethereum (ETH)</div>
+                    <div class="ticker-price" id="eth-price">Loading...</div>
+                    <div class="ticker-change" id="eth-change">-</div>
                 </div>
             </div>
         </section>
@@ -65,54 +138,49 @@
             <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
         </div>
     </footer>
-    
+
 <script>
 let lastPrices = { btc: null, eth: null };
 
+function formatPrice(price) {
+    return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function updateCard(elementId, price, change) {
+    const priceElement = document.getElementById(`${elementId}-price`);
+    const changeElement = document.getElementById(`${elementId}-change`);
+
+    // Update price
+    priceElement.textContent = formatPrice(price);
+
+    // Update change
+    changeElement.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
+    changeElement.className = `ticker-change ${change >= 0 ? "positive" : "negative"}`;
+}
+
 async function fetchPrices() {
     try {
-        // Fetch crypto prices from CoinGecko
-        const cryptoResponse = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
-        const cryptoData = await cryptoResponse.json();
-        
-        // Update Bitcoin Price
-        const btcPrice = cryptoData.bitcoin.usd;
-        const btcElement = document.getElementById("btc-price");
-        const btcArrow = document.getElementById("btc-arrow");
-        updatePrice(btcElement, btcArrow, lastPrices.btc, btcPrice);
-        lastPrices.btc = btcPrice;
-        
-        // Update Ethereum Price
-        const ethPrice = cryptoData.ethereum.usd;
-        const ethElement = document.getElementById("eth-price");
-        const ethArrow = document.getElementById("eth-arrow");
-        updatePrice(ethElement, ethArrow, lastPrices.eth, ethPrice);
-        lastPrices.eth = ethPrice;
+        const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true");
+        const data = await response.json();
+
+        const btcPrice = data.bitcoin.usd;
+        const btcChange = data.bitcoin.usd_24h_change;
+        updateCard("btc", btcPrice, btcChange);
+
+        const ethPrice = data.ethereum.usd;
+        const ethChange = data.ethereum.usd_24h_change;
+        updateCard("eth", ethPrice, ethChange);
 
     } catch (error) {
         console.error("Error fetching prices:", error);
     }
 }
 
-function updatePrice(element, arrow, lastPrice, newPrice) {
-    element.textContent = `$${newPrice.toLocaleString()}`;
-    
-    if (lastPrice === null) return;  // Skip the first update
-    
-    if (newPrice > lastPrice) {
-        arrow.textContent = "▲";
-        arrow.classList.add("up");
-        arrow.classList.remove("down");
-    } else if (newPrice < lastPrice) {
-        arrow.textContent = "▼";
-        arrow.classList.add("down");
-        arrow.classList.remove("up");
-    }
-}
-
-// Refresh prices every 60 seconds
+// Initial load
 fetchPrices();
-setInterval(fetchPrices, 60000);
+
+// Real-time updates every 5 seconds
+setInterval(fetchPrices, 5000);
 </script>
 
 </body>
