@@ -14,7 +14,6 @@
         body {
             font-family: 'Montserrat', sans-serif;
         }
-        /* Styles from your styles.css that are relevant if not overridden by Tailwind or local styles */
         .introductory-narrative {
             color: #a0aec0;
             margin-top: 1.5rem;
@@ -24,13 +23,11 @@
         .introductory-narrative p {
             margin-bottom: 1rem;
         }
-        .introductory-narrative strong { /* For bolding within paragraphs */
-            color: #cbd5e0; /* Or your preferred emphasis color */
+        .introductory-narrative strong {
+            color: #cbd5e0;
             font-weight: 600;
         }
-
-        /* Styles for chart titles */
-        .chart-title-style { /* Renamed for clarity, original was .chart-wrapper > h2 */
+        .chart-title-style {
             font-size: 1.25em;
             font-weight: 600;
             text-align: center;
@@ -38,13 +35,9 @@
             margin-top: 0;
             margin-bottom: 1rem;
         }
-
-        /* Ensure canvas background is transparent to show chart-wrapper's dark background */
         .chart-wrapper canvas {
-            background-color: transparent !important; /* Key change for darker charts */
+            background-color: transparent !important;
         }
-
-        /* KPIs */
         .kpi-container {
             display: flex;
             justify-content: space-around;
@@ -77,7 +70,6 @@
             margin-bottom: 0;
             text-align: center;
         }
-
         .loading-message-placeholder, .error-message-placeholder {
             text-align: center;
             color: #a0aec0;
@@ -87,7 +79,6 @@
         .error-message-placeholder {
             color: #f87171;
         }
-
     </style>
 </head>
 <body>
@@ -119,7 +110,7 @@
                 <p>These factors led to Taiwan's exports to Germany growing much faster than its imports, causing the trade surplus to more than double between 2018 and 2022, as your text notes.</p>
 
                 <div class="yearly-balance-chart-container mx-auto my-6 md:w-11/12 lg:w-5/6 xl:w-3/4">
-                    <div class="chart-wrapper p-4 md:p-6"> {/* chart-wrapper provides background and padding */}
+                    <div class="chart-wrapper p-4 md:p-6">
                         <h2 id="chartTitleYearlyBalance" class="chart-title-style">Yearly Trade Balance (Exports - Imports)</h2>
                         <canvas id="yearlyTradeBalanceChart" style="max-height: 380px; width: 100%;"></canvas>
                     </div>
@@ -150,9 +141,9 @@
                 </div>
             </div>
 
-            <div class="chart-wrapper"> {/* This chart-wrapper is full-width by default within its parent */}
+            <div class="chart-wrapper">
                 <h2 id="chartTitleTrade" class="chart-title-style">Trade Value Over Time (Monthly)</h2>
-                <canvas id="tradeChart"></canvas> {/* This will take default height or Chart.js aspect ratio */}
+                <canvas id="tradeChart"></canvas>
             </div>
             <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
             <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
@@ -289,7 +280,6 @@
             }
 
             if (loadingEl) loadingEl.style.display = 'none';
-            // canvasEl.style.display = 'block'; // Canvas is already block by default or styled by Tailwind
 
             const ctx = canvasEl.getContext('2d');
             const barColors = yearlyBalanceData.balances.map(balance => balance >= 0 ? 'rgba(75, 192, 192, 0.7)' : 'rgba(255, 99, 132, 0.7)');
@@ -309,8 +299,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true, // Set to true, CSS will manage container size
-                    // aspectRatio: 1.8, // Experiment with this if max-height isn't enough control
+                    maintainAspectRatio: true,
                     scales: {
                         y: {
                             title: { display: true, text: `Trade Balance (${TRADE_CURRENCY_CODE})`, color: '#c9d1d9', font: { family: 'Montserrat'} },
@@ -360,8 +349,6 @@
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
-            // Note: loadingYearlyBalanceEl and errorYearlyBalanceEl are now part of the narrative flow
-            // and will be handled by renderYearlyTradeBalanceChart directly.
 
             if(loadingMessageEl) loadingMessageEl.style.display = 'block';
             if(errorMessageEl) errorMessageEl.style.display = 'none';
@@ -422,7 +409,7 @@
                             ]
                         },
                         options: {
-                            responsive: true, maintainAspectRatio: true, // Default, good for this chart
+                            responsive: true, maintainAspectRatio: true,
                             scales: {
                                 x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }},
                                     title: { display: true, text: 'Date', color: '#c9d1d9', font: { family: 'Montserrat'} },
@@ -450,7 +437,7 @@
                     });
                 } else {
                     console.error("Monthly trade chart canvas not found!");
-                     if(errorMessageEl && loadingMessageEl) { // If monthly chart fails, show error in its placeholder
+                     if(errorMessageEl && loadingMessageEl) {
                         errorMessageEl.textContent = 'Error: Monthly trade chart canvas not found.';
                         errorMessageEl.style.display = 'block';
                         loadingMessageEl.style.display = 'none';
@@ -458,12 +445,11 @@
                 }
 
                 const yearlyBalanceData = calculateYearlyTradeBalance(importData, exportData);
-                // Show loading message for yearly chart before rendering
                 const loadingYearlyEl = document.getElementById('loadingYearlyTradeBalance');
                 if (loadingYearlyEl) loadingYearlyEl.style.display = 'block';
 
                 if (yearlyBalanceData.labels.length > 0) {
-                    renderYearlyTradeBalanceChart(yearlyBalanceData); // This function will hide its own loading message
+                    renderYearlyTradeBalanceChart(yearlyBalanceData);
                 } else {
                     const errorYearlyEl = document.getElementById('errorYearlyTradeBalance');
                     if(errorYearlyEl) {
@@ -476,15 +462,14 @@
             } catch (error) {
                 console.error("Failed to display trade visualizations:", error);
                 if(loadingMessageEl) loadingMessageEl.style.display = 'none';
-                if(errorMessageEl) { // General error for monthly chart area
+                if(errorMessageEl) {
                     errorMessageEl.textContent = `Error loading trade data: ${error.message}.`;
                     errorMessageEl.style.display = 'block';
                 }
-                // Error for yearly chart if it's a general failure before its specific rendering
                 const loadingYearlyEl = document.getElementById('loadingYearlyTradeBalance');
                 const errorYearlyEl = document.getElementById('errorYearlyTradeBalance');
                 if(loadingYearlyEl) loadingYearlyEl.style.display = 'none';
-                if(errorYearlyEl && errorYearlyEl.style.display === 'none') { // Only show if not already showing specific error
+                if(errorYearlyEl && errorYearlyEl.style.display === 'none') {
                     errorYearlyEl.textContent = `Could not generate yearly balance chart due to earlier error: ${error.message}`;
                     errorYearlyEl.style.display = 'block';
                 }
