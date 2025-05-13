@@ -28,10 +28,10 @@
             height: 450px; 
             display: flex;
             flex-direction: column; 
-            margin-bottom: 2rem; /* Added default bottom margin for standalone charts */
+            margin-bottom: 2rem; 
         }
         .grid .chart-container {
-            margin-bottom: 0; /* Reset bottom margin if chart is in a grid with its own gap */
+            margin-bottom: 0; 
         }
         .chart-title {
             font-size: 1.25rem; 
@@ -61,21 +61,21 @@
         }
         .explanation-text {
              color: #a0aec0; 
-             margin-top: 2rem; /* Default top margin */
-             margin-bottom: 2rem; /* Default bottom margin */
+             margin-top: 2rem; 
+             margin-bottom: 2rem; 
         }
-        .explanation-text h3 { /* Only one main H3 now for the whole explanation block conceptually */
+        .explanation-text h3 {
             font-size: 1.75rem;
             font-weight: 700; 
             color: #e2e8f0;
-            margin-bottom: 1rem; /* Adjusted margin */
+            margin-bottom: 1rem; 
             text-align: center;
         }
         .explanation-text h4 {
             font-size: 1.25rem;
             font-weight: 600; 
             color: #cbd5e0;
-            margin-top: 1.5rem; /* Increased top margin for separation */
+            margin-top: 1.5rem; 
             margin-bottom: 0.75rem;
         }
         .explanation-text p, .explanation-text li {
@@ -114,7 +114,7 @@
                     <h1 class="text-3xl sm:text-4xl font-bold text-white"> 
                         Overview of Taiwan's Domestic Banking Sector
                     </h1>
-                    <p class="text-lg text-slate-400 mt-2">Data reported by domestic banks</p>
+                    <p class="text-lg text-slate-400 mt-2 text-center">Data reported by domestic banks</p>
                 </div>
 
                 <div class="chart-container" id="totalAssetsContainer">
@@ -138,7 +138,7 @@
                     <p>Generally, this sustained performance points to a stable and resilient banking environment.</p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-8 mt-8"> {/* Added mt-8 to space from text above, maintaining grid for consistency */}
+                <div class="grid grid-cols-1 gap-8 mt-8"> 
                     <div class="chart-container" id="profitBeforeTaxContainer">
                         <h2 class="chart-title">Profit Before Tax</h2>
                         <canvas id="profitBeforeTaxChart"></canvas>
@@ -184,9 +184,6 @@
     </footer>
 
     <script>
-        // JavaScript remains the same as the previous "cleaned comment" version
-        // It will correctly target the chart canvases by their IDs regardless of their order in the HTML.
-
         function displayChartError(containerId, canvasId, message) {
             const container = document.getElementById(containerId);
             const canvas = document.getElementById(canvasId);
