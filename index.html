@@ -1,297 +1,298 @@
- <!DOCTYPE html>
- <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pierre Meyer - Personal Website</title>
-  <link href="styles.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- </head>
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Pierre Meyer - Personal Website</title>
+ <link href="styles.css" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+ <link rel="icon" href="favicon.ico" type="image/x-icon">
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
- <body>
-  <div class="background-animation"></div>
-  <header>
-  <div class="container">
-   <h1>Pierre Meyer</h1>
-   <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
-   <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+<body>
+ <div class="background-animation"></div>
+ <header>
+ <div class="container">
+  <h1>Pierre Meyer</h1>
+  <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
+  <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+ </div>
+ </header>
+
+ <main class="container">
+ <section>
+  <h2>About Me</h2>
+  <p>
+   Hey there! I’m Pierre Meyer, a business development professional with a passion for connecting cultures
+   and driving growth. I’ve had the unique experience of building my career across Germany and Taiwan,
+   working at the intersection of global business strategy and relationship management. </p>
+  <p>
+   My background spans regulatory affairs, project assistance, and business strategy, with a knack for
+   finding creative solutions in fast-paced environments. I thrive in international settings, leveraging
+   my fluency in English, German, and Chinese to bridge communication gaps and build meaningful
+   connections. </p>
+ </section>
+
+ <hr class="divider">
+
+ <section>
+  <h2>My CV</h2>
+  <p>
+   <a href="CV.pdf" target="_blank" class="cv-button">Download My CV</a>
+  </p>
+ </section>
+
+ <hr class="divider">
+
+ <section class="market-section">
+  <h2>Live Market Prices</h2>
+  <table class="market-table">
+   <thead>
+    <tr>
+     <th>#</th>
+     <th>Name</th>
+     <th>Price</th>
+     <th>24h Change</th>
+     <th>Price Graph (7D)</th>
+    </tr>
+   </thead>
+   <tbody id="market-table-body">
+    <tr>
+     <td>1</td>
+     <td>
+      <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501457" alt="Bitcoin" width="24" style="margin-right: 5px;">
+      Bitcoin (BTC)
+     </td>
+     <td id="btc-price">Loading...</td>
+     <td id="btc-change" class="price-change">-</td>
+     <td>
+      <div class="graph-container">
+       <canvas id="btc-chart"></canvas>
+      </div>
+     </td>
+    </tr>
+    <tr>
+     <td>2</td>
+     <td>
+      <img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628" alt="Ethereum" width="24" style="margin-right: 5px;">
+      Ethereum (ETH)
+     </td>
+     <td id="eth-price">Loading...</td>
+     <td id="eth-change" class="price-change">-</td>
+     <td>
+      <div class="graph-container">
+       <canvas id="eth-chart"></canvas>
+      </div>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </section>
+
+ <hr class="divider">
+
+ <section>
+  <h2>Currency Exchange</h2>
+  <div class="form-group">
+   <label for="fromCurrency">From Currency</label>
+   <select id="fromCurrency">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="GBP">GBP</option>
+    <option value="JPY">JPY</option>
+    <option value="CAD">CAD</option>
+   </select>
   </div>
-  </header>
-
-  <main class="container">
-  <section>
-   <h2>About Me</h2>
-   <p>
-    Hey there! I’m Pierre Meyer, a business development professional with a passion for connecting cultures
-    and driving growth. I’ve had the unique experience of building my career across Germany and Taiwan,
-    working at the intersection of global business strategy and relationship management.
-   </p>
-   <p>
-    My background spans regulatory affairs, project assistance, and business strategy, with a knack for
-    finding creative solutions in fast-paced environments. I thrive in international settings, leveraging
-    my fluency in English, German, and Chinese to bridge communication gaps and build meaningful
-    connections.
-   </p>
-  </section>
-
-  <hr class="divider">
-
-  <section>
-   <h2>My CV</h2>
-   <p>
-    <a href="CV.pdf" target="_blank" class="cv-button">Download My CV</a>
-   </p>
-  </section>
-
-  <hr class="divider">
-
-  <section class="market-section">
-   <h2>Live Market Prices</h2>
-   <table class="market-table">
-    <thead>
-     <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>24h Change</th>
-      <th>Price Graph (7D)</th>
-     </tr>
-    </thead>
-    <tbody id="market-table-body">
-     <tr>
-      <td>1</td>
-      <td>
-       <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501457" alt="Bitcoin" width="24" style="margin-right: 5px;">
-       Bitcoin (BTC)
-      </td>
-      <td id="btc-price">Loading...</td>
-      <td id="btc-change" class="price-change">-</td>
-      <td>
-       <div class="graph-container">
-        <canvas id="btc-chart"></canvas>
-       </div>
-      </td>
-     </tr>
-     <tr>
-      <td>2</td>
-      <td>
-       <img src="https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628" alt="Ethereum" width="24" style="margin-right: 5px;">
-       Ethereum (ETH)
-      </td>
-      <td id="eth-price">Loading...</td>
-      <td id="eth-change" class="price-change">-</td>
-      <td>
-       <div class="graph-container">
-        <canvas id="eth-chart"></canvas>
-       </div>
-      </td>
-     </tr>
-    </tbody>
-   </table>
-  </section>
-
-  <hr class="divider">
-
-  <section>
-   <h2>Currency Exchange</h2>
-   <div class="form-group">
-    <label for="fromCurrency">From Currency</label>
-    <select id="fromCurrency">
-     <option value="USD">USD</option>
-     <option value="EUR">EUR</option>
-     <option value="GBP">GBP</option>
-     <option value="JPY">JPY</option>
-     <option value="CAD">CAD</option>
-    </select>
-   </div>
-   <div class="form-group">
-    <label for="toCurrency">To Currency</label>
-    <select id="toCurrency">
-     <option value="EUR">EUR</option>
-     <option value="USD">USD</option>
-     <option value="GBP">GBP</option>
-     <option value="JPY">JPY</option>
-     <option value="CAD">CAD</option>
-    </select>
-   </div>
-   <div class="form-group">
-    <label for="amount">Amount</label>
-    <input type="number" id="amount" placeholder="Enter amount" value="100">
-   </div>
-   <button id="convert" class="btn">Convert</button>
-   <div id="result">Loading...</div>
-   <p id="error-message" class="error-message"></p>
-  </section>
-  </main>
-
-  <footer>
-  <div class="container">
-   <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+  <div class="form-group">
+   <label for="toCurrency">To Currency</label>
+   <select id="toCurrency">
+    <option value="EUR">EUR</option>
+    <option value="USD">USD</option>
+    <option value="GBP">GBP</option>
+    <option value="JPY">JPY</option>
+    <option value="CAD">CAD</option>
+   </select>
   </div>
-  </footer>
+  <div class="form-group">
+   <label for="amount">Amount</label>
+   <input type="number" id="amount" placeholder="Enter amount" value="100">
+  </div>
+  <button id="convert" class="btn">Convert</button>
+  <div id="result">Loading...</div>
+  <p id="error-message" class="error-message"></p>
+ </section>
 
-  <script>
-   const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
-   const marketTableBody = document.getElementById('market-table-body');
+ <hr class="divider">
 
-   // Initialize Charts
-   const charts = {};
-   const FETCH_INTERVAL = 120000;
+ <section>
+  <h2>Projects & Visualizations</h2>
+  <p>Explore some of the data projects and visualizations I've worked on.</p>
+  <p>
+   <a href="trade_report.html" class="cv-button">View Taiwan-Germany Trade Data</a>
+  </p>
+ </section>
+ </main>
 
-   function formatPrice(price) {
-    return `$${price.toLocaleString(undefined, {
-     minimumFractionDigits: 2,
-     maximumFractionDigits: 2,
-    })}`;
-   }
+ <footer>
+ <div class="container">
+  <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+ </div>
+ </footer>
 
-   function updatePrice(coin, price, change) {
-    const priceElement = document.getElementById(`${coin}-price`);
-    const changeElement = document.getElementById(`${coin}-change`);
+ <script>
+  const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
+  const marketTableBody = document.getElementById('market-table-body');
+  const charts = {};
+  const FETCH_INTERVAL = 120000;
 
-    priceElement.textContent = `$${price.toFixed(2)}`;
-    changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
-    changeElement.className = `price-change ${change > 0 ? 'positive' : 'negative'}`;
-   }
+  function formatPrice(price) {
+   return `$${price.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+   })}`;
+  }
 
-   async function fetchMarketData() {
-    try {
-     const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true`);
-     const data = await response.json();
+  function updatePrice(coin, price, change) {
+   const priceElement = document.getElementById(`${coin}-price`);
+   const changeElement = document.getElementById(`${coin}-change`);
+   priceElement.textContent = `$${price.toFixed(2)}`;
+   changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
+   changeElement.className = `price-change ${change > 0 ?
+'positive' : 'negative'}`;
+  }
 
-     if (!response.ok) {
-      throw new Error(`Failed to fetch market data: ${response.status}`);
-     }
+  async function fetchMarketData() {
+   try {
+    const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true`);
+    const data = await response.json();
 
-     updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
-     updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
-
-     fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
-     fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
-
-    } catch (error) {
-     console.error('Error fetching market data:', error);
-     marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
+    if (!response.ok) {
+     throw new Error(`Failed to fetch market data: ${response.status}`);
     }
+
+    updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
+    updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
+
+    fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
+    fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
+   } catch (error) {
+    console.error('Error fetching market data:', error);
+    marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
    }
+  }
 
-   async function fetchAndRenderChart(coinId, currency, days, chartId) {
-    try {
-     const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
-     const historicalData = await response.json();
+  async function fetchAndRenderChart(coinId, currency, days, chartId) {
+   try {
+    const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
+    const historicalData = await response.json();
 
-     if (!response.ok) {
-      throw new Error(`Failed to fetch historical data for ${coinId}: ${response.status}`);
-     }
-
-     const prices = historicalData.prices.map(p => p[1]);
-     const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
-
-     renderChart(chartId, timestamps, prices, coinId);
-
-    } catch (error) {
-     console.error(`Error fetching chart data for ${coinId}:`, error);
-     const chartContainer = document.getElementById(chartId);
-     chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+    if (!response.ok) {
+     throw new Error(`Failed to fetch historical data for ${coinId}: ${response.status}`);
     }
-   }
 
-   function renderChart(chartId, labels, data, coin) {
-    const ctx = document.getElementById(chartId).getContext('2d');
-    new Chart(ctx, {
-     type: 'line',
-     data: {
-      labels: labels,
-      datasets: [{
-       label: `${coin.toUpperCase()} Price (USD)`,
-       data: data,
-       borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
-       borderWidth: 2,
-       fill: false,
-       pointRadius: 0
-      }]
-     },
-     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      scales: {
-       x: { display: false },
-       y: {
-        display: true,
-        ticks: {
-         callback: function(value) {
-          return '$' + value;
-         }
+    const prices = historicalData.prices.map(p => p[1]);
+    const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
+    renderChart(chartId, timestamps, prices, coinId);
+
+   } catch (error) {
+    console.error(`Error fetching chart data for ${coinId}:`, error);
+    const chartContainer = document.getElementById(chartId);
+    chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+   }
+  }
+
+  function renderChart(chartId, labels, data, coin) {
+   const ctx = document.getElementById(chartId).getContext('2d');
+   new Chart(ctx, {
+    type: 'line',
+    data: {
+     labels: labels,
+     datasets: [{
+      label: `${coin.toUpperCase()} Price (USD)`,
+      data: data,
+      borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
+      borderWidth: 2,
+      fill: false,
+      pointRadius: 0
+     }]
+    },
+    options: {
+     responsive: true,
+     maintainAspectRatio: false,
+     animation: false,
+     scales: {
+      x: { display: false },
+      y: {
+       display: true,
+       ticks: {
+        callback: function(value) {
+         return '$' + value;
         }
-       },
-      },
-      plugins: {
-       legend: {
-        display: false,
        }
+      },
+     },
+     plugins: {
+      legend: {
+       display: false,
       }
      }
-    });
-   }
+    }
+   });
+  }
 
+   const fromCurrencySelect = document.getElementById('fromCurrency');
+   const toCurrencySelect = document.getElementById('toCurrency');
+   const amountInput = document.getElementById('amount');
+   const resultDiv = document.getElementById('result');
+   const convertButton = document.getElementById('convert');
+   const errorMessage = document.getElementById('error-message');
 
+   const API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; // Replace with your actual API key
+   const BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
 
-    const fromCurrencySelect = document.getElementById('fromCurrency');
-    const toCurrencySelect = document.getElementById('toCurrency');
-    const amountInput = document.getElementById('amount');
-    const resultDiv = document.getElementById('result');
-    const convertButton = document.getElementById('convert');
-    const errorMessage = document.getElementById('error-message');
+   convertButton.addEventListener('click', () => {
+       const fromCurrency = fromCurrencySelect.value;
+       const toCurrency = toCurrencySelect.value;
+       const amount = parseFloat(amountInput.value);
 
-    const API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp';  // Replace with your actual API key
-    const BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
+       if (isNaN(amount) || amount <= 0) {
+           errorMessage.textContent = 'Please enter a valid amount.';
+           resultDiv.textContent = '';
+           return;
+       }
 
-    convertButton.addEventListener('click', () => {
-        const fromCurrency = fromCurrencySelect.value;
-        const toCurrency = toCurrencySelect.value;
-        const amount = parseFloat(amountInput.value);
+       errorMessage.textContent = '';
+       resultDiv.textContent = 'Loading...';
 
-        if (isNaN(amount) || amount <= 0) {
-            errorMessage.textContent = 'Please enter a valid amount.';
-            resultDiv.textContent = '';
-            return;
-        }
+       fetch(`${BASE_URL}?apikey=${API_KEY}&base_currency=${fromCurrency}&currencies=${toCurrency}`)
+           .then(response => {
+               if (!response.ok) {
+                   throw new Error(`HTTP error! status: ${response.status}`);
+               }
+               return response.json();
+           })
+           .then(data => {
+               if (data.data && data.data[toCurrency]) {
+                   const conversionRate = data.data[toCurrency];
+                   const convertedAmount = amount * conversionRate;
+                   resultDiv.textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+               } else {
+                   errorMessage.textContent = 'Invalid currency selection.';
+                   resultDiv.textContent = '';
+               }
+           })
+           .catch(error => {
+               console.error('Error fetching conversion rate:', error);
+               errorMessage.textContent = 'Failed to fetch conversion rate. Please try again later.';
+               resultDiv.textContent = '';
+           });
+   });
 
-        errorMessage.textContent = '';
-        resultDiv.textContent = 'Loading...';
+  fetchMarketData();
+  setInterval(fetchMarketData, 120000);
+ </script>
+</body>
 
-        fetch(`${BASE_URL}?apikey=${API_KEY}&base_currency=${fromCurrency}&currencies=${toCurrency}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.data && data.data[toCurrency]) {
-                    const conversionRate = data.data[toCurrency];
-                    const convertedAmount = amount * conversionRate;
-                    resultDiv.textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
-                } else {
-                    errorMessage.textContent = 'Invalid currency selection.';
-                    resultDiv.textContent = '';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching conversion rate:', error);
-                errorMessage.textContent = 'Failed to fetch conversion rate. Please try again later.';
-                resultDiv.textContent = '';
-            });
-    });
-
-
-   fetchMarketData();
-   setInterval(fetchMarketData, 120000);
-  </script>
- </body>
-
- </html>
+</html>
