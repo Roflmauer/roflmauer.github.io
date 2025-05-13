@@ -15,21 +15,29 @@
         }
         .chart-container {
             background-color: #2d3748; /* Darker background for chart cards */
-            padding: 2rem;
+            padding: 2rem; /* Padding around the content (title + chart) */
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            min-height: 400px; /* Ensure charts have enough space */
+            height: 450px; /* Fixed height for the container */
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-direction: column; /* Stack title and chart vertically */
         }
-        .chart-title {
+        .chart-title { /* Renamed from .chart-container h2.chart-title for clarity */
             font-size: 1.25rem; /* 20px */
             font-weight: 600;
-            margin-bottom: 1.5rem; /* 24px */
+            margin-bottom: 1rem; /* Reduced margin slightly */
             text-align: center;
             color: #cbd5e0; /* Lighter title color */
+            flex-shrink: 0; /* Prevent title from shrinking if space is tight */
         }
+
+        .chart-container canvas {
+            display: block; /* Ensure canvas is block for layout */
+            width: 100%;   /* Canvas should take full width of its allocated space */
+            flex-grow: 1;  /* Canvas will take up remaining vertical space in the flex container */
+            min-height: 0; /* Crucial for flex items to shrink properly, prevents canvas from forcing container larger */
+        }
+
         /* Chart.js global defaults for dark theme */
         Chart.defaults.color = '#a0aec0'; /* Default text color for chart elements (axes, ticks) */
         Chart.defaults.borderColor = '#4a5568'; /* Default border color for chart elements (grid lines) */
@@ -40,9 +48,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
+            flex-grow: 1; /* If it's the only thing visible (before canvas or on error), it should fill available space */
             color: #cbd5e0;
             font-size: 1.1rem;
+            /* Removed height: 100% as flex-grow handles filling space */
         }
     </style>
 </head>
@@ -86,17 +95,36 @@
         function displayChartError(containerId, canvasId, message) {
             const container = document.getElementById(containerId);
             const canvas = document.getElementById(canvasId);
-            const loadingMessage = container.querySelector('.message-container');
+            const loadingMessage = container.querySelector('.message-container'); // Target specific loading message
+            
             if (canvas) canvas.style.display = 'none'; // Hide canvas
-            if (loadingMessage) {
+
+            // Ensure loading message exists and is targeted correctly
+            const specificLoadingMsg = document.getElementById('loading' + canvasId.replace('Chart', '')); // e.g. loadingTotalAssets
+            if (specificLoadingMsg) {
+                 specificLoadingMsg.textContent = message;
+                 specificLoadingMsg.style.color = '#f56565'; // Red color for error
+                 specificLoadingMsg.style.display = 'flex'; // Ensure it's visible
+            } else if (loadingMessage) { // Fallback to generic message-container if specific one not found
                 loadingMessage.textContent = message;
-                loadingMessage.style.color = '#f56565'; // Red color for error
-            } else { // Fallback if message-container is not found
+                loadingMessage.style.color = '#f56565';
+                loadingMessage.style.display = 'flex';
+            } else { // Absolute fallback: create error div
                 const errorDiv = document.createElement('div');
-                errorDiv.className = 'message-container';
+                errorDiv.className = 'message-container'; // Re-add class for styling
                 errorDiv.style.color = '#f56565';
+                errorDiv.style.display = 'flex'; // Ensure it's visible and styled
+                errorDiv.style.justifyContent = 'center';
+                errorDiv.style.alignItems = 'center';
+                errorDiv.style.flexGrow = '1';
                 errorDiv.textContent = message;
-                container.appendChild(errorDiv);
+                // Try to append it after the title if possible
+                const titleEl = container.querySelector('.chart-title');
+                if (titleEl && titleEl.nextSibling) {
+                    container.insertBefore(errorDiv, titleEl.nextSibling);
+                } else {
+                    container.appendChild(errorDiv);
+                }
             }
         }
 
@@ -130,17 +158,11 @@
                     },
                     ticks: {
                         color: '#a0aec0', // Y-axis ticks color
-                        // Callback to format Y-axis ticks for better readability if needed
                         callback: function(value, index, values) {
-                            if (yAxisLabel.includes('Trillion') || yAxisLabel.includes('Hundred Million')) {
-                                // For large numbers, you might want to format them
-                                // e.g., return value.toLocaleString() + ' T';
-                                return value;
-                            }
                             if (yAxisLabel.includes('%')) {
-                                return value + '%';
+                                return value.toLocaleString() + '%'; // Add toLocaleString for consistency
                             }
-                            return value;
+                            return value.toLocaleString(); // Format other numbers as well
                         }
                     }
                 }
@@ -184,129 +206,85 @@
 
         // Function to initialize charts with fetched data
         async function initializeCharts() {
+            const chartConfigs = [
+                { id: 'TotalAssets', title: 'Total Assets', yLabel: 'NT$ Trillion', containerId: 'totalAssetsContainer', canvasId: 'totalAssetsChart', dataKey: 'total_assets', divisor: 10000 },
+                { id: 'ProfitBeforeTax', title: 'Profit Before Tax', yLabel: 'NT$ Hundred Million', containerId: 'profitBeforeTaxContainer', canvasId: 'profitBeforeTaxChart', dataKey: 'profit_before_tax', divisor: 1 },
+                { id: 'RoaRoe', title: 'ROA & ROE', yLabel: 'Percentage (%)', containerId: 'roaRoeContainer', canvasId: 'roaAndRoeChart', isMultiDataset: true }
+            ];
+
             try {
-                // Attempt to fetch the JSON data
-                // IMPORTANT: Ensure 'taiwan_banking_overview_data.json' is in the same directory as the HTML file, or provide the correct path.
                 const response = await fetch('taiwan_banking_overview_data.json');
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - Could not load data file. Check if the file exists and the path is correct.`);
+                    throw new Error(`HTTP error! status: ${response.status} - Could not load data file. Check path & file existence.`);
                 }
-                const jsonData = await response.json(); // Renamed to jsonData to avoid conflict
+                const jsonData = await response.json();
 
-                // Validate data structure: Check for annual_data array
                 if (!jsonData.annual_data || !Array.isArray(jsonData.annual_data) || jsonData.annual_data.length === 0) {
-                    throw new Error('JSON data is missing the "annual_data" array, it is not an array, or it is empty.');
+                    throw new Error('JSON data is missing "annual_data" array or it is empty.');
                 }
 
-                // Extract data from the annual_data array
                 const years = jsonData.annual_data.map(item => item.gregorian_year.toString());
-                // Convert Total Assets from Hundred Million NT$ to Trillion NT$ by dividing by 10,000
-                const totalAssetsData = jsonData.annual_data.map(item => parseFloat((item.total_assets / 10000).toFixed(2)));
-                const profitBeforeTaxData = jsonData.annual_data.map(item => item.profit_before_tax);
-                const roaData = jsonData.annual_data.map(item => item.roa);
-                const roeData = jsonData.annual_data.map(item => item.roe);
 
-                // Hide loading messages
-                document.getElementById('loadingTotalAssets').style.display = 'none';
-                document.getElementById('loadingProfitBeforeTax').style.display = 'none';
-                document.getElementById('loadingRoaRoe').style.display = 'none';
+                chartConfigs.forEach(config => {
+                    document.getElementById('loading' + config.id).style.display = 'none';
+                    document.getElementById(config.canvasId).style.display = 'block'; // Make canvas visible
 
-                // Make canvases visible
-                document.getElementById('totalAssetsChart').style.display = 'block';
-                document.getElementById('profitBeforeTaxChart').style.display = 'block';
-                document.getElementById('roaAndRoeChart').style.display = 'block';
+                    const ctx = document.getElementById(config.canvasId).getContext('2d');
+                    let datasets;
 
-                // 1. Total Assets Chart
-                const totalAssetsCtx = document.getElementById('totalAssetsChart').getContext('2d');
-                new Chart(totalAssetsCtx, {
-                    type: 'line',
-                    data: {
-                        labels: years,
-                        datasets: [{
-                            label: 'Total Assets (NT$ Trillion)',
-                            data: totalAssetsData,
-                            borderColor: 'rgb(59, 130, 246)', // Blue
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            fill: true,
-                            pointRadius: 3,
-                            pointBackgroundColor: 'rgb(59, 130, 246)'
-                        }]
-                    },
-                    options: commonChartOptions('NT$ Trillion')
-                });
-
-                // 2. Profit Before Tax Chart
-                const profitCtx = document.getElementById('profitBeforeTaxChart').getContext('2d');
-                new Chart(profitCtx, {
-                    type: 'line',
-                    data: {
-                        labels: years,
-                        datasets: [{
-                            label: 'Profit Before Tax (NT$ Hundred Million)',
-                            data: profitBeforeTaxData,
-                            borderColor: 'rgb(236, 72, 153)', // Pink
-                            backgroundColor: 'rgba(236, 72, 153, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            fill: true,
-                            pointRadius: 3,
-                            pointBackgroundColor: 'rgb(236, 72, 153)'
-                        }]
-                    },
-                    options: commonChartOptions('NT$ Hundred Million')
-                });
-
-                // 3. ROA & ROE Chart
-                const roaRoeCtx = document.getElementById('roaAndRoeChart').getContext('2d');
-                new Chart(roaRoeCtx, {
-                    type: 'line',
-                    data: {
-                        labels: years,
-                        datasets: [
+                    if (config.isMultiDataset) {
+                        const roaData = jsonData.annual_data.map(item => item.roa);
+                        const roeData = jsonData.annual_data.map(item => item.roe);
+                        datasets = [
                             {
                                 label: 'Return on Assets (ROA %)',
                                 data: roaData,
-                                borderColor: 'rgb(20, 184, 166)', // Teal
-                                backgroundColor: 'rgba(20, 184, 166, 0.1)',
-                                borderWidth: 2,
-                                tension: 0.1,
-                                fill: true,
-                                pointRadius: 3,
-                                pointBackgroundColor: 'rgb(20, 184, 166)'
+                                borderColor: 'rgb(20, 184, 166)', backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                                borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(20, 184, 166)'
                             },
                             {
                                 label: 'Return on Equity (ROE %)',
                                 data: roeData,
-                                borderColor: 'rgb(139, 92, 246)', // Purple
-                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                borderWidth: 2,
-                                tension: 0.1,
-                                fill: true,
-                                pointRadius: 3,
-                                pointBackgroundColor: 'rgb(139, 92, 246)'
+                                borderColor: 'rgb(139, 92, 246)', backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(139, 92, 246)'
                             }
-                        ]
-                    },
-                    options: commonChartOptions('Percentage (%)')
+                        ];
+                    } else {
+                        const chartData = jsonData.annual_data.map(item => parseFloat((item[config.dataKey] / config.divisor).toFixed(2)));
+                        let borderColor, backgroundColor, pointBackgroundColor;
+                        if (config.id === 'TotalAssets') {
+                            borderColor = 'rgb(59, 130, 246)'; backgroundColor = 'rgba(59, 130, 246, 0.1)'; pointBackgroundColor = 'rgb(59, 130, 246)';
+                        } else { // ProfitBeforeTax
+                            borderColor = 'rgb(236, 72, 153)'; backgroundColor = 'rgba(236, 72, 153, 0.1)'; pointBackgroundColor = 'rgb(236, 72, 153)';
+                        }
+                        datasets = [{
+                            label: `${config.title} (${config.yLabel.split('(')[1] ? config.yLabel.split('(')[1].replace(')','') : config.yLabel})`, // Extract unit for label
+                            data: chartData,
+                            borderColor: borderColor, backgroundColor: backgroundColor,
+                            borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: pointBackgroundColor
+                        }];
+                    }
+                    
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: { labels: years, datasets: datasets },
+                        options: commonChartOptions(config.yLabel)
+                    });
                 });
 
             } catch (error) {
                 console.error('Error initializing charts:', error);
-                // Display error messages in each chart container
-                displayChartError('totalAssetsContainer', 'totalAssetsChart', `Error: ${error.message}`);
-                displayChartError('profitBeforeTaxContainer', 'profitBeforeTaxChart', `Error: ${error.message}`);
-                displayChartError('roaRoeContainer', 'roaAndRoeChart', `Error: ${error.message}`);
+                chartConfigs.forEach(config => {
+                    displayChartError(config.containerId, config.canvasId, `Error: ${error.message}`);
+                });
             }
         }
 
-        // Hide canvas elements initially and show loading messages
-        document.getElementById('totalAssetsChart').style.display = 'none';
-        document.getElementById('profitBeforeTaxChart').style.display = 'none';
-        document.getElementById('roaAndRoeChart').style.display = 'none';
+        // Hide canvas elements initially and ensure loading messages are visible
+        document.querySelectorAll('canvas').forEach(canvas => canvas.style.display = 'none');
+        document.querySelectorAll('.message-container').forEach(msg => msg.style.display = 'flex');
 
-        // Call the function to fetch data and initialize charts when the DOM is ready
+
         document.addEventListener('DOMContentLoaded', initializeCharts);
     </script>
 
