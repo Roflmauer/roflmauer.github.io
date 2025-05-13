@@ -103,7 +103,7 @@
         // Chart.js configurations
         const commonChartOptions = (yAxisLabel) => ({
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: false, // Important for chart to fill container height
             scales: {
                 x: {
                     title: {
@@ -113,6 +113,9 @@
                     },
                     grid: {
                         color: '#4a5568' // X-axis grid lines
+                    },
+                    ticks: {
+                        color: '#a0aec0' // X-axis ticks color
                     }
                 },
                 y: {
@@ -121,15 +124,33 @@
                         text: yAxisLabel,
                         color: '#a0aec0'
                     },
-                    beginAtZero: false,
+                    beginAtZero: false, // Allow negative values if necessary
                     grid: {
                         color: '#4a5568' // Y-axis grid lines
+                    },
+                    ticks: {
+                        color: '#a0aec0', // Y-axis ticks color
+                        // Callback to format Y-axis ticks for better readability if needed
+                        callback: function(value, index, values) {
+                            if (yAxisLabel.includes('Trillion') || yAxisLabel.includes('Hundred Million')) {
+                                // For large numbers, you might want to format them
+                                // e.g., return value.toLocaleString() + ' T';
+                                return value;
+                            }
+                            if (yAxisLabel.includes('%')) {
+                                return value + '%';
+                            }
+                            return value;
+                        }
                     }
                 }
             },
             plugins: {
                 legend: {
                     position: 'top',
+                    labels: {
+                        color: '#cbd5e0' // Legend text color
+                    }
                 },
                 tooltip: {
                     mode: 'index',
@@ -137,6 +158,21 @@
                     backgroundColor: 'rgba(0,0,0,0.7)',
                     titleColor: '#ffffff',
                     bodyColor: '#ffffff',
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y.toLocaleString();
+                                if (context.chart.options.scales.y.title.text.includes('%')) {
+                                   label += '%';
+                                }
+                            }
+                            return label;
+                        }
+                    }
                 }
             },
             interaction: {
@@ -150,17 +186,25 @@
         async function initializeCharts() {
             try {
                 // Attempt to fetch the JSON data
-                // IMPORTANT: Replace 'taiwan_banking_overview_data.json' with the correct path if it's not in the same directory as the HTML file.
+                // IMPORTANT: Ensure 'taiwan_banking_overview_data.json' is in the same directory as the HTML file, or provide the correct path.
                 const response = await fetch('taiwan_banking_overview_data.json');
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - Could not load data file.`);
+                    throw new Error(`HTTP error! status: ${response.status} - Could not load data file. Check if the file exists and the path is correct.`);
                 }
-                const data = await response.json();
+                const jsonData = await response.json(); // Renamed to jsonData to avoid conflict
 
-                // Validate data structure (basic check)
-                if (!data.years || !data.totalAssets || !data.profitBeforeTax || !data.roa || !data.roe) {
-                    throw new Error('JSON data is missing required fields (years, totalAssets, profitBeforeTax, roa, roe).');
+                // Validate data structure: Check for annual_data array
+                if (!jsonData.annual_data || !Array.isArray(jsonData.annual_data) || jsonData.annual_data.length === 0) {
+                    throw new Error('JSON data is missing the "annual_data" array, it is not an array, or it is empty.');
                 }
+
+                // Extract data from the annual_data array
+                const years = jsonData.annual_data.map(item => item.gregorian_year.toString());
+                // Convert Total Assets from Hundred Million NT$ to Trillion NT$ by dividing by 10,000
+                const totalAssetsData = jsonData.annual_data.map(item => parseFloat((item.total_assets / 10000).toFixed(2)));
+                const profitBeforeTaxData = jsonData.annual_data.map(item => item.profit_before_tax);
+                const roaData = jsonData.annual_data.map(item => item.roa);
+                const roeData = jsonData.annual_data.map(item => item.roe);
 
                 // Hide loading messages
                 document.getElementById('loadingTotalAssets').style.display = 'none';
@@ -172,16 +216,15 @@
                 document.getElementById('profitBeforeTaxChart').style.display = 'block';
                 document.getElementById('roaAndRoeChart').style.display = 'block';
 
-
                 // 1. Total Assets Chart
                 const totalAssetsCtx = document.getElementById('totalAssetsChart').getContext('2d');
                 new Chart(totalAssetsCtx, {
                     type: 'line',
                     data: {
-                        labels: data.years, // Use years from JSON
+                        labels: years,
                         datasets: [{
                             label: 'Total Assets (NT$ Trillion)',
-                            data: data.totalAssets, // Use totalAssets from JSON
+                            data: totalAssetsData,
                             borderColor: 'rgb(59, 130, 246)', // Blue
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             borderWidth: 2,
@@ -199,10 +242,10 @@
                 new Chart(profitCtx, {
                     type: 'line',
                     data: {
-                        labels: data.years, // Use years from JSON
+                        labels: years,
                         datasets: [{
                             label: 'Profit Before Tax (NT$ Hundred Million)',
-                            data: data.profitBeforeTax, // Use profitBeforeTax from JSON
+                            data: profitBeforeTaxData,
                             borderColor: 'rgb(236, 72, 153)', // Pink
                             backgroundColor: 'rgba(236, 72, 153, 0.1)',
                             borderWidth: 2,
@@ -220,11 +263,11 @@
                 new Chart(roaRoeCtx, {
                     type: 'line',
                     data: {
-                        labels: data.years, // Use years from JSON
+                        labels: years,
                         datasets: [
                             {
                                 label: 'Return on Assets (ROA %)',
-                                data: data.roa, // Use roa from JSON
+                                data: roaData,
                                 borderColor: 'rgb(20, 184, 166)', // Teal
                                 backgroundColor: 'rgba(20, 184, 166, 0.1)',
                                 borderWidth: 2,
@@ -235,7 +278,7 @@
                             },
                             {
                                 label: 'Return on Equity (ROE %)',
-                                data: data.roe, // Use roe from JSON
+                                data: roeData,
                                 borderColor: 'rgb(139, 92, 246)', // Purple
                                 backgroundColor: 'rgba(139, 92, 246, 0.1)',
                                 borderWidth: 2,
@@ -252,9 +295,9 @@
             } catch (error) {
                 console.error('Error initializing charts:', error);
                 // Display error messages in each chart container
-                displayChartError('totalAssetsContainer', 'totalAssetsChart', `Error loading Total Assets: ${error.message}`);
-                displayChartError('profitBeforeTaxContainer', 'profitBeforeTaxChart', `Error loading Profit Before Tax: ${error.message}`);
-                displayChartError('roaRoeContainer', 'roaAndRoeChart', `Error loading ROA & ROE: ${error.message}`);
+                displayChartError('totalAssetsContainer', 'totalAssetsChart', `Error: ${error.message}`);
+                displayChartError('profitBeforeTaxContainer', 'profitBeforeTaxChart', `Error: ${error.message}`);
+                displayChartError('roaRoeContainer', 'roaAndRoeChart', `Error: ${error.message}`);
             }
         }
 
