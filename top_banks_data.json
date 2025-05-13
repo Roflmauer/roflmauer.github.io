@@ -1,0 +1,24 @@
+// top_banks_data.json
+{
+  "data_as_of": "Primarily Year-End 2023 (Sources: Taiwan - Balance Sheets of Domestic Banks, March 31, 2023; Germany - European Banks by Total Assets, data compiled April 3, 2024)",
+  "taiwan": {
+    "currency": "NT$ Trillion",
+    "banks": [
+      { "rank": 1, "name": "Bank of Taiwan (臺灣銀行)", "total_assets": 6.397 },
+      { "rank": 2, "name": "CTBC Bank (中國信託商業銀行)", "total_assets": 5.718 },
+      { "rank": 3, "name": "Taiwan Cooperative Bank (合作金庫銀行)", "total_assets": 4.958 },
+      { "rank": 4, "name": "Mega International Commercial Bank (兆豐國際商業銀行)", "total_assets": 4.711 },
+      { "rank": 5, "name": "Cathay United Bank (國泰世華商業銀行)", "total_assets": 4.540 }
+    ]
+  },
+  "germany": {
+    "currency": "EUR Billion",
+    "banks": [
+      { "rank": 1, "name": "Deutsche Bank AG", "total_assets": 1312.33 },
+      { "rank": 2, "name": "DZ BANK AG", "total_assets": 644.59 },
+      { "rank": 3, "name": "Commerzbank AG", "total_assets": 516.82 },
+      { "rank": 4, "name": "Landesbank Baden-Württemberg (LBBW)", "total_assets": 333.20 },
+      { "rank": 5, "name": "Bayerische Landesbank (BayernLB)", "total_assets": 256.70 }
+    ]
+  }
+}
