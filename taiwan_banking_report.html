@@ -9,74 +9,46 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <style>
-        /* These styles were in the standalone taiwan_banking_report.html. */
-        /* You should move them to your main styles.css for consistency. */
-        /* Ensure they don't conflict with existing styles or make them more specific if needed. */
-        /* For example, .data-section is already used in trade_report.html, so it's good if it's in styles.css */
-
-        .data-section { /* Already used in trade_report.html, good to have in styles.css */
-            margin-top: 30px; /* Adjusted from 50px to look good as the primary content */
-            padding-top: 20px;
-            /* border-top: 1px solid #30363d; */ /* No top border if it's the first main content */
-        }
-        .chart-grid { /* Already used in trade_report.html (for economic charts previously) */
-            display: grid;
-            grid-template-columns: 1fr; 
-            gap: 30px;
-        }
-        .chart-container-small { /* This class is specific to these charts */
-            height: 350px; 
-            margin-bottom:20px;
-        }
-        #loadingTaiwanBankingMessagePage, #errorTaiwanBankingMessagePage { /* Specific IDs */
-            text-align: center;
-            font-size: 1.2em;
-            padding: 20px;
-            color: #c9d1d9; /* Match dark theme text */
-        }
-        #errorTaiwanBankingMessagePage {
-            color: #f85149; /* Error color */
-        }
-        /* Ensure h1, h2, h3, p on this page pick up styles from styles.css for the dark theme */
-    </style>
-</head>
+    </head>
 <body>
-    <div class="background-animation"></div> <header>
-        <div class="container">
-            <h1>Pierre Meyer</h1>
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
-            <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+    <div class="background-animation"></div>
+
+    <header>
+        <div class="container header-content-wrapper"> <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
+            <div class="header-text">
+                <h1>Pierre Meyer</h1>
+                <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+            </div>
         </div>
     </header>
 
-    <main class="container"> {/* Use your existing .container class from styles.css */}
+    <main class="container">
         
         <section class="data-section taiwan-banking-overview-section">
-            <h1 id="taiwanBankingTitlePage" style="font-size: 2.5em; color: #58a6ff; margin-bottom: 10px;">Overview of Taiwan's Domestic Banking Sector</h1>
-            <p style="text-align: center; font-style: italic; color: #8b949e; margin-bottom: 30px;" id="taiwanBankingSourcePage"></p>
+            <h1>Overview of Taiwan's Domestic Banking Sector</h1>
+            <p class="subtle-text center-text" id="taiwanBankingSourcePage"></p>
             
             <div id="taiwanBankingChartsContainerPage" style="display:none;">
                 <div class="chart-grid">
                     <div class="chart-container-small">
-                        <h3 style="color: #58a6ff; text-align:center;">Total Assets & Profit Before Tax</h3>
+                        <h3>Total Assets & Profit Before Tax</h3>
                         <canvas id="taiwanAssetsProfitChartPage"></canvas>
                     </div>
                     <div class="chart-container-small">
-                        <h3 style="color: #58a6ff; text-align:center;">ROA & ROE</h3>
+                        <h3>ROA & ROE</h3>
                         <canvas id="taiwanRatiosChartPage"></canvas>
                     </div>
                 </div>
             </div>
-            <div id="loadingTaiwanBankingMessagePage">Loading Taiwan banking overview data...</div>
-            <div id="errorTaiwanBankingMessagePage" style="display:none;"></div>
+            <div id="loadingTaiwanBankingMessagePage" class="loading-message-placeholder">Loading Taiwan banking overview data...</div>
+            <div id="errorTaiwanBankingMessagePage" class="error-message-placeholder" style="display:none;"></div>
         </section>
 
     </main>
     <footer>
         <div class="container">
-            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de" style="color: #58a6ff;">Contact Me</a></p>
-            <p><a href="index.html" style="color: #58a6ff; text-decoration: none;">Back to Home</a></p>
+            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+            <p><a href="index.html">Back to Home</a></p>
         </div>
     </footer>
 
@@ -107,7 +79,7 @@
         function displayTaiwanBankingOverview() {
             const loadingEl = document.getElementById('loadingTaiwanBankingMessagePage');
             const errorEl = document.getElementById('errorTaiwanBankingMessagePage');
-            const titleEl = document.getElementById('taiwanBankingTitlePage'); // This is an h1 now
+            const titleEl = document.querySelector('.taiwan-banking-overview-section > h1'); // Target the h1 for the page title
             const sourceEl = document.getElementById('taiwanBankingSourcePage');
             const chartsContainerEl = document.getElementById('taiwanBankingChartsContainerPage');
 
@@ -118,11 +90,14 @@
             fetchTaiwanBankingData().then(data => {
                 loadingEl.style.display = 'none';
                 chartsContainerEl.style.display = 'block';
-                // titleEl.textContent = data.title || "Overview of Taiwan's Domestic Banking Sector"; // Title is now static in h1
-                if (data.title && titleEl.textContent.includes("Loading")) { // Update if still default loading text
-                    titleEl.textContent = data.title;
+                
+                if (titleEl && data.title) { // Update title if element exists and data.title exists
+                    // titleEl.textContent = data.title; // The title is now static in the HTML h1
                 }
-                sourceEl.textContent = data.source || "";
+                if (sourceEl) {
+                    sourceEl.textContent = data.source || "";
+                }
+
 
                 if (!data.annual_data || data.annual_data.length === 0) {
                     throw new Error("No annual data found in Taiwan banking overview file.");
@@ -143,13 +118,13 @@
                         datasets: [
                             {
                                 label: 'Total Assets (NT$ Trillion)', data: totalAssets,
-                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', // Dark theme adjustment
+                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 yAxisID: 'yAssets', tension: 0.1, fill: false,
                                 pointBackgroundColor: 'rgba(54, 162, 235, 1)', pointBorderColor: '#fff'
                             },
                             {
                                 label: `Profit Before Tax (${data.unit_assets_profit || 'NT$ 100M'})`, data: profitBeforeTax,
-                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', // Dark theme adjustment
+                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 yAxisID: 'yProfit', tension: 0.1, fill: false,
                                 pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
                             }
@@ -192,13 +167,13 @@
                         datasets: [
                             {
                                 label: 'Return on Assets (ROA %)', data: roa,
-                                borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', // Dark theme adjustment
+                                borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 tension: 0.1, fill: false,
                                 pointBackgroundColor: 'rgba(75, 192, 192, 1)', pointBorderColor: '#fff'
                             },
                             {
                                 label: 'Return on Equity (ROE %)', data: roe,
-                                borderColor: 'rgba(153, 102, 255, 1)', backgroundColor: 'rgba(153, 102, 255, 0.2)', // Dark theme adjustment
+                                borderColor: 'rgba(153, 102, 255, 1)', backgroundColor: 'rgba(153, 102, 255, 0.2)',
                                 tension: 0.1, fill: false,
                                 pointBackgroundColor: 'rgba(153, 102, 255, 1)', pointBorderColor: '#fff'
                             }
@@ -219,7 +194,7 @@
                             }
                         },
                         plugins: { 
-                            tooltip: { mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', callbacks: {label: function(context) {
+                            tooltip: { mode: 'index', intersect: false, callbacks: {label: function(context) {
                                 let label = context.dataset.label || '';
                                 if (label) { label += ': '; }
                                 if (context.parsed.y !== null) { label += formatPercentage(context.parsed.y); }
@@ -234,7 +209,7 @@
                 loadingEl.style.display = 'none';
                 errorEl.textContent = `Error loading Taiwan banking overview data: ${error.message}. Ensure '${TAIWAN_BANKING_DATA_FILE}' exists and is correct.`;
                 errorEl.style.display = 'block';
-                titleEl.textContent = "Could not load Taiwan Banking Overview"; // Keep h1 title consistent
+                if(titleEl) titleEl.textContent = "Could not load Taiwan Banking Overview";
                 chartsContainerEl.style.display = 'none';
             });
         }
@@ -244,39 +219,3 @@
     </script>
 </body>
 </html>
-```
-
-**Key Changes in this `taiwan_banking_report.html` (compared to the standalone version I gave before):**
-
-1.  **Common Header and Footer:** The `<head>`, `<header>`, and `<footer>` sections are copied directly from your `index.html` structure.
-2.  **Linked `styles.css`:** It now links to your main `styles.css`.
-3.  **Page-Specific Title:** The `<title>` tag is updated.
-4.  **Main Content Wrapper:** The unique content (the banking overview section) is wrapped in `<main class="container">`.
-5.  **Styling Adjustments for Dark Theme:**
-    * I've tried to make the chart elements (axis titles, ticks, legend, tooltips) and some text elements use colors that would better match your dark theme (`#c9d1d9` for light text, `#8b949e` for secondary text, `#30363d` for grid lines).
-    * The `<style>` block within the `<head>` of this file now contains only a few specific rules. **You should aim to move `.data-section`, `.chart-grid`, and `.chart-container-small` into your main `styles.css` file.** I've adjusted the `.data-section` margin slightly as it's now the primary content.
-    * The `h1` for the page title and `h3` for chart titles have inline styles for color to match your `index.html`'s blue accent. Ideally, these would also be classes in `styles.css`.
-6.  **Element IDs:** I kept the "Page" suffix for IDs in this file (e.g., `taiwanBankingTitlePage`, `taiwanAssetsProfitChartPage`) to ensure they are distinct.
-7.  **"Back to Home" Link:** Added in the footer.
-
-**Next Step: Consolidate CSS**
-
-The most important step for a truly unified look is to consolidate your CSS:
-
-1.  **Open your main `styles.css` file.**
-2.  **Move CSS Rules:**
-    * From `trade_report.html` (the version I gave you with the common template), take the rules for:
-        * `.kpi-container`, `.kpi` (and its child elements `h3`, `p`)
-        * `.chart-wrapper`
-        * `.data-section` (if not already a good general style)
-        * `.bank-list-section-container`, `.bank-list-container`
-        * `table.styled-table` (and its `th`, `td`)
-        * Styles for `#loadingMessage`, `#errorMessage`, `#loadingTopBanksMessage`, `#errorTopBanksMessage` (you might want to make a generic `.loading-message` and `.error-message` class).
-    * From the `taiwan_banking_report.html` above, take the rules for:
-        * `.chart-grid` (if not already covered)
-        * `.chart-container-small`
-        * Styles for `#loadingTaiwanBankingMessagePage`, `#errorTaiwanBankingMessagePage` (again, consider generic classes).
-3.  **Adapt for Dark Theme:** Ensure all these moved styles use colors that fit your dark theme (text colors like `#c9d1d9` or `#8b949e`, background colors for elements if needed, border colors like `#30363d`).
-4.  **General Element Styling:** Make sure your `styles.css` has good default styles for `h1, h2, h3, p, a` that match your theme, so you don't need as many inline styles. For example, all your section `h2` and chart `h3` titles could get their blue color and centering from a rule in `styles.css`.
-
-Once you've done this, all three of your HTML pages (`index.html`, `trade_report.html`, `taiwan_banking_report.html`) will share the same core structure and styling, leading to that cohesive feel you're looking f
