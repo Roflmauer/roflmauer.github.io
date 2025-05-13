@@ -5,17 +5,6 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Pierre Meyer - Personal Website</title>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P5W4S30761"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-P5W4S30761');
-</script>
- 
  <link href="styles.css" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
  <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -55,13 +44,16 @@
   </p>
  </section>
 
- <hr class="divider">
+  <hr class="divider">
 
  <section>
   <h2>Projects & Visualizations</h2>
   <p>Explore some of the data projects and visualizations I've worked on.</p>
+  <p style="margin-bottom: 15px;">
+   <a href="trade_report.html" class="cv-button">Taiwan-Germany Trade & Top Banks Comparison</a>
+  </p>
   <p>
-   <a href="trade_report.html" class="cv-button">View Taiwan-Germany Trade Data</a>
+   <a href="taiwan_banking_report.html" class="cv-button">Overview of Taiwan's Domestic Banking Sector</a>
   </p>
  </section>
  <hr class="divider">
@@ -210,7 +202,9 @@
    } catch (error) {
     console.error(`Error fetching chart data for ${coinId}:`, error);
     const chartContainer = document.getElementById(chartId);
-    chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+    if (chartContainer) { // Check if element exists before trying to set its innerHTML
+        chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+    }
    }
   }
 
@@ -260,7 +254,7 @@
    const convertButton = document.getElementById('convert');
    const errorMessage = document.getElementById('error-message');
 
-   const API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; // Replace with your actual API key
+   const API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp';
    const BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
 
    convertButton.addEventListener('click', () => {
