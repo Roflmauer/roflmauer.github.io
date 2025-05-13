@@ -14,29 +14,19 @@
         body {
             font-family: 'Montserrat', sans-serif;
         }
-        /* Styles for the main content, assuming your styles.css handles header/footer/background */
-        .trade-report-main-content {
-            /* Add any specific container styling if needed, or rely on main.container from styles.css */
-        }
+        /* Styles from your styles.css that are relevant if not overridden by Tailwind or local styles */
         .introductory-narrative {
-             color: #a0aec0; /* Base text color for paragraphs */
+             color: #a0aec0; 
              margin-top: 1.5rem; 
-             margin-bottom: 2.5rem; /* More space before KPIs */
-             line-height: 1.7; /* Slightly more line height for readability */
-        }
-        .introductory-narrative h3 { /* If you choose to use an h3 for the "Welcome!" part */
-            font-size: 1.5rem; /* Adjust as needed */
-            font-weight: 600; 
-            color: #e2e8f0;
-            margin-bottom: 1rem; 
-            text-align: left;
+             margin-bottom: 2.5rem; 
+             line-height: 1.7; 
         }
         .introductory-narrative p {
             margin-bottom: 1rem;
         }
         .introductory-narrative ul {
             list-style-type: disc;
-            padding-left: 1.75rem; /* More indentation */
+            padding-left: 1.75rem; 
             margin-bottom: 1rem;
         }
         .introductory-narrative li {
@@ -44,80 +34,71 @@
         }
         .introductory-narrative strong {
             color: #cbd5e0;
-            font-weight: 600; /* Montserrat bold */
+            font-weight: 600; 
         }
 
-        /* Chart specific styles from previous version */
-        .kpi-container, .chart-wrapper { /* Assuming these are styled in styles.css or add Tailwind here */
-            margin-bottom: 2rem; 
-        }
-         .chart-wrapper h2 { /* Title for individual charts */
-            font-size: 1.25rem;
+        /* Ensuring chart titles within chart-wrapper are styled if not covered by general H2 in styles.css for this context */
+        .chart-wrapper > h2 {
+            font-size: 1.25em; 
             font-weight: 600;
             text-align: center;
-            color: #cbd5e0;
-            margin-bottom: 1rem;
+            color: #cbd5e0; /* Using a color consistent with other sub-titles if #58a6ff is too bright here */
+            margin-top: 0; /* Remove top margin if it's the first child of chart-wrapper */
+            margin-bottom: 1rem; /* Space before canvas */
         }
-        .kpi-container { /* Copied from your index.html for consistency, adjust if needed */
+        
+        /* Ensure canvas background is transparent to show chart-wrapper's dark background */
+        .chart-wrapper canvas {
+             background-color: transparent !important; /* Key change for darker charts */
+        }
+
+        /* KPIs might get their primary styling from styles.css, these are fallbacks or overrides if needed */
+        .kpi-container {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 1rem; /* Tailwind might handle this better with `gap-4` etc. on the container */
             margin-bottom: 2rem;
         }
         .kpi {
-            background-color: #2d3748; /* Adjust to match your theme if different from banking page */
+            background-color: #161b22; /* Match your styles.css .chart-wrapper background or specific KPI style */
+            color: #c9d1d9;
             padding: 1.5rem;
-            border-radius: 0.5rem;
+            border-radius: 0.5rem; /* 8px */
             text-align: center;
             flex-grow: 1;
-            min-width: 200px; /* Ensure KPIs don't get too squeezed */
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            min-width: 200px;
+            border: 1px solid #30363d; /* Match border from styles.css */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25); /* Match shadow from styles.css */
         }
         .kpi h3 {
-            font-size: 1rem;
+            font-size: 1rem; /* 1em */
             font-weight: 600;
-            color: #a0aec0;
-            margin-bottom: 0.5rem;
+            color: #8b949e; /* Consistent with your styles.css .kpi h3 */
+            margin-top: 0;
+            margin-bottom: 0.5rem; /* 6px */
         }
         .kpi p {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #e2e8f0;
+            font-size: 1.5rem; /* 1.5em */
+            font-weight: 700; /* 600 in styles.css for .kpi p */
+            color: #58a6ff; /* Consistent with your styles.css .kpi p */
+            margin-bottom: 0;
+            text-align: center; /* Explicitly center KPI value */
         }
-        /* Loading and Error Messages */
+        
         .loading-message-placeholder, .error-message-placeholder {
             text-align: center;
             color: #a0aec0;
             padding: 1rem;
-            min-height: 40px; /* Ensure space is reserved */
+            min-height: 40px; 
         }
         .error-message-placeholder {
-            color: #f87171; /* Reddish for errors */
+            color: #f87171; 
         }
 
-        /* Styles from banking_report for Chart.js elements if not globally set by styles.css */
-        canvas {
-            background-color: #2d3748; /* Or your preferred chart card background */
-            border-radius: 0.375rem; /* Match card radius if desired */
-            padding: 1rem; /* Padding inside the canvas card, if canvas itself is the card */
-        }
-         /* If .chart-wrapper is the card, canvas needs no background/padding */
-        /* For example: */
-        /* .chart-wrapper {
-            background-color: #2d3748; 
-            padding: 1.5rem; 
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-        }
-        .chart-wrapper canvas { background-color: transparent; padding: 0; } */
-
-
-        Chart.defaults.color = '#a0aec0'; 
-        Chart.defaults.borderColor = '#4a5568'; 
-        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
-        Chart.defaults.font.family = 'Montserrat';
-
+        /* Chart.js Global Defaults (Best placed in script, but can be set via CSS variables if themeable) */
+        /* Forcing font here if JS defaults don't take for some reason, but JS is preferred */
+        /* canvas { font-family: 'Montserrat', sans-serif; } */
 
     </style>
 </head>
@@ -135,8 +116,8 @@
     </header>
 
     <main class="container">
-        <div class="trade-report-main-content"> {/* Wrapper for this page's specific content */}
-            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">Taiwan-Germany Trade Report</h1> {/* Centered main title */}
+        <div class="trade-report-main-content"> 
+            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">Taiwan-Germany Trade Report</h1>
 
             <div class="introductory-narrative max-w-4xl mx-auto px-4">
                 <p>Welcome! Germany and Taiwan stand as significant players in the global landscape of advanced manufacturing and technology. Their trade relationship, therefore, isn't just a set of numbers; it's a dynamic story of economic partnership, innovation, and response to global trends. The visualizations you're about to explore unpack this fascinating narrative over the past decade, tracking the flow of goods from early 2014 through April 2024.</p>
@@ -149,6 +130,7 @@
                 <p>These patterns offer more than just economic statistics; they provide a window into how bilateral trade relationships adapt to and reflect broader global economic currents, the resilience and adjustments in international supply chains, and the ever-evolving demands of key industries.</p>
                 <p>Now, let's explore the data.</p>
             </div>
+
             <div class="kpi-container">
                 <div class="kpi">
                     <h3>Latest Imports (Trade)</h3>
@@ -187,6 +169,12 @@
     </footer>
 
     <script>
+        // Set Chart.js Global Defaults
+        Chart.defaults.font.family = 'Montserrat';
+        Chart.defaults.color = '#a0aec0'; 
+        Chart.defaults.borderColor = '#4a5568'; 
+        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
+
         // --- Configuration ---
         const TRADE_IMPORT_FILE_NAME = 'Imports_from_Germany_to_Taiwan_Over_Time.json';
         const TRADE_EXPORT_FILE_NAME = 'Exports_from_Taiwan_to_Germany_Over_Time.json';
