@@ -53,7 +53,7 @@
             color: #1A73E8;
             margin-bottom: 0;
         }
-        .chart-wrapper { /* Renamed from chart-container to avoid conflict if you copy styles */
+        .chart-wrapper {
             margin-bottom: 40px;
         }
         #loadingMessage, #errorMessage, .loading-economic, .error-economic {
@@ -98,11 +98,11 @@
         }
         .economic-chart-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Initially 1 column, can be changed to 2 for side-by-side */
+            grid-template-columns: 1fr;
             gap: 30px;
         }
         .economic-chart-container {
-            height: 300px; /* Adjust as needed */
+            height: 300px;
         }
     </style>
 </head>
@@ -154,14 +154,7 @@
                             <div>Germany: <span id="inflation-de-kpi">N/A</span></div>
                         </div>
                     </div>
-                    <div class="economic-kpi">
-                        <h4>Unemployment Rate (%)</h4>
-                        <div class="economic-kpi-values">
-                            <div>Taiwan: <span id="unemployment-tw-kpi">N/A</span></div>
-                            <div>Germany: <span id="unemployment-de-kpi">N/A</span></div>
-                        </div>
                     </div>
-                </div>
 
                 <h3>Historical Trends (Last ~10 Years)</h3>
                 <div class="economic-chart-grid">
@@ -171,10 +164,7 @@
                     <div class="economic-chart-container">
                         <canvas id="inflationChart"></canvas>
                     </div>
-                    <div class="economic-chart-container">
-                        <canvas id="unemploymentChart"></canvas>
                     </div>
-                </div>
             </div>
         </section>
     </div>
@@ -186,10 +176,10 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        const ALPHA_VANTAGE_API_KEY = "ODD2V19YX7IJRSCC"; // Your actual API Key
+        const ALPHA_VANTAGE_API_KEY = "ODD2V19YX7IJRSCC"; // Your API Key
         const AV_COUNTRY_GERMANY = "Germany";
-        const AV_COUNTRY_TAIWAN = "Taiwan"; // Alpha Vantage may use "Taiwan, Province of China" or need a specific series ID.
-        const NUMBER_OF_YEARS_ECONOMIC_DATA = 10; // Approx years for charts
+        const AV_COUNTRY_TAIWAN = "Taiwan";
+        const NUMBER_OF_YEARS_ECONOMIC_DATA = 10;
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
@@ -313,12 +303,19 @@
             }
         }
 
-        // --- Economic Data Functions (MODIFIED) ---
+        // --- Economic Data Functions ---
         async function fetchEconomicData(indicator, country) {
-            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "") { // Check for placeholder or empty
-                console.warn("Alpha Vantage API Key not set or is placeholder. Economic data will not be fetched.");
-                throw new Error("API Key Missing or Placeholder");
+            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "" || ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
+                // Note: Added "ODD2V19YX7IJRSCC" to the check as it was provided as a user's key but could be a demo/placeholder.
+                // Ideally, the user should ensure it's their personal, valid key.
+                let warningMessage = "Alpha Vantage API Key not set or is a placeholder/demo key. Economic data will not be fetched.";
+                if (ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
+                    warningMessage = "The Alpha Vantage API Key 'ODD2V19YX7IJRSCC' might be a demo key with very strict limits or could be invalid. Please use your personal API key. Economic data might not load reliably.";
+                }
+                console.warn(warningMessage);
+                throw new Error("API Key Issue");
             }
+
             let url;
             const needsYoYCalculation = (indicator === 'GDP' || indicator === 'INFLATION');
 
@@ -329,10 +326,9 @@
                 case 'INFLATION':
                     url = `https://www.alphavantage.co/query?function=CPI&country=${country}&interval=annual&apikey=${ALPHA_VANTAGE_API_KEY}`;
                     break;
-                case 'UNEMPLOYMENT':
-                    url = `https://www.alphavantage.co/query?function=UNEMPLOYMENT_RATE&country=${country}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-                    break;
+                // UNEMPLOYMENT case removed
                 default:
+                    // This case should not be hit if we only call with 'GDP' and 'INFLATION'
                     throw new Error(`Unknown economic indicator: ${indicator}`);
             }
 
@@ -346,11 +342,10 @@
                 console.warn(`Alpha Vantage API call limit likely reached for ${indicator} ${country}. Data: `, result.Information);
                 throw new Error(`API Limit Reached for ${indicator} ${country}`);
             }
-             if (result["Error Message"]){
+            if (result["Error Message"]){
                 console.warn(`Alpha Vantage API error for ${indicator} ${country}: ${result["Error Message"]}`);
                 throw new Error(`API Error for ${indicator} ${country}: ${result["Error Message"]}`);
             }
-
 
             if (!result.data || result.data.length === 0) {
                 if (result.Note && country === AV_COUNTRY_TAIWAN) {
@@ -360,7 +355,7 @@
                 } else {
                      console.warn(`No data array found for ${indicator} for ${country}. Response:`, result);
                 }
-                return []; // Return empty array if no data
+                return [];
             }
 
             let processedData = result.data
@@ -376,25 +371,19 @@
                             const percentageChange = ((processedData[i].value - processedData[i-1].value) / processedData[i-1].value) * 100;
                             yoyData.push({ date: processedData[i].date, value: percentageChange });
                         } else {
-                            // Cannot calculate YoY if previous value is 0 or invalid
                             yoyData.push({ date: processedData[i].date, value: null });
                         }
                     }
                     processedData = yoyData;
                 } else {
-                    // Not enough data to calculate YoY change
                     console.warn(`Not enough data points for ${indicator} for ${country} to calculate YoY change. Found: ${processedData.length}`);
                     processedData = [];
                 }
             }
-            // For UNEMPLOYMENT, Alpha Vantage directly provides the percentage value (e.g., 5.3 for 5.3%)
-            // No further transformation is typically needed here unless the API changes format.
-            // If unemployment values were e.g. 0.053 for 5.3%, you'd multiply by 100 here.
-
             return processedData;
         }
 
-        function createEconomicChart(canvasId, chartLabelPrefix, dataTW, dataDE) { // Renamed 'label' to 'chartLabelPrefix'
+        function createEconomicChart(canvasId, chartLabelPrefix, dataTW, dataDE) {
             const ctx = document.getElementById(canvasId).getContext('2d');
 
             const allYears = [...new Set([...dataTW.map(d => d.date.getFullYear()), ...dataDE.map(d => d.date.getFullYear())])].sort((a,b) => a - b);
@@ -421,7 +410,7 @@
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
                             tension: 0.1,
                             fill: false,
-                            spanGaps: false, // Set to true if you want to connect lines over missing (null) data points
+                            spanGaps: false,
                         },
                         {
                             label: `Germany (${chartLabelPrefix})`,
@@ -430,7 +419,7 @@
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
                             tension: 0.1,
                             fill: false,
-                            spanGaps: false, // Set to true if you want to connect lines over missing (null) data points
+                            spanGaps: false,
                         }
                     ]
                 },
@@ -463,55 +452,59 @@
             errorEconomicEl.style.display = 'none';
             economicDataContentEl.style.display = 'none';
 
-            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "") {
+            // Updated API Key check
+            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "" || ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
+                let warningMessage = "Alpha Vantage API Key is missing or is a placeholder/demo key. Economic indicators cannot be loaded.";
+                 if (ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC" && ALPHA_VANTAGE_API_KEY !== "YOUR_ALPHA_VANTAGE_API_KEY") { // Avoid double warning if it's the actual placeholder
+                    warningMessage = "The Alpha Vantage API Key 'ODD2V19YX7IJRSCC' might be a demo key with very strict limits or could be invalid. Please use your personal API key for reliable data loading.";
+                }
                 loadingEconomicEl.style.display = 'none';
-                errorEconomicEl.textContent = "Alpha Vantage API Key is missing or is placeholder. Economic indicators cannot be loaded.";
+                errorEconomicEl.textContent = warningMessage;
                 errorEconomicEl.style.display = 'block';
                 return;
             }
 
+
             try {
-                const results = await Promise.allSettled([ // Use allSettled to get results even if some promises fail
+                const results = await Promise.allSettled([
                     fetchEconomicData('GDP', AV_COUNTRY_TAIWAN),
                     fetchEconomicData('GDP', AV_COUNTRY_GERMANY),
                     fetchEconomicData('INFLATION', AV_COUNTRY_TAIWAN),
-                    fetchEconomicData('INFLATION', AV_COUNTRY_GERMANY),
-                    fetchEconomicData('UNEMPLOYMENT', AV_COUNTRY_TAIWAN),
-                    fetchEconomicData('UNEMPLOYMENT', AV_COUNTRY_GERMANY)
+                    fetchEconomicData('INFLATION', AV_COUNTRY_GERMANY)
+                    // Unemployment fetches removed
                 ]);
 
                 const gdpTW = results[0].status === 'fulfilled' ? results[0].value : [];
                 const gdpDE = results[1].status === 'fulfilled' ? results[1].value : [];
                 const inflationTW = results[2].status === 'fulfilled' ? results[2].value : [];
                 const inflationDE = results[3].status === 'fulfilled' ? results[3].value : [];
-                const unemploymentTW = results[4].status === 'fulfilled' ? results[4].value : [];
-                const unemploymentDE = results[5].status === 'fulfilled' ? results[5].value : [];
 
-                // Log errors from failed promises
+                let hasFetchError = false;
                 results.forEach((result, index) => {
                     if (result.status === 'rejected') {
+                        hasFetchError = true;
                         const indicatorIndex = Math.floor(index / 2);
                         const countryIndex = index % 2;
-                        const indicatorName = ['GDP', 'INFLATION', 'UNEMPLOYMENT'][indicatorIndex];
+                        const indicatorName = ['GDP', 'INFLATION'][indicatorIndex]; // Adjusted for removed unemployment
                         const countryName = countryIndex === 0 ? AV_COUNTRY_TAIWAN : AV_COUNTRY_GERMANY;
                         console.error(`Failed to fetch ${indicatorName} for ${countryName}:`, result.reason);
-                         if (errorEconomicEl.textContent === "") { // Show first error
+                         if (errorEconomicEl.textContent === "" || errorEconomicEl.textContent.includes("API Key")) { // Show first specific fetch error if no API key error shown
                             errorEconomicEl.textContent = `Error loading some economic data: ${result.reason.message}. Check console.`;
                             errorEconomicEl.style.display = 'block';
+                        } else if (!errorEconomicEl.textContent.includes(result.reason.message)) {
+                            errorEconomicEl.textContent += ` | ${result.reason.message}`; // Append other errors
                         }
                     }
                 });
 
-
                 loadingEconomicEl.style.display = 'none';
-                economicDataContentEl.style.display = 'block';
+                economicDataContentEl.style.display = 'block'; // Show content even if some data is missing
 
                 document.getElementById('gdp-tw-kpi').textContent = gdpTW.length ? formatPercentage(gdpTW[gdpTW.length - 1].value) : 'N/A';
                 document.getElementById('gdp-de-kpi').textContent = gdpDE.length ? formatPercentage(gdpDE[gdpDE.length - 1].value) : 'N/A';
                 document.getElementById('inflation-tw-kpi').textContent = inflationTW.length ? formatPercentage(inflationTW[inflationTW.length - 1].value) : 'N/A';
                 document.getElementById('inflation-de-kpi').textContent = inflationDE.length ? formatPercentage(inflationDE[inflationDE.length - 1].value) : 'N/A';
-                document.getElementById('unemployment-tw-kpi').textContent = unemploymentTW.length ? formatPercentage(unemploymentTW[unemploymentTW.length - 1].value) : 'N/A';
-                document.getElementById('unemployment-de-kpi').textContent = unemploymentDE.length ? formatPercentage(unemploymentDE[unemploymentDE.length - 1].value) : 'N/A';
+                // Unemployment KPI updates removed
 
                 if (gdpTW.length || gdpDE.length) createEconomicChart('gdpChart', 'GDP Growth', gdpTW, gdpDE);
                 else document.getElementById('gdpChart').parentElement.innerHTML = '<p class="error-economic">GDP data unavailable for charting.</p>';
@@ -519,14 +512,15 @@
                 if (inflationTW.length || inflationDE.length) createEconomicChart('inflationChart', 'Inflation', inflationTW, inflationDE);
                 else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">Inflation data unavailable for charting.</p>';
 
-                if (unemploymentTW.length || unemploymentDE.length) createEconomicChart('unemploymentChart', 'Unemployment', unemploymentTW, unemploymentDE);
-                else document.getElementById('unemploymentChart').parentElement.innerHTML = '<p class="error-economic">Unemployment data unavailable for charting.</p>';
+                // Unemployment chart creation removed
 
-            } catch (error) { // Should not be hit if using Promise.allSettled for fetches
-                console.error("General error in displayEconomicIndicators:", error);
+            } catch (error) {
+                console.error("General error in displayEconomicIndicators:", error); // Should be less likely now
                 loadingEconomicEl.style.display = 'none';
-                errorEconomicEl.textContent = `A general error occurred: ${error.message}. Check console.`;
-                errorEconomicEl.style.display = 'block';
+                if (!errorEconomicEl.textContent) { // Only update if no specific fetch error was already shown
+                    errorEconomicEl.textContent = `A general error occurred: ${error.message}. Check console.`;
+                    errorEconomicEl.style.display = 'block';
+                }
             }
         }
 
