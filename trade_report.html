@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiwan-Germany Trade Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .kpi-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 900px;
+        }
+        .kpi {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            margin: 10px;
+            min-width: 180px;
+            flex-grow: 1;
+        }
+        .kpi h3 {
+            margin-top: 0;
+            font-size: 1em;
+            color: #555;
+        }
+        .kpi p {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1A73E8; /* Chart.js default blue */
+            margin-bottom: 0;
+        }
+        #loadingMessage {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 20px;
+        }
+        #errorMessage {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Taiwan-Germany Trade Overview</h1>
+
+    <div class="kpi-container">
+        <div class="kpi">
+            <h3>Latest Imports</h3>
+            <p id="latestImportValue">---</p>
+        </div>
+        <div class="kpi">
+            <h3>Latest Exports</h3>
+            <p id="latestExportValue">---</p>
+        </div>
+        <div class="kpi">
+            <h3>Latest Trade Balance</h3>
+            <p id="latestTradeBalance">---</p>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h2 id="chartTitle">Trade Value Over Time</h2>
+        <canvas id="tradeChart"></canvas>
+    </div>
+    <div id="loadingMessage">Loading data...</div>
+    <div id="errorMessage" style="display:none;"></div>
+
+    <script>
+        // --- Configuration ---
+        const IMPORT_FILE_NAME = 'Imports_from_Germany_to_Taiwan_Over_Time.json';
+        const EXPORT_FILE_NAME = 'Exports_from_Taiwan_to_Germany_Over_Time.json';
+        const CURRENCY_SYMBOL = '$';
+        const CURRENCY_CODE = 'USD';
+        // --- End Configuration ---
+
+        async function fetchData(fileName) {
+            try {
+                const response = await fetch(fileName);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} for ${fileName}`);
+                }
+                const jsonData = await response.json();
+                const datasetKey = Object.keys(jsonData.datasets)[0];
+                if (!datasetKey || !jsonData.datasets[datasetKey]) {
+                    throw new Error(`Could not find data array in ${fileName} under 'datasets'.`);
+                }
+                return jsonData.datasets[datasetKey].map(item => ({
+                    date: new Date(item.Date), // Chart.js time adapter will handle this
+                    value: parseFloat(item.Value)
+                })).sort((a, b) => a.date - b.date);
+            } catch (error) {
+                console.error(`Error fetching or parsing ${fileName}:`, error);
+                throw error;
+            }
+        }
+
+        function formatCurrency(value) {
+            if (isNaN(value)) return 'N/A';
+            return CURRENCY_SYMBOL + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        async function displayTradeData() {
+            const loadingMessageEl = document.getElementById('loadingMessage');
+            const errorMessageEl = document.getElementById('errorMessage');
+            const chartContainerEl = document.querySelector('.chart-container');
+            const kpiContainerEl = document.querySelector('.kpi-container');
+
+            loadingMessageEl.style.display = 'block';
+            errorMessageEl.style.display = 'none';
+            chartContainerEl.style.display = 'none';
+            kpiContainerEl.style.display = 'none';
+
+            try {
+                const importData = await fetchData(IMPORT_FILE_NAME);
+                const exportData = await fetchData(EXPORT_FILE_NAME);
+
+                loadingMessageEl.style.display = 'none';
+                chartContainerEl.style.display = 'block';
+                kpiContainerEl.style.display = 'flex';
+
+                if (!importData.length || !exportData.length) {
+                   throw new Error("No data points found after processing files.");
+                }
+
+                const labels = importData.map(item => item.date);
+                const importValues = importData.map(item => item.value);
+                const exportValues = exportData.map(item => item.value);
+
+                const latestImport = importData[importData.length - 1];
+                const latestExport = exportData[exportData.length - 1];
+
+                document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value);
+                document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value);
+                document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value);
+                document.getElementById('chartTitle').textContent = `Trade Value (${CURRENCY_CODE}) Over Time`;
+
+                const ctx = document.getElementById('tradeChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Imports from Germany',
+                                data: importValues,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                tension: 0.1,
+                                fill: true,
+                            },
+                            {
+                                label: 'Exports to Germany',
+                                data: exportValues,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                tension: 0.1,
+                                fill: true,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'year',
+                                    tooltipFormat: 'MMM yyyy',
+                                    displayFormats: {
+                                        month: 'MMM yyyy',
+                                        year: 'yyyy'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: `Trade Value (${CURRENCY_CODE})`
+                                },
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        if (Math.abs(value) >= 1e9) {
+                                            return CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
+                                        } else if (Math.abs(value) >= 1e6) {
+                                            return CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
+                                        } else if (Math.abs(value) >= 1e3) {
+                                            return CURRENCY_SYMBOL + (value / 1e3).toFixed(1) + 'K';
+                                        }
+                                        return CURRENCY_SYMBOL + value.toLocaleString('en-US');
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Failed to display trade data:", error);
+                loadingMessageEl.style.display = 'none';
+                errorMessageEl.textContent = `Error loading trade data: ${error.message}. Please check the console and ensure JSON files are in the same directory as this HTML file.`;
+                errorMessageEl.style.display = 'block';
+                chartContainerEl.style.display = 'none';
+                kpiContainerEl.style.display = 'none';
+            }
+        }
+
+        displayTradeData();
+    </script>
+</body>
+</html>
