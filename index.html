@@ -13,17 +13,21 @@
 
 <body>
  <div class="background-animation"></div>
+
  <header>
- <div class="container">
-  <h1>Pierre Meyer</h1>
-  <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
-  <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
- </div>
+    <div class="container header-content-wrapper">
+        <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
+        <div class="header-text">
+            <h1>Pierre Meyer</h1>
+            <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+        </div>
+    </div>
  </header>
 
  <main class="container">
  <section>
-  <h2 class="index-section-title">About Me</h2> <p>
+  <h2 class="index-section-title">About Me</h2>
+  <p>
    Hey there! I’m Pierre Meyer, a business development professional with a passion for connecting cultures
    and driving growth. I’ve had the unique experience of building my career across Germany and Taiwan,
    working at the intersection of global business strategy and relationship management. </p>
@@ -107,7 +111,8 @@
 
  <hr class="divider">
 
- <section id="currency-exchange-section"> <h2 class="index-section-title">Currency Exchange</h2>
+ <section id="currency-exchange-section">
+  <h2 class="index-section-title">Currency Exchange</h2>
   <div class="form-group">
    <label for="fromCurrency">From Currency</label>
    <select id="fromCurrency">
@@ -116,7 +121,7 @@
     <option value="GBP">GBP</option>
     <option value="JPY">JPY</option>
     <option value="CAD">CAD</option>
-    </select>
+   </select>
   </div>
   <div class="form-group">
    <label for="toCurrency">To Currency</label>
@@ -126,7 +131,7 @@
     <option value="GBP">GBP</option>
     <option value="JPY">JPY</option>
     <option value="CAD">CAD</option>
-    </select>
+   </select>
   </div>
   <div class="form-group">
    <label for="amount">Amount</label>
@@ -146,11 +151,10 @@
  </footer>
 
  <script>
-  // Scripts for Live Market Prices and Currency Exchange
   const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
   const marketTableBody = document.getElementById('market-table-body');
-  const FETCH_INTERVAL = 120000; // 2 minutes
-  let activeCharts = {}; // Keep track of active charts to destroy them before re-rendering
+  const FETCH_INTERVAL = 120000; 
+  let activeCharts = {}; 
 
   function formatPrice(price) {
    return `$${price.toLocaleString(undefined, {
@@ -192,15 +196,13 @@
 
   async function fetchAndRenderChart(coinId, currency, days, chartId) {
    const chartCanvas = document.getElementById(chartId);
-   // Assuming error p is the direct next sibling with class 'crypto-chart-error'
-   const errorDisplay = chartCanvas ? chartCanvas.parentElement.querySelector('.crypto-chart-error') : null;
-
+   const errorDisplay = chartCanvas ? chartCanvas.parentElement.querySelector('.crypto-chart-error') : null; 
 
    if (!chartCanvas) {
        console.warn(`Canvas with ID ${chartId} not found.`);
        return;
    }
-    if(errorDisplay) errorDisplay.style.display = 'none'; // Hide previous errors
+    if(errorDisplay) errorDisplay.style.display = 'none';
 
    try {
     const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
@@ -256,7 +258,6 @@
     });
   }
 
-  // --- Currency Converter Script ---
   const fromCurrencySelect = document.getElementById('fromCurrency');
   const toCurrencySelect = document.getElementById('toCurrency');
   const amountInput = document.getElementById('amount');
@@ -267,12 +268,8 @@
   const FCA_API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; 
   const FCA_BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
 
-  console.log("Setting up currency converter..."); 
-
   if (convertButton && fromCurrencySelect && toCurrencySelect && amountInput && resultDiv && errorMessageDisplay) {
-      console.log("Convert button event listener successfully attached."); 
       convertButton.addEventListener('click', () => {
-          console.log("Convert button clicked!"); 
           const fromCurrency = fromCurrencySelect.value;
           const toCurrency = toCurrencySelect.value;
           const amount = parseFloat(amountInput.value);
@@ -311,16 +308,9 @@
               });
       });
   } else {
-      console.error("One or more currency converter elements not found. Button functionality will be affected.");
-      if (!convertButton) console.error("Convert button not found");
-      if (!fromCurrencySelect) console.error("From currency select not found");
-      if (!toCurrencySelect) console.error("To currency select not found");
-      if (!amountInput) console.error("Amount input not found");
-      if (!resultDiv) console.error("Result div not found");
-      if (!errorMessageDisplay) console.error("Error message display not found");
+      console.error("One or more currency converter elements not found. Button functionality may be affected.");
   }
 
-  // Initial fetch for market data if its container exists
   if (marketTableBody) {
     fetchMarketData();
     setInterval(fetchMarketData, FETCH_INTERVAL);
