@@ -67,15 +67,15 @@ h1, h2, h3, h4, h5, h6 {
 /* Page titles inside <main> container */
 main > h1 { 
     font-size: 2.2em; 
-    margin-top: 1em; 
-    margin-bottom: 1em;
+    margin-top: 1.5em; /* INCREASED top margin */
+    margin-bottom: 0.5em; /* REDUCED bottom margin before subtitle/source */
     text-align: center;
 } 
 
-h2 { font-size: 1.8em; text-align: center; }
-h3 { font-size: 1.3em; text-align: center; }
+h2 { font-size: 1.8em; text-align: center; margin-bottom: 1em; /* INCREASED bottom margin */ }
+h3 { font-size: 1.3em; text-align: center; margin-bottom: 0.8em; /* INCREASED bottom margin */}
 
-.index-section-title { /* For h2 on index page that need to be left-aligned */
+.index-section-title {
     text-align: left;
 }
 
@@ -85,60 +85,53 @@ p {
   text-align: left;
 }
 p.center-text, div.center-text p { text-align: center; }
-p.subtle-text, span.subtle-text { color: #8b949e; font-size: 0.9em; font-style: italic; }
+p.subtle-text, span.subtle-text { 
+    color: #8b949e; 
+    font-size: 0.9em; 
+    font-style: italic;
+    margin-bottom: 1.5em; /* INCREASED bottom margin for source lines */
+}
 
-/* === MODIFIED HEADER STYLES START === */
+/* Header */
 header {
-  background: #161b22; /* Slightly simpler background, or keep gradient if preferred */
-  padding: 15px 0; /* REDUCED vertical padding */
+  background: #161b22;
+  padding: 15px 0;
   margin-bottom: 30px; 
   border-bottom: 1px solid #30363d;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
-
-header .container.header-content-wrapper { /* Target the new wrapper */
+header .container.header-content-wrapper {
     display: flex;
-    align-items: center; /* Vertically align items */
-    justify-content: flex-start; /* Align items to the start */
-    gap: 20px; /* Space between picture and text block */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
 }
-
-.profile-pic-header { /* New class for header profile picture */
-  width: 60px; /* REDUCED size significantly */
+.profile-pic-header {
+  width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #58a6ff; /* Thinner border */
-  /* Removed box-shadow from here to simplify, header shadow is enough */
-  margin: 0; /* Remove auto margins */
-  animation: zoomIn 0.8s ease-out 0.2s; /* Kept animation, slightly faster, added delay */
-  /* If you want NO animation on profile pic, remove the animation line above */
+  border: 2px solid #58a6ff;
+  margin: 0;
+  animation: zoomIn 0.8s ease-out 0.2s;
 }
-
-.header-text {
-    text-align: left; /* Align text to the left */
-}
-
-.header-text h1 { /* Site title in header */
-  font-size: 1.8em; /* REDUCED font size */
-  margin-top: 0; /* Remove top margin */
-  margin-bottom: 2px; /* REDUCED margin */
+.header-text { text-align: left; }
+.header-text h1 {
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 2px;
   color: #58a6ff;
-  text-align: left; /* Ensure left alignment */
+  text-align: left;
   animation: fadeInDown 0.6s ease-out 0.1s;
-  /* If you want NO animation on name, remove the animation line above */
 }
-
-.header-text p { /* Subtitle in header */
+.header-text p {
   color: #8b949e;
-  margin-top: 0; /* Remove top margin */
+  margin-top: 0;
   margin-bottom: 0;
-  font-size: 0.9em; /* REDUCED font size */
-  line-height: 1.3; /* Adjusted line height */
-  text-align: left; /* Ensure left alignment */
+  font-size: 0.9em;
+  line-height: 1.3;
+  text-align: left;
   animation: fadeInUp 0.7s ease-out 0.2s;
-  /* If you want NO animation on subtitle, remove the animation line above */
 }
-/* === MODIFIED HEADER STYLES END === */
 
 /* Buttons */
 .btn, .cv-button {
@@ -159,21 +152,10 @@ header .container.header-content-wrapper { /* Target the new wrapper */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transform: translateY(-2px);
 }
-.btn {
-  background-color: #238636;
-  color: #ffffff;
-}
-.btn:hover {
-  background-color: #2ea043;
-}
-.cv-button {
-  background-color: #58a6ff;
-  color: #0d1117;
-}
-.cv-button:hover {
-  background-color: #79c0ff;
-  color: #0d1117;
-}
+.btn { background-color: #238636; color: #ffffff; }
+.btn:hover { background-color: #2ea043; }
+.cv-button { background-color: #58a6ff; color: #0d1117; }
+.cv-button:hover { background-color: #79c0ff; color: #0d1117; }
 
 /* Divider */
 .divider {
@@ -219,35 +201,43 @@ header .container.header-content-wrapper { /* Target the new wrapper */
 .chart-wrapper, .chart-container-small {
     margin-bottom: 30px;
     background-color: #161b22;
-    padding: 15px;
+    padding: 20px; /* INCREASED padding */
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative; /* For canvas containment */
 }
 .chart-container-small { 
-    height: 350px;
+    height: 370px; /* SLIGHTLY INCREASED height to accommodate legend and padding */
 }
+/* Ensure canvas is responsive within its direct parent */
+.chart-container-small canvas, .chart-wrapper canvas {
+    max-width: 100%;
+    max-height: 100%; /* This helps if the container has a fixed height */
+}
+
 
 .data-section {
     margin-top: 30px;
     padding-top: 15px;
 }
-.data-section h2 {
+.data-section > h2 { /* Targeting section titles directly under .data-section */
     color: #58a6ff;
     text-align: center;
     margin-bottom: 15px;
     font-size: 1.7em;
 }
-.data-section h3 {
+.data-section > h3 { /* Targeting chart titles directly under .data-section (or its children) */
     color: #58a6ff;
     text-align: center;
-    margin-bottom: 10px;
+    margin-top: 0; /* Remove top margin if it's the first thing in a chart container */
+    margin-bottom: 15px; /* INCREASED margin before chart canvas */
     font-size: 1.25em;
 }
 .data-section p.subtle-text {
     text-align: center;
-    margin-top: -5px; 
-    margin-bottom: 20px;
+    margin-top: -10px; 
+    margin-bottom: 25px; /* INCREASED margin */
 }
 
 .bank-list-section-container {
@@ -336,7 +326,6 @@ table.styled-table tbody tr:hover {
     margin-bottom: 30px;
 }
 .market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; }
-
 .market-table {
   width: 100%;
   border-collapse: collapse;
@@ -397,14 +386,14 @@ table.styled-table tbody tr:hover {
   .market-table { display: block; overflow-x: auto; }
   .graph-container { max-width: 80px; height: 30px; }
   header .container.header-content-wrapper {
-    flex-direction: column; /* Stack header items on small screens */
+    flex-direction: column;
     gap: 10px;
   }
   .profile-pic-header {
-    margin-bottom: 5px; /* Add some space below pic when stacked */
+    margin-bottom: 5px;
   }
   .header-text h1, .header-text p {
-    text-align: center; /* Center text when stacked */
+    text-align: center;
   }
 }
 
@@ -497,7 +486,7 @@ footer a:hover {
   color: #79c0ff;
 }
 
-/* Animations - Kept as is, but their visual impact might be different now */
+/* Animations */
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
@@ -512,4 +501,3 @@ footer a:hover {
   z-index: -1;
    background-color: #0d1117;
 }
-
