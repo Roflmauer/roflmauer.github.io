@@ -53,6 +53,36 @@
             font-size: 1.1rem;
             /* Removed height: 100% as flex-grow handles filling space */
         }
+
+        /* Basic styling for the inserted text block for better readability */
+        .explanation-text h3 {
+            font-size: 1.75rem; /* Larger than chart titles */
+            font-weight: 700;
+            color: #e2e8f0; /* Main light text color */
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .explanation-text h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #cbd5e0; /* Slightly less prominent than h3 */
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+        .explanation-text p, .explanation-text li {
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+            color: #a0aec0; /* Softer color for paragraph text */
+        }
+        .explanation-text ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .explanation-text strong {
+            color: #cbd5e0; /* Make bold text a bit brighter */
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8">
@@ -63,9 +93,41 @@
             <p class="text-lg text-slate-400 mt-2">Data reported by domestic banks</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
+        <div class="explanation-text max-w-4xl mx-auto mb-12 px-4"> 
+            <h3>Understanding Taiwan's Banking Sector Performance: A Story of Growth and Resilience</h3>
 
-            <div class="chart-container" id="totalAssetsContainer">
+            <p>The data presented on this site offers a fascinating look into the Taiwanese domestic banking sector over more than two decades (2002-2023). Two key aspects stand out: a consistent long-term growth in both total assets and profitability, and a notable dip between 2004 and 2006 that highlights real-world economic impacts.</p>
+
+            <h4>The Big Picture: Steady Upward Trajectory</h4>
+            <p>If you look at the graph for "Total Assets of Domestic Banking Sector," you'll see a remarkably steady climb over the 20-year period, rising from approximately NT$25 trillion in 2002 to around NT$65 trillion by 2023. Similarly, the "Profit Before Tax" graph, while showing more year-to-year fluctuations, demonstrates a clear overall trend of increasing profitability, remaining consistently positive and reaching significant peaks, especially in more recent years.</p>
+            <p>This long-term growth in assets and profitability is generally characteristic of a healthy, developing banking sector within an expanding economy like Taiwan's. Several factors contribute to this:</p>
+            <ul>
+                <li><strong>Economic Expansion:</strong> As Taiwan's economy has grown, so has the demand for banking services like loans and deposits, naturally increasing banks' asset bases.</li>
+                <li><strong>Financial Deepening:</strong> Mature economies often see their financial sectors grow, indicating increased financial activity relative to the overall economy.</li>
+                <li><strong>Retained Earnings & Reinvestment:</strong> Consistent profits allow banks to build capital and reinvest, further fueling asset growth.</li>
+            </ul>
+            <p>Generally, this sustained performance points to a stable and resilient banking environment.</p>
+
+            <h4>A Closer Look: The 2004-2006 Dip and the Credit Card Phenomenon</h4>
+            <p>While the long-term trend is upward, the graphs for "Profit Before Tax" and "Return on Equity (ROE)" show a distinct downturn between 2004 and 2006. Profit Before Tax, after a peak in 2004, declined noticeably in 2005 and 2006. Correspondingly, ROE, a key measure of how effectively shareholder investments are generating profits (ROE = Net Income / Shareholders' Equity ), also fell sharply during this time.</p>
+            <p>This dip wasn't an anomaly but was directly linked to a significant event in Taiwan's financial history: the <strong>credit card and cash card crisis</strong> (often termed the "dual-card crisis" or 「卡債風暴」).</p>
+            <ul>
+                <li><strong>The Context:</strong> In the early 2000s, Taiwanese banks engaged in aggressive marketing and issuance of credit cards and cash cards (a form of revolving personal loan). This led to a rapid increase in consumer credit, often extended with less stringent lending standards due to intense competition.</li>
+                <li><strong>The Crisis Unfolds:</strong> By 2005-2006, a substantial number of individuals found themselves over-leveraged and unable to repay their debts. This resulted in a surge in defaults and non-performing loans (NPLs) specifically from these card products.</li>
+                <li><strong>Impact on Bank Financials:</strong>
+                    <ul>
+                        <li><strong>Reduced Profits:</strong> To cover the losses from these bad debts, banks had to significantly increase their <strong>loan loss provisions</strong> (money set aside to cover expected defaults) and undertake substantial <strong>write-offs</strong> (removing unrecoverable loans from their books). Both provisions and write-offs are expenses that directly reduce a bank's Profit Before Tax.</li>
+                        <li><strong>Lower ROE:</strong> With Profit Before Tax (and consequently Net Income) falling due to these increased expenses, the ROE naturally declined. This illustrates how a crisis in a specific lending segment can impact overall bank profitability and returns to shareholders.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The dip in your graphs during 2005-2006 clearly visualizes the financial impact of this real-world event on the banking sector.</p>
+
+            <h4>Resilience and Recovery</h4>
+            <p>Importantly, the story doesn't end with the downturn. The graphs also show that following this challenging period, Taiwanese banks managed to recover. Profits and ROE began to climb again in subsequent years, demonstrating the resilience of the sector and the effectiveness of measures taken to address the crisis. This recovery and return to long-term growth underscores the underlying stability of Taiwan's banking system.</p>
+            <p>In summary, the data reveals that while Taiwan's banking sector has enjoyed robust long-term growth in assets and profitability, it, like any financial system, is subject to economic cycles and specific challenges. The 2004-2006 period serves as a clear example of how external events can impact financial performance, and how understanding these relationships provides a richer context to the numbers.</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8"> <div class="chart-container" id="totalAssetsContainer">
                 <h2 class="chart-title">Total Assets of Domestic Banking Sector</h2>
                 <canvas id="totalAssetsChart"></canvas>
                 <div id="loadingTotalAssets" class="message-container">Loading data...</div>
@@ -100,11 +162,11 @@
             if (canvas) canvas.style.display = 'none'; // Hide canvas
 
             // Ensure loading message exists and is targeted correctly
-            const specificLoadingMsg = document.getElementById('loading' + canvasId.replace('Chart', '')); // e.g. loadingTotalAssets
+            const specificLoadingMsg = document.getElementById('loading' + canvasId.replace('Chart', '').replace('AndR', 'R')); // Adjusted for RoaRoe id
             if (specificLoadingMsg) {
-                 specificLoadingMsg.textContent = message;
-                 specificLoadingMsg.style.color = '#f56565'; // Red color for error
-                 specificLoadingMsg.style.display = 'flex'; // Ensure it's visible
+                specificLoadingMsg.textContent = message;
+                specificLoadingMsg.style.color = '#f56565'; // Red color for error
+                specificLoadingMsg.style.display = 'flex'; // Ensure it's visible
             } else if (loadingMessage) { // Fallback to generic message-container if specific one not found
                 loadingMessage.textContent = message;
                 loadingMessage.style.color = '#f56565';
@@ -189,7 +251,7 @@
                             if (context.parsed.y !== null) {
                                 label += context.parsed.y.toLocaleString();
                                 if (context.chart.options.scales.y.title.text.includes('%')) {
-                                   label += '%';
+                                    label += '%';
                                 }
                             }
                             return label;
@@ -226,10 +288,13 @@
                 const years = jsonData.annual_data.map(item => item.gregorian_year.toString());
 
                 chartConfigs.forEach(config => {
-                    document.getElementById('loading' + config.id).style.display = 'none';
-                    document.getElementById(config.canvasId).style.display = 'block'; // Make canvas visible
+                    const loadingElement = document.getElementById('loading' + config.id);
+                    if (loadingElement) loadingElement.style.display = 'none';
+                    
+                    const canvasElement = document.getElementById(config.canvasId);
+                    if(canvasElement) canvasElement.style.display = 'block'; // Make canvas visible
 
-                    const ctx = document.getElementById(config.canvasId).getContext('2d');
+                    const ctx = canvasElement.getContext('2d');
                     let datasets;
 
                     if (config.isMultiDataset) {
