@@ -12,13 +12,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         body {
-            font-family: 'Montserrat', sans-serif; /* Matching your preferred page font */
-            /* Assuming background-color and base text color are handled by styles.css or your .background-animation */
-            /* These styles are specific to the banking charts section if not covered by Tailwind/styles.css */
+            font-family: 'Montserrat', sans-serif;
         }
-        .banking-charts-section { /* A wrapper for the banking charts content */
-            background-color: #1a202c; /* Dark background from previous chart page */
-            color: #e2e8f0; /* Light text color from previous chart page */
+        .banking-charts-section {
+            background-color: #1a202c; 
+            color: #e2e8f0; 
             padding-top: 2rem;
             padding-bottom: 2rem;
         }
@@ -33,7 +31,7 @@
         }
         .chart-title {
             font-size: 1.25rem; 
-            font-weight: 600; /* Montserrat bold */
+            font-weight: 600; 
             margin-bottom: 1rem;
             text-align: center;
             color: #cbd5e0; 
@@ -45,9 +43,6 @@
             flex-grow: 1;
             min-height: 0;
         }
-        /* Ensure Chart.js defaults align with Montserrat and dark theme if not overridden by global styles.css */
-        /* These might need adjustment based on your styles.css */
-        /* Chart.defaults.font.family = 'Montserrat'; */ /* This can be set in JS if needed */
         Chart.defaults.color = '#a0aec0'; 
         Chart.defaults.borderColor = '#4a5568'; 
         Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
@@ -60,12 +55,12 @@
             color: #cbd5e0;
             font-size: 1.1rem;
         }
-        .explanation-text { /* For the text block we added */
-             color: #a0aec0; /* Base text color for paragraphs */
+        .explanation-text {
+             color: #a0aec0; 
         }
         .explanation-text h3 {
             font-size: 1.75rem;
-            font-weight: 700; /* Montserrat bold */
+            font-weight: 700; 
             color: #e2e8f0;
             margin-top: 1.5rem;
             margin-bottom: 1rem;
@@ -73,7 +68,7 @@
         }
         .explanation-text h4 {
             font-size: 1.25rem;
-            font-weight: 600; /* Montserrat bold */
+            font-weight: 600; 
             color: #cbd5e0;
             margin-top: 1.25rem;
             margin-bottom: 0.75rem;
@@ -89,7 +84,7 @@
         }
         .explanation-text strong {
             color: #cbd5e0;
-            font-weight: 700; /* Montserrat bold */
+            font-weight: 700; 
         }
     </style>
 </head>
@@ -97,21 +92,21 @@
     <div class="background-animation"></div>
 
     <header>
-        <div class="container header-content-wrapper"> {/* Assuming .container and .header-content-wrapper are defined in styles.css */}
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> {/* Assuming .profile-pic-header is in styles.css */}
-            <div class="header-text"> {/* Assuming .header-text is in styles.css */}
+        <div class="container header-content-wrapper"> 
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> 
+            <div class="header-text"> 
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
         </div>
     </header>
 
-    <main class="container"> {/* Assuming .container provides appropriate padding/max-width from styles.css */}
+    <main class="container"> 
         
-        <section class="banking-charts-section my-8"> {/* Added my-8 for vertical margin */}
-            <div class="w-full max-w-6xl mx-auto px-4 sm:px-0"> {/* Container for banking content, px-4 for small screens */}
+        <section class="banking-charts-section my-8"> 
+            <div class="w-full max-w-6xl mx-auto px-4 sm:px-0"> 
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-white"> {/* Adjusted for main page title style consistency */}
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white"> 
                         Overview of Taiwan's Domestic Banking Sector
                     </h1>
                     <p class="text-lg text-slate-400 mt-2">Data reported by domestic banks</p>
@@ -148,7 +143,7 @@
                     </ul>
                     <p>Generally, this sustained performance points to a stable and resilient banking environment.</p>
                     <h4>A Closer Look: The 2004-2006 Dip and the Credit Card Phenomenon</h4>
-                    <p>While the long-term trend is upward, the graphs for "Profit Before Tax" and "Return on Equity (ROE)" show a distinct downturn between 2004 and 2006. Profit Before Tax, after a peak in 2004, declined noticeably in 2005 and 2006. Correspondingly, ROE, a key measure of how effectively shareholder investments are generating profits (ROE = Net Income / Shareholders' Equity ), also fell sharply during this time.</p>
+                    <p>While the long-term trend is upward, the graphs for "Profit Before Tax" and "Return on Equity (ROE)" show a distinct downturn between 2004 and 2006. Profit Before Tax, after a peak in 2004, declined noticeably in 2005 and 2006. Correspondingly, ROE, a key measure of how effectively shareholder investments are generating profits (ROE = Net Income / Shareholders' Equity), also fell sharply during this time.</p>
                     <p>This dip wasn't an anomaly but was directly linked to a significant event in Taiwan's financial history: the <strong>credit card and cash card crisis</strong> (often termed the "dual-card crisis" or 「卡債風暴」).</p>
                     <ul>
                         <li><strong>The Context:</strong> In the early 2000s, Taiwanese banks engaged in aggressive marketing and issuance of credit cards and cash cards (a form of revolving personal loan). This led to a rapid increase in consumer credit, often extended with less stringent lending standards due to intense competition.</li>
@@ -167,20 +162,17 @@
                 </div>
             </div>
         </section>
-        </main>
+
+    </main>
 
     <footer>
-        <div class="container"> {/* Assuming .container is defined in styles.css */}
+        <div class="container"> 
             <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
             <p><a href="index.html">Back to Home</a></p>
         </div>
     </footer>
 
     <script>
-        // --- JavaScript for Banking Sector Charts ---
-        // (This is the same script from your previous banking_overview.html,
-        // with error handling and chart initialization for totalAssets, profitBeforeTax, and roaRoe)
-
         function displayChartError(containerId, canvasId, message) {
             const container = document.getElementById(containerId);
             const canvas = document.getElementById(canvasId);
@@ -258,7 +250,7 @@
             interaction: { mode: 'nearest', axis: 'x', intersect: false }
         });
 
-        async function initializeBankingCharts() { // Renamed to avoid conflict if other JS is present
+        async function initializeBankingCharts() {
             const chartConfigs = [
                 { id: 'TotalAssets', title: 'Total Assets', yLabel: 'NT$ Trillion', containerId: 'totalAssetsContainer', canvasId: 'totalAssetsChart', dataKey: 'total_assets', divisor: 10000 },
                 { id: 'ProfitBeforeTax', title: 'Profit Before Tax', yLabel: 'NT$ Hundred Million', containerId: 'profitBeforeTaxContainer', canvasId: 'profitBeforeTaxChart', dataKey: 'profit_before_tax', divisor: 1 },
@@ -266,7 +258,7 @@
             ];
 
             try {
-                const response = await fetch('taiwan_banking_overview_data.json'); // Ensure this JSON file is accessible
+                const response = await fetch('taiwan_banking_overview_data.json'); 
                 if (!response.ok) { throw new Error(`HTTP error! status: ${response.status} - Could not load banking data.`); }
                 const jsonData = await response.json();
                 if (!jsonData.annual_data || !Array.isArray(jsonData.annual_data) || jsonData.annual_data.length === 0) {
@@ -312,7 +304,6 @@
 
         document.querySelectorAll('canvas').forEach(canvas => canvas.style.display = 'none');
         document.querySelectorAll('.message-container').forEach(msg => msg.style.display = 'flex');
-        // Call the function to initialize banking charts
         document.addEventListener('DOMContentLoaded', initializeBankingCharts); 
     </script>
 </body>
