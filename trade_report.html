@@ -22,7 +22,7 @@
     </header>
 
     <main class="container">
-        <h1 style="font-size: 2.5em; color: #58a6ff; margin-bottom: 30px;">Taiwan-Germany Trade & Top Banks Comparison</h1>
+        <h1>Taiwan-Germany Trade & Top Banks Comparison</h1>
 
         <div class="kpi-container">
             <div class="kpi">
@@ -40,14 +40,14 @@
         </div>
 
         <div class="chart-wrapper">
-            <h2 id="chartTitleTrade" style="color: #58a6ff;">Trade Value Over Time</h2>
+            <h2 id="chartTitleTrade">Trade Value Over Time</h2>
             <canvas id="tradeChart"></canvas>
         </div>
         <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
         <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
 
         <section class="data-section top-banks-section">
-            <h2 style="color: #58a6ff;">Top 5 Banks by Total Assets</h2>
+            <h2>Top 5 Banks by Total Assets</h2>
             <p class="subtle-text center-text" id="banksDataAsOf">Data as of: Researching...</p>
             <p class="subtle-text center-text" id="exchangeRateInfo" style="font-size: 0.9em;">USD conversions based on approximate fixed rates.</p>
             <div class="bank-list-section-container">
@@ -110,7 +110,7 @@
         }
         
         function formatLargeCurrency(value, symbol, targetUnit = "Billion") {
-            if (isNaN(value) || value === null) return 'N/A'; // Added null check
+            if (isNaN(value) || value === null) return 'N/A';
             let displayValue = value;
             let displayUnit = targetUnit;
 
@@ -147,7 +147,7 @@
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
-            // const chartTitleTradeEl = document.getElementById('chartTitleTrade'); // Title is static in HTML
+            // const chartTitleTradeEl = document.getElementById('chartTitleTrade'); // Title is static in HTML h2
 
             loadingMessageEl.style.display = 'block';
             errorMessageEl.style.display = 'none';
@@ -177,14 +177,14 @@
                             {
                                 label: 'Imports from Germany',
                                 data: importValues,
-                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', // Adjusted alpha for dark theme
+                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                 tension: 0.1, fill: true,
                                 pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
                             },
                             {
                                 label: 'Exports to Germany',
                                 data: exportValues,
-                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', // Adjusted alpha
+                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 tension: 0.1, fill: true,
                                 pointBackgroundColor: 'rgba(54, 162, 235, 1)', pointBorderColor: '#fff'
                             }
@@ -194,7 +194,7 @@
                         responsive: true, maintainAspectRatio: true,
                         scales: {
                             x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
-                                 title: { display: true, text: 'Date', color: '#c9d1d9'},
+                                 title: { display: true, text: 'Date', color: '#c9d1d9'}, // Ensure this matches your styles.css for h2/h3 if possible
                                  ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
                                },
                             y: { beginAtZero: true, 
