@@ -176,13 +176,11 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        // === YOUR NEW PERSONAL API KEY ===
-        const ALPHA_VANTAGE_API_KEY = "H83U1JUK9AYBAKZT"; // <--- YOUR NEW KEY HERE
-        // =================================
+        const ALPHA_VANTAGE_API_KEY = "H83U1JUK9AYBAKZT"; // Your NEW personal API Key
         const AV_COUNTRY_GERMANY = "Germany";
-        const AV_COUNTRY_TAIWAN = "Taiwan"; // May need to be "Taiwan, Province of China" - test this
+        const AV_COUNTRY_TAIWAN = "Taiwan, Province of China"; // MODIFIED - Try this for Taiwan
         const NUMBER_OF_YEARS_ECONOMIC_DATA = 10;
-        const PLACEHOLDER_API_KEY_STRING = "YOUR_ALPHA_VANTAGE_API_KEY"; // Generic placeholder string to check against
+        const PLACEHOLDER_API_KEY_STRING = "YOUR_ALPHA_VANTAGE_API_KEY";
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
@@ -306,7 +304,7 @@
             }
         }
 
-        // --- Economic Data Functions (with DEBUG CONSOLE LOGS and new API key check) ---
+        // --- Economic Data Functions (MODIFIED with new YoY for INFLATION and console logs) ---
         async function fetchEconomicData(indicator, country) {
             if (ALPHA_VANTAGE_API_KEY === PLACEHOLDER_API_KEY_STRING || ALPHA_VANTAGE_API_KEY === "") {
                 const warningMessage = "Alpha Vantage API Key is missing or is a placeholder. Economic data will not be fetched.";
@@ -315,51 +313,45 @@
             }
 
             let url;
-            const needsYoYCalculation = (indicator === 'GDP' || indicator === 'INFLATION');
-
             switch (indicator) {
                 case 'GDP':
                     url = `https://www.alphavantage.co/query?function=REAL_GDP&country=${country}&interval=annual&apikey=${ALPHA_VANTAGE_API_KEY}`;
                     break;
                 case 'INFLATION':
+                    // Even if we request annual, AlphaVantage might send monthly for CPI with some keys/countries
                     url = `https://www.alphavantage.co/query?function=CPI&country=${country}&interval=annual&apikey=${ALPHA_VANTAGE_API_KEY}`;
                     break;
                 default:
                     throw new Error(`Unknown economic indicator: ${indicator}`);
             }
 
-            console.log(`Workspaceing ${indicator} for ${country} from URL: ${url}`); // DEBUG: Log the URL
+            console.log(`Workspaceing ${indicator} for ${country} from URL: ${url}`);
 
             const response = await fetch(url);
             if (!response.ok) {
-                 const errorText = await response.text(); // Try to get more details from response body
+                const errorText = await response.text();
                 throw new Error(`Failed to fetch ${indicator} for ${country}: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
             const result = await response.json();
-            // --- DEBUG: Log RAW API RESPONSE ---
             console.log(`Raw API response for ${indicator} - ${country}:`, JSON.parse(JSON.stringify(result)));
-            // --- END DEBUG ---
+
 
             if (result.Information && result.Information.includes("API call frequency")) {
                 console.warn(`Alpha Vantage API call limit likely reached for ${indicator} ${country}. Data: `, result.Information);
                 throw new Error(`API Limit Reached for ${indicator} ${country}`);
             }
-            if (result["Error Message"]){ // Typically indicates an issue with the API call parameters or key
+            if (result["Error Message"]){
                 console.warn(`Alpha Vantage API error for ${indicator} ${country}: ${result["Error Message"]}`);
                 throw new Error(`API Error for ${indicator} ${country}: ${result["Error Message"]}`);
             }
-            // Check for a "Note" which often indicates a premium feature or incorrect parameter for free tier
             if (result.Note) {
                  console.warn(`Note from Alpha Vantage for ${indicator} - ${country}: ${result.Note}`);
-                 // If the note implies data isn't available (e.g. premium feature), treat as no data
                  if (result.Note.toLowerCase().includes("premium") || result.Note.toLowerCase().includes("not available")) {
                     return [];
                  }
             }
 
-
             if (!result.data || result.data.length === 0) {
-                // This block might now be covered by the "Note" or "Error Message" check above for many cases
                 console.warn(`No data array found or data array is empty for ${indicator} for ${country}. Response:`, result);
                 return [];
             }
@@ -369,11 +361,9 @@
                 .filter(d => !isNaN(d.value) && d.date instanceof Date && !isNaN(d.date.getFullYear()))
                 .sort((a, b) => a.date - b.date);
 
-            // --- DEBUG: Log Data Pre-YoY Calc ---
-            console.log(`Data pre-YoY calc for ${indicator} - ${country}:`, JSON.parse(JSON.stringify(processedData)));
-            // --- END DEBUG ---
+            console.log(`Data pre-YoY calc for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5)))); // Log last 5 raw data points
 
-            if (needsYoYCalculation) {
+            if (indicator === 'GDP') {
                 if (processedData.length > 1) {
                     let yoyData = [];
                     for (let i = 1; i < processedData.length; i++) {
@@ -386,31 +376,85 @@
                     }
                     processedData = yoyData;
                 } else {
-                    console.warn(`Not enough data points for ${indicator} for ${country} to calculate YoY change. Found: ${processedData.length}`);
+                    console.warn(`Not enough data points for GDP for ${country} to calculate YoY change. Found: ${processedData.length}`);
                     processedData = [];
                 }
+            } else if (indicator === 'INFLATION') {
+                // Check if data appears to be monthly (e.g. many more points than years covered, or interval in response is monthly)
+                // For simplicity, we'll assume if result.interval === 'monthly' (from raw response) or if points > ~30 for ~10 years of data
+                const isMonthly = (result.interval && result.interval.toLowerCase() === 'monthly') || (processedData.length > NUMBER_OF_YEARS_ECONOMIC_DATA + 20); // Heuristic
+                if (isMonthly) {
+                    console.log(`Inflation data for ${country} appears to be monthly. Calculating YoY from monthly CPI.`);
+                    if (processedData.length > 12) {
+                        let yoyInflationData = [];
+                        for (let i = 12; i < processedData.length; i++) {
+                            const currentEntry = processedData[i];
+                            const prevYearEntry = processedData[i-12]; // Direct look-back for monthly
+
+                            if (prevYearEntry && prevYearEntry.value !== 0 && prevYearEntry.value !== null && !isNaN(prevYearEntry.value)) {
+                                const percentageChange = ((currentEntry.value - prevYearEntry.value) / prevYearEntry.value) * 100;
+                                yoyInflationData.push({ date: currentEntry.date, value: percentageChange });
+                            } else {
+                                yoyInflationData.push({ date: currentEntry.date, value: null });
+                            }
+                        }
+                        processedData = yoyInflationData;
+                    } else {
+                        console.warn(`Not enough monthly CPI data points for ${country} to calculate YoY inflation. Found: ${processedData.length}`);
+                        processedData = [];
+                    }
+                } else { // Assume annual CPI, calculate YoY as with GDP
+                    console.log(`Inflation data for ${country} appears to be annual. Calculating YoY from annual CPI.`);
+                     if (processedData.length > 1) {
+                        let yoyData = [];
+                        for (let i = 1; i < processedData.length; i++) {
+                            if (processedData[i-1].value !== 0 && processedData[i-1].value !== null && !isNaN(processedData[i-1].value)) {
+                                const percentageChange = ((processedData[i].value - processedData[i-1].value) / processedData[i-1].value) * 100;
+                                yoyData.push({ date: processedData[i].date, value: percentageChange });
+                            } else {
+                                yoyData.push({ date: processedData[i].date, value: null });
+                            }
+                        }
+                        processedData = yoyData;
+                    } else {
+                        console.warn(`Not enough annual CPI data points for ${country} to calculate YoY inflation. Found: ${processedData.length}`);
+                        processedData = [];
+                    }
+                }
             }
-             // --- DEBUG: Log Final Processed Data (Post-YoY/Final) ---
-            console.log(`Final processed data for ${indicator} - ${country}:`, JSON.parse(JSON.stringify(processedData)));
-            // --- END DEBUG ---
+
+            console.log(`Final processed data for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5)))); // Log last 5 processed
             return processedData;
         }
 
         function createEconomicChart(canvasId, chartLabelPrefix, dataTW, dataDE) {
             const ctx = document.getElementById(canvasId).getContext('2d');
 
-            // Ensure dataTW and dataDE are arrays before mapping
             const yearsTW = Array.isArray(dataTW) ? dataTW.map(d => d.date.getFullYear()) : [];
             const yearsDE = Array.isArray(dataDE) ? dataDE.map(d => d.date.getFullYear()) : [];
 
             const allYears = [...new Set([...yearsTW, ...yearsDE])].sort((a,b) => a - b);
-            const limitedYears = allYears.slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
+            // For YoY data, the first year of data might be, e.g., 1990 if raw data started in 1989.
+            // We need to make sure 'limitedYears' aligns with the years present in the YoY 'processedData'.
+            // The current 'limitedYears' from allYears.slice might not match perfectly if one dataset is shorter.
 
-            const twValues = limitedYears.map(year => {
+            // Let's use the years from the actual processed data for labels, ensuring they are common or handled.
+            let chartYears = [];
+            if (dataTW.length > 0 && dataDE.length > 0) {
+                const allProcessedYears = [...new Set([...dataTW.map(d => d.date.getFullYear()), ...dataDE.map(d => d.date.getFullYear())])].sort((a,b) => a - b);
+                chartYears = allProcessedYears.slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
+            } else if (dataTW.length > 0) {
+                chartYears = dataTW.map(d => d.date.getFullYear()).sort((a,b) => a - b).slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
+            } else if (dataDE.length > 0) {
+                chartYears = dataDE.map(d => d.date.getFullYear()).sort((a,b) => a - b).slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
+            }
+
+
+            const twValues = chartYears.map(year => {
                 const entry = Array.isArray(dataTW) ? dataTW.find(d => d.date.getFullYear() === year) : undefined;
                 return entry ? entry.value : null;
             });
-            const deValues = limitedYears.map(year => {
+            const deValues = chartYears.map(year => {
                 const entry = Array.isArray(dataDE) ? dataDE.find(d => d.date.getFullYear() === year) : undefined;
                 return entry ? entry.value : null;
             });
@@ -418,7 +462,7 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: limitedYears.map(String),
+                    labels: chartYears.map(String),
                     datasets: [
                         {
                             label: `Taiwan (${chartLabelPrefix})`,
@@ -510,6 +554,7 @@
                 });
 
                 if (hasFetchError) {
+                    // Display concatenated error messages if any fetch failed
                     errorEconomicEl.textContent = `Error loading some economic data: ${specificErrorMessages.join(' | ')}. Check console.`;
                     errorEconomicEl.style.display = 'block';
                 }
@@ -529,10 +574,10 @@
                 if (inflationTW.length || inflationDE.length) createEconomicChart('inflationChart', 'Inflation', inflationTW, inflationDE);
                 else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">Inflation data currently unavailable for charting.</p>';
 
-            } catch (error) { 
+            } catch (error) {
                 console.error("General error in displayEconomicIndicators:", error);
                 loadingEconomicEl.style.display = 'none';
-                 if (!errorEconomicEl.textContent || errorEconomicEl.textContent.includes("API Key Issue")) { 
+                 if (!errorEconomicEl.textContent || errorEconomicEl.textContent.includes("API Key Issue")) {
                     errorEconomicEl.textContent = `A general unexpected error occurred: ${error.message}. Check console.`;
                     errorEconomicEl.style.display = 'block';
                 }
