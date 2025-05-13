@@ -192,7 +192,9 @@
 
   async function fetchAndRenderChart(coinId, currency, days, chartId) {
    const chartCanvas = document.getElementById(chartId);
-   const errorDisplay = chartCanvas ? chartCanvas.nextElementSibling : null; // Assuming error p is next sibling
+   // Assuming error p is the direct next sibling with class 'crypto-chart-error'
+   const errorDisplay = chartCanvas ? chartCanvas.parentElement.querySelector('.crypto-chart-error') : null;
+
 
    if (!chartCanvas) {
        console.warn(`Canvas with ID ${chartId} not found.`);
@@ -238,7 +240,7 @@
        label: `${coin.toUpperCase()} Price (USD)`,
        data: data,
        borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
-       borderWidth: 1.5, // Thinner line for sparkline
+       borderWidth: 1.5, 
        fill: false,
        pointRadius: 0,
        tension: 0.4
@@ -247,9 +249,9 @@
      options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 0 }, // No animation for quick updates
+      animation: { duration: 0 }, 
       scales: { x: { display: false }, y: { display: false } },
-      plugins: { legend: { display: false }, tooltip: { enabled: false } } // Disabled tooltips for pure sparkline
+      plugins: { legend: { display: false }, tooltip: { enabled: false } } 
      }
     });
   }
@@ -262,15 +264,15 @@
   const convertButton = document.getElementById('convert');
   const errorMessageDisplay = document.getElementById('error-message');
 
-  const FCA_API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; // FreeCurrencyAPI key
+  const FCA_API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; 
   const FCA_BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
 
-  console.log("Setting up currency converter..."); // DEBUG
+  console.log("Setting up currency converter..."); 
 
   if (convertButton && fromCurrencySelect && toCurrencySelect && amountInput && resultDiv && errorMessageDisplay) {
-      console.log("Convert button event listener successfully attached."); // DEBUG
+      console.log("Convert button event listener successfully attached."); 
       convertButton.addEventListener('click', () => {
-          console.log("Convert button clicked!"); // DEBUG
+          console.log("Convert button clicked!"); 
           const fromCurrency = fromCurrencySelect.value;
           const toCurrency = toCurrencySelect.value;
           const amount = parseFloat(amountInput.value);
@@ -312,7 +314,10 @@
       console.error("One or more currency converter elements not found. Button functionality will be affected.");
       if (!convertButton) console.error("Convert button not found");
       if (!fromCurrencySelect) console.error("From currency select not found");
-      // ... etc. for other elements
+      if (!toCurrencySelect) console.error("To currency select not found");
+      if (!amountInput) console.error("Amount input not found");
+      if (!resultDiv) console.error("Result div not found");
+      if (!errorMessageDisplay) console.error("Error message display not found");
   }
 
   // Initial fetch for market data if its container exists
@@ -323,29 +328,3 @@
  </script>
 </body>
 </html>
-```
-**Key improvements in this `index.html` script:**
-
-1.  **Static Chart.js:** `<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>` is now directly in the `<head>`.
-2.  **Crypto Chart Error Handling:** If `fetchAndRenderChart` fails, it now tries to display an error message within a `<p class="error-message crypto-chart-error">` tag that I added next to each canvas in the HTML, rather than replacing the parent's content (which would remove the canvas).
-3.  **Currency Converter Debugging:**
-    * `console.log("Setting up currency converter...");` is added before trying to get elements.
-    * A more comprehensive check `if (convertButton && fromCurrencySelect && ...)` ensures all necessary elements are found before attaching the event listener. If not, it logs an error.
-    * `console.log("Convert button event listener successfully attached.");` is logged if the setup is successful.
-    * `console.log("Convert button clicked!");` is logged when the button is actually clicked.
-4.  **API Key:** The `FCA_API_KEY` is explicitly defined within the script block.
-5.  **Error Messages:** Made API error messages slightly more informative.
-
-**After replacing your `index.html` with this:**
-
-1.  **Hard Refresh** your browser (Ctrl+Shift+R or Cmd+Shift+R).
-2.  **Open the Developer Console (F12).**
-3.  **Check for initial errors** when the page loads.
-4.  **Look for the debug messages:**
-    * You *should* see "Setting up currency converter..."
-    * You *should* see "Convert button event listener successfully attached."
-5.  **Click the "Convert" button.**
-    * You *should* see "Convert button clicked!" in the console.
-    * Observe if any errors occur *after* this click log.
-
-This will help us understand if the script is even reaching the point of setting up the button, if the button click is registered, and if any errors occur during the fetch or processing of the currency conversion. Please share what you see in the conso
