@@ -64,18 +64,18 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-h1 { font-size: 2.5em; text-align: center; }
-/* Specific h1 for report page titles, if different from header's h1 */
+/* Page titles inside <main> container */
 main > h1 { 
-    font-size: 2.2em; /* Slightly smaller for content page titles */
+    font-size: 2.2em; 
     margin-top: 1em; 
     margin-bottom: 1em;
+    text-align: center;
 } 
 
-h2 { font-size: 1.8em;   text-align: center; } /* REDUCED default h2 size */
-h3 { font-size: 1.3em; text-align: center; } /* REDUCED default h3 size */
+h2 { font-size: 1.8em; text-align: center; }
+h3 { font-size: 1.3em; text-align: center; }
 
-.index-section-title {
+.index-section-title { /* For h2 on index page that need to be left-aligned */
     text-align: left;
 }
 
@@ -84,55 +84,61 @@ p {
   color: #c9d1d9;
   text-align: left;
 }
-p.center-text, div.center-text p {
-    text-align: center;
-}
-p.subtle-text, span.subtle-text {
-    color: #8b949e;
-    font-size: 0.9em;
-    font-style: italic;
-}
+p.center-text, div.center-text p { text-align: center; }
+p.subtle-text, span.subtle-text { color: #8b949e; font-size: 0.9em; font-style: italic; }
 
-/* Header - MODIFIED FOR COMPACTNESS */
+/* === MODIFIED HEADER STYLES START === */
 header {
-  background: linear-gradient(145deg, #161b22, #21262d);
-  padding: 20px 0; /* REDUCED padding */
-  margin-bottom: 25px; /* REDUCED margin */
+  background: #161b22; /* Slightly simpler background, or keep gradient if preferred */
+  padding: 15px 0; /* REDUCED vertical padding */
+  margin-bottom: 30px; 
   border-bottom: 1px solid #30363d;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-header .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-header h1 { /* Site title in header */
-  font-size: 2.2em; /* REDUCED font size */
-  margin-bottom: 5px; /* REDUCED margin */
-  color: #58a6ff;
-  animation: fadeInDown 0.8s ease-out; /* Slightly faster animation */
-}
-header p { /* Subtitle in header */
-  color: #8b949e;
-  animation: fadeInUp 1s ease-out; /* Slightly faster animation */
-  margin-bottom: 0;
-  font-size: 1em; /* REDUCED font size */
-  max-width: 600px;
-  line-height: 1.4; /* Adjusted line height */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Softer shadow */
 }
 
-/* Profile Picture - MODIFIED FOR COMPACTNESS */
-.profile-pic {
-  width: 80px; /* REDUCED size */
-  height: 80px; /* REDUCED size */
-  border-radius: 50%;
-  border: 3px solid #58a6ff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* Adjusted shadow */
-  margin: 10px auto; /* REDUCED margin */
-  display: block;
-  animation: zoomIn 1s ease-out; /* Slightly faster animation */
+header .container.header-content-wrapper { /* Target the new wrapper */
+    display: flex;
+    align-items: center; /* Vertically align items */
+    justify-content: flex-start; /* Align items to the start */
+    gap: 20px; /* Space between picture and text block */
 }
+
+.profile-pic-header { /* New class for header profile picture */
+  width: 60px; /* REDUCED size significantly */
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #58a6ff; /* Thinner border */
+  /* Removed box-shadow from here to simplify, header shadow is enough */
+  margin: 0; /* Remove auto margins */
+  animation: zoomIn 0.8s ease-out 0.2s; /* Kept animation, slightly faster, added delay */
+  /* If you want NO animation on profile pic, remove the animation line above */
+}
+
+.header-text {
+    text-align: left; /* Align text to the left */
+}
+
+.header-text h1 { /* Site title in header */
+  font-size: 1.8em; /* REDUCED font size */
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: 2px; /* REDUCED margin */
+  color: #58a6ff;
+  text-align: left; /* Ensure left alignment */
+  animation: fadeInDown 0.6s ease-out 0.1s;
+  /* If you want NO animation on name, remove the animation line above */
+}
+
+.header-text p { /* Subtitle in header */
+  color: #8b949e;
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: 0;
+  font-size: 0.9em; /* REDUCED font size */
+  line-height: 1.3; /* Adjusted line height */
+  text-align: left; /* Ensure left alignment */
+  animation: fadeInUp 0.7s ease-out 0.2s;
+  /* If you want NO animation on subtitle, remove the animation line above */
+}
+/* === MODIFIED HEADER STYLES END === */
 
 /* Buttons */
 .btn, .cv-button {
@@ -174,7 +180,7 @@ header p { /* Subtitle in header */
   border: 0;
   height: 1px;
   background-color: #30363d;
-  margin: 40px 0; /* Kept larger margin for content dividers */
+  margin: 40px 0;
 }
 
 /* Styles for Report Pages Elements */
@@ -182,28 +188,28 @@ header p { /* Subtitle in header */
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin: 25px 0; /* Adjusted margin */
+    margin: 25px 0;
 }
 .kpi {
     background-color: #161b22;
     color: #c9d1d9;
-    padding: 15px; /* Adjusted padding */
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
     text-align: center;
-    margin: 8px; /* Adjusted margin */
+    margin: 8px;
     min-width: 180px;
     flex: 1;
 }
 .kpi h3 {
     margin-top: 0;
-    font-size: 1em; /* Adjusted */
+    font-size: 1em;
     color: #8b949e;
-    margin-bottom: 6px; /* Adjusted */
+    margin-bottom: 6px;
 }
 .kpi p {
-    font-size: 1.5em; /* Adjusted */
+    font-size: 1.5em;
     font-weight: 600;
     color: #58a6ff;
     margin-bottom: 0;
@@ -211,37 +217,37 @@ header p { /* Subtitle in header */
 }
 
 .chart-wrapper, .chart-container-small {
-    margin-bottom: 30px; /* Adjusted */
+    margin-bottom: 30px;
     background-color: #161b22;
-    padding: 15px; /* Adjusted */
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
 .chart-container-small { 
-    height: 350px; /* Kept height */
+    height: 350px;
 }
 
 .data-section {
-    margin-top: 30px; /* Adjusted */
-    padding-top: 15px; /* Adjusted */
+    margin-top: 30px;
+    padding-top: 15px;
 }
 .data-section h2 {
     color: #58a6ff;
     text-align: center;
-    margin-bottom: 15px; /* Adjusted */
-    font-size: 1.7em; /* Adjusted */
+    margin-bottom: 15px;
+    font-size: 1.7em;
 }
 .data-section h3 {
     color: #58a6ff;
     text-align: center;
-    margin-bottom: 10px; /* Adjusted */
-    font-size: 1.25em; /* Adjusted */
+    margin-bottom: 10px;
+    font-size: 1.25em;
 }
 .data-section p.subtle-text {
     text-align: center;
     margin-top: -5px; 
-    margin-bottom: 20px; /* Adjusted */
+    margin-bottom: 20px;
 }
 
 .bank-list-section-container {
@@ -256,14 +262,14 @@ header p { /* Subtitle in header */
     max-width: 48%;
     margin-bottom: 20px;
     background-color: #161b22;
-    padding: 15px; /* Adjusted */
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
 .bank-list-container h3 {
     margin-top: 0;
-    margin-bottom: 12px; /* Adjusted */
+    margin-bottom: 12px;
 }
 .bank-list-container h3 span {
     font-size: 0.8em;
@@ -274,12 +280,12 @@ header p { /* Subtitle in header */
 table.styled-table { 
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9em; /* Adjusted */
+    font-size: 0.9em;
     color: #c9d1d9;
 }
 table.styled-table th, table.styled-table td {
     border-bottom: 1px solid #30363d;
-    padding: 8px 10px; /* Adjusted */
+    padding: 8px 10px;
     text-align: left;
     vertical-align: middle;
 }
@@ -299,11 +305,11 @@ table.styled-table tbody tr:hover {
 .loading-message-placeholder, .error-message-placeholder {
     text-align: center;
     font-size: 1.1em;
-    padding: 15px; /* Adjusted */
+    padding: 15px;
     color: #8b949e;
     border: 1px dashed #30363d;
     border-radius: 5px;
-    margin-top: 15px; /* Adjusted */
+    margin-top: 15px;
 }
 .error-message-placeholder {
     color: #f85149;
@@ -313,7 +319,7 @@ table.styled-table tbody tr:hover {
 #loadingTaiwanBankingMessagePage, #errorTaiwanBankingMessagePage,
 #loadingTopBanksMessage, #errorTopBanksMessage {
     text-align: center;
-    font-size: 1.2em; /* Kept these slightly larger if used by ID */
+    font-size: 1.2em;
     padding: 20px;
     color: #c9d1d9;
 }
@@ -327,7 +333,7 @@ table.styled-table tbody tr:hover {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #30363d;
-    margin-bottom: 30px; /* Adjusted */
+    margin-bottom: 30px;
 }
 .market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; }
 
@@ -390,6 +396,16 @@ table.styled-table tbody tr:hover {
 @media (max-width: 768px) {
   .market-table { display: block; overflow-x: auto; }
   .graph-container { max-width: 80px; height: 30px; }
+  header .container.header-content-wrapper {
+    flex-direction: column; /* Stack header items on small screens */
+    gap: 10px;
+  }
+  .profile-pic-header {
+    margin-bottom: 5px; /* Add some space below pic when stacked */
+  }
+  .header-text h1, .header-text p {
+    text-align: center; /* Center text when stacked */
+  }
 }
 
 /* Currency Exchange */
@@ -398,35 +414,35 @@ section:has(> #fromCurrency) {
   padding: 20px 30px 30px 30px;
   border-radius: 8px;
   border: 1px solid #30363d;
-  max-width: 450px; /* Reduced max-width */
+  max-width: 450px;
   margin-left: auto;
   margin-right: auto;
 }
 section:has(> #fromCurrency) h2 {
   text-align: center;
   margin-top: 0;
-  margin-bottom: 20px; /* Adjusted */
+  margin-bottom: 20px;
   font-size: 1.8em;
 }
 .form-group {
-  margin-bottom: 12px; /* Reduced margin */
+  margin-bottom: 12px;
   text-align: left;
 }
 .form-group label {
   display: block;
-  margin-bottom: 5px; /* Reduced margin */
+  margin-bottom: 5px;
   color: #8b949e;
   font-weight: 600;
-  font-size: 0.85em; /* Adjusted */
+  font-size: 0.85em;
 }
 section select, section input[type="number"], section input[type="text"] {
   width: 100%; 
-  padding: 8px 10px; /* Adjusted padding */
+  padding: 8px 10px;
   border: 1px solid #30363d;
   border-radius: 6px;
   background-color: #0d1117;
   color: #c9d1d9;
-  font-size: 0.95em; /* Adjusted */
+  font-size: 0.95em;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -440,13 +456,13 @@ section select:focus, section input[type="number"]:focus, section input[type="te
   margin-top: 15px;
   background-color: #238636;
   color: #ffffff;
-  padding: 10px 25px; /* Ensure consistent padding with other .btn */
+  padding: 10px 25px;
 }
 #convert.btn:hover {
   background-color: #2ea043;
 }
 #result { 
-  margin-top: 15px; /* Adjusted */
+  margin-top: 15px;
   font-size: 1.1em;
   color: #c9d1d9;
   font-weight: bold;
@@ -454,7 +470,7 @@ section select:focus, section input[type="number"]:focus, section input[type="te
 }
 #error-message.error-message {
   color: #f85149;
-  margin-top: 8px; /* Adjusted */
+  margin-top: 8px;
   font-size: 0.85em;
   text-align: center;
   min-height: 1.2em;
@@ -463,8 +479,8 @@ section select:focus, section input[type="number"]:focus, section input[type="te
 /* Footer */
 footer {
   text-align: center;
-  padding: 20px 0; /* REDUCED padding */
-  margin-top: 30px; /* REDUCED margin */
+  padding: 20px 0;
+  margin-top: 30px;
   border-top: 1px solid #30363d;
   color: #8b949e;
 }
@@ -472,7 +488,7 @@ footer p {
     margin-bottom: 5px;
     color: #8b949e;
     text-align: center;
-    font-size: 0.85em; /* Slightly smaller */
+    font-size: 0.85em;
 }
 footer a {
   color: #58a6ff;
@@ -481,9 +497,9 @@ footer a:hover {
   color: #79c0ff;
 }
 
-/* Animations */
-@keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } } /* REDUCED distance */
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } /* REDUCED distance */
+/* Animations - Kept as is, but their visual impact might be different now */
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
 /* Background Animation */
@@ -496,3 +512,4 @@ footer a:hover {
   z-index: -1;
    background-color: #0d1117;
 }
+
