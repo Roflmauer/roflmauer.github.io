@@ -14,10 +14,11 @@
     <div class="background-animation"></div>
 
     <header>
-        <div class="container">
-            <h1>Pierre Meyer</h1>
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
-            <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+        <div class="container header-content-wrapper">
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
+                <h1>Pierre Meyer</h1>
+                <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+            </div>
         </div>
     </header>
 
@@ -147,8 +148,7 @@
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
-            // const chartTitleTradeEl = document.getElementById('chartTitleTrade'); // Title is static in HTML h2
-
+            
             loadingMessageEl.style.display = 'block';
             errorMessageEl.style.display = 'none';
 
@@ -194,7 +194,7 @@
                         responsive: true, maintainAspectRatio: true,
                         scales: {
                             x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
-                                 title: { display: true, text: 'Date', color: '#c9d1d9'}, // Ensure this matches your styles.css for h2/h3 if possible
+                                 title: { display: true, text: 'Date', color: '#c9d1d9'},
                                  ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
                                },
                             y: { beginAtZero: true, 
