@@ -5,17 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taiwan-Germany Trade Report - Pierre Meyer</title>
     <link href="styles.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    </head>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        /* Styles for the main content, assuming your styles.css handles header/footer/background */
+        .trade-report-main-content {
+            /* Add any specific container styling if needed, or rely on main.container from styles.css */
+        }
+        .introductory-narrative {
+             color: #a0aec0; /* Base text color for paragraphs */
+             margin-top: 1.5rem; 
+             margin-bottom: 2.5rem; /* More space before KPIs */
+             line-height: 1.7; /* Slightly more line height for readability */
+        }
+        .introductory-narrative h3 { /* If you choose to use an h3 for the "Welcome!" part */
+            font-size: 1.5rem; /* Adjust as needed */
+            font-weight: 600; 
+            color: #e2e8f0;
+            margin-bottom: 1rem; 
+            text-align: left;
+        }
+        .introductory-narrative p {
+            margin-bottom: 1rem;
+        }
+        .introductory-narrative ul {
+            list-style-type: disc;
+            padding-left: 1.75rem; /* More indentation */
+            margin-bottom: 1rem;
+        }
+        .introductory-narrative li {
+            margin-bottom: 0.5rem;
+        }
+        .introductory-narrative strong {
+            color: #cbd5e0;
+            font-weight: 600; /* Montserrat bold */
+        }
+
+        /* Chart specific styles from previous version */
+        .kpi-container, .chart-wrapper { /* Assuming these are styled in styles.css or add Tailwind here */
+            margin-bottom: 2rem; 
+        }
+         .chart-wrapper h2 { /* Title for individual charts */
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+        .kpi-container { /* Copied from your index.html for consistency, adjust if needed */
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .kpi {
+            background-color: #2d3748; /* Adjust to match your theme if different from banking page */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            flex-grow: 1;
+            min-width: 200px; /* Ensure KPIs don't get too squeezed */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .kpi h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #a0aec0;
+            margin-bottom: 0.5rem;
+        }
+        .kpi p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        /* Loading and Error Messages */
+        .loading-message-placeholder, .error-message-placeholder {
+            text-align: center;
+            color: #a0aec0;
+            padding: 1rem;
+            min-height: 40px; /* Ensure space is reserved */
+        }
+        .error-message-placeholder {
+            color: #f87171; /* Reddish for errors */
+        }
+
+        /* Styles from banking_report for Chart.js elements if not globally set by styles.css */
+        canvas {
+            background-color: #2d3748; /* Or your preferred chart card background */
+            border-radius: 0.375rem; /* Match card radius if desired */
+            padding: 1rem; /* Padding inside the canvas card, if canvas itself is the card */
+        }
+         /* If .chart-wrapper is the card, canvas needs no background/padding */
+        /* For example: */
+        /* .chart-wrapper {
+            background-color: #2d3748; 
+            padding: 1.5rem; 
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .chart-wrapper canvas { background-color: transparent; padding: 0; } */
+
+
+        Chart.defaults.color = '#a0aec0'; 
+        Chart.defaults.borderColor = '#4a5568'; 
+        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
+        Chart.defaults.font.family = 'Montserrat';
+
+
+    </style>
+</head>
 <body>
     <div class="background-animation"></div>
 
     <header>
         <div class="container header-content-wrapper">
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> 
+            <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
@@ -23,41 +135,53 @@
     </header>
 
     <main class="container">
-        <h1>Taiwan-Germany Trade Report</h1>
+        <div class="trade-report-main-content"> {/* Wrapper for this page's specific content */}
+            <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">Taiwan-Germany Trade Report</h1> {/* Centered main title */}
 
-        <div class="kpi-container">
-            <div class="kpi">
-                <h3>Latest Imports (Trade)</h3>
-                <p id="latestImportValue">---</p>
+            <div class="introductory-narrative max-w-4xl mx-auto px-4">
+                <p>Welcome! Germany and Taiwan stand as significant players in the global landscape of advanced manufacturing and technology. Their trade relationship, therefore, isn't just a set of numbers; it's a dynamic story of economic partnership, innovation, and response to global trends. The visualizations you're about to explore unpack this fascinating narrative over the past decade, tracking the flow of goods from early 2014 through April 2024.</p>
+                <p>As you delve into the charts, I invite you to look out for a few compelling developments that the data reveals:</p>
+                <ul>
+                    <li><strong>The Upward Journey:</strong> You'll first notice the overall growth in trade volume. This reflects the deepening economic ties and the consistent demand for high-quality goods between these two export-oriented economies.</li>
+                    <li><strong>A Period of Acceleration:</strong> Keep a close eye on the period around <strong>2019-2020</strong>. The data suggests this was a pivotal time, marking the onset of a notable surge in trade activity. It's particularly interesting to observe the trajectory of Taiwan's exports to Germany during these years. What global events or specific industry demands do you think might have contributed to this shift?</li>
+                    <li><strong>The Evolving Trade Balance:</strong> Perhaps one of the most striking insights lies in how these dynamics have reshaped Taiwan's yearly trade balance with Germany. As you examine the yearly breakdown, see if you can pinpoint how Taiwan's trade surplus didn't just incrementally increase, but actually <strong>more than doubled between 2018 and 2023.</strong></li>
+                </ul>
+                <p>These patterns offer more than just economic statistics; they provide a window into how bilateral trade relationships adapt to and reflect broader global economic currents, the resilience and adjustments in international supply chains, and the ever-evolving demands of key industries.</p>
+                <p>Now, let's explore the data.</p>
             </div>
-            <div class="kpi">
-                <h3>Latest Exports (Trade)</h3>
-                <p id="latestExportValue">---</p>
+            <div class="kpi-container">
+                <div class="kpi">
+                    <h3>Latest Imports (Trade)</h3>
+                    <p id="latestImportValue">---</p>
+                </div>
+                <div class="kpi">
+                    <h3>Latest Exports (Trade)</h3>
+                    <p id="latestExportValue">---</p>
+                </div>
+                <div class="kpi">
+                    <h3>Latest Trade Balance</h3>
+                    <p id="latestTradeBalance">---</p>
+                </div>
             </div>
-            <div class="kpi">
-                <h3>Latest Trade Balance</h3>
-                <p id="latestTradeBalance">---</p>
-            </div>
-        </div>
 
-        <div class="chart-wrapper">
-            <h2 id="chartTitleTrade">Trade Value Over Time (Monthly)</h2>
-            <canvas id="tradeChart"></canvas>
-        </div>
-        <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
-        <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
+            <div class="chart-wrapper">
+                <h2 id="chartTitleTrade">Trade Value Over Time (Monthly)</h2>
+                <canvas id="tradeChart"></canvas>
+            </div>
+            <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
+            <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
 
-        <div class="chart-wrapper">
-            <h2 id="chartTitleYearlyBalance">Yearly Trade Balance (Exports - Imports)</h2>
-            <canvas id="yearlyTradeBalanceChart"></canvas>
+            <div class="chart-wrapper">
+                <h2 id="chartTitleYearlyBalance">Yearly Trade Balance (Exports - Imports)</h2>
+                <canvas id="yearlyTradeBalanceChart"></canvas>
+            </div>
+            <div id="loadingYearlyTradeBalance" class="loading-message-placeholder" style="display:none;">Calculating yearly balance...</div>
+            <div id="errorYearlyTradeBalance" class="error-message-placeholder" style="display:none;"></div>
         </div>
-        <div id="loadingYearlyTradeBalance" class="loading-message-placeholder" style="display:none;">Calculating yearly balance...</div>
-        <div id="errorYearlyTradeBalance" class="error-message-placeholder" style="display:none;"></div>
-        
     </main>
     <footer>
         <div class="container">
-            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+            <p>© <span id="currentYear">2025</span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
             <p><a href="index.html">Back to Home</a></p>
         </div>
     </footer>
@@ -203,9 +327,9 @@
                     maintainAspectRatio: true,
                     scales: {
                         y: {
-                            title: { display: true, text: `Trade Balance (${TRADE_CURRENCY_CODE})`, color: '#c9d1d9' },
+                            title: { display: true, text: `Trade Balance (${TRADE_CURRENCY_CODE})`, color: '#c9d1d9', font: { family: 'Montserrat'} },
                             ticks: {
-                                color: '#8b949e',
+                                color: '#8b949e', font: { family: 'Montserrat'},
                                 callback: function(value) {
                                     if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
                                     if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
@@ -215,14 +339,15 @@
                             grid: { color: '#30363d' }
                         },
                         x: {
-                            title: { display: true, text: 'Year', color: '#c9d1d9' },
-                            ticks: { color: '#8b949e' },
+                            title: { display: true, text: 'Year', color: '#c9d1d9', font: { family: 'Montserrat'} },
+                            ticks: { color: '#8b949e', font: { family: 'Montserrat'} },
                             grid: { color: '#30363d' }
                         }
                     },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            titleFont: { family: 'Montserrat' }, bodyFont: { family: 'Montserrat' },
                             mode: 'index',
                             intersect: false,
                             titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)',
@@ -315,12 +440,12 @@
                             responsive: true, maintainAspectRatio: true,
                             scales: {
                                 x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
-                                    title: { display: true, text: 'Date', color: '#c9d1d9'},
-                                    ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
+                                    title: { display: true, text: 'Date', color: '#c9d1d9', font: { family: 'Montserrat'} },
+                                    ticks: {color: '#8b949e', font: { family: 'Montserrat'}}, grid: {color: '#30363d'}
                                   },
                                 y: { beginAtZero: true, 
-                                    title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
-                                    ticks: {color: '#8b949e', callback: function(value) {
+                                    title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9', font: { family: 'Montserrat'}}, 
+                                    ticks: {color: '#8b949e', font: { family: 'Montserrat'}, callback: function(value) {
                                         if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
                                         if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
                                         return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
@@ -329,8 +454,12 @@
                                 }
                             },
                             plugins: {
-                                tooltip: { mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }},
-                                legend: { position: 'top', labels: {color: '#c9d1d9'} }
+                                legend: { position: 'top', labels: {color: '#c9d1d9', font: { family: 'Montserrat'}} },
+                                tooltip: { 
+                                    mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', 
+                                    titleFont: { family: 'Montserrat' }, bodyFont: { family: 'Montserrat' },
+                                    callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }
+                                }
                             }
                         }
                     });
@@ -370,6 +499,11 @@
                 await displayTradeVisualizations(); 
             } catch (tradeError) {
                 console.error("Error during trade visualizations.", tradeError);
+            }
+            // Update footer year
+            const currentYearEl = document.getElementById('currentYear');
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
             }
         }
 
