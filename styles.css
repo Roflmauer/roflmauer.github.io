@@ -4,9 +4,9 @@ body { margin: 0; }
 main { display: block; }
 h1 { font-size: 2em; margin: 0.67em 0; }
 hr { box-sizing: content-box; height: 0; overflow: visible; }
-pre, code, kbd, samp { font-family: monospace, monospace; font-size: 1em; } /* Combined for monospace */
-a { background-color: transparent; text-decoration: none; } /* Default no underline for links */
-a:hover { text-decoration: underline; } /* Underline on hover */
+pre, code, kbd, samp { font-family: monospace, monospace; font-size: 1em; }
+a { background-color: transparent; text-decoration: none; }
+a:hover { text-decoration: underline; }
 abbr[title] { border-bottom: none; text-decoration: underline dotted; }
 b, strong { font-weight: bolder; }
 dfn { font-style: italic; }
@@ -15,17 +15,17 @@ small { font-size: 80%; }
 sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
 sub { bottom: -0.25em; }
 sup { top: -0.5em; }
-img { border-style: none; max-width: 100%; height: auto; } /* Responsive images */
+img { border-style: none; max-width: 100%; height: auto; }
 button, input, optgroup, select, textarea { font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0; }
 button, input { overflow: visible; }
 button, select { text-transform: none; }
 [type="button"], [type="reset"], [type="submit"], button { -webkit-appearance: button; }
 [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner, button::-moz-focus-inner { border-style: none; padding: 0; }
 [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring, button:-moz-focusring { outline: 1px dotted ButtonText; }
-fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid #30363d; /* Added border for dark theme */ }
+fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid #30363d; }
 legend { box-sizing: border-box; color: inherit; display: table; max-width: 100%; padding: 0; white-space: normal; }
 progress { vertical-align: baseline; }
-textarea { overflow: auto; resize: vertical; display: block; width: 100%;} /* Made textarea block and full-width by default */
+textarea { overflow: auto; resize: vertical; display: block; width: 100%;}
 [type="checkbox"], [type="radio"] { box-sizing: border-box; padding: 0; }
 [type="number"]::-webkit-inner-spin-button, [type="number"]::-webkit-outer-spin-button { height: auto; }
 [type="search"] { -webkit-appearance: textfield; outline-offset: -2px; }
@@ -35,105 +35,110 @@ details { display: block; }
 summary { display: list-item; }
 template, [hidden] { display: none; }
 html { box-sizing: border-box; }
-*, *::before, *::after { box-sizing: inherit; } /* Simplified from :after, :before */
+*, *::before, *::after { box-sizing: inherit; }
 
 /* General Styles */
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #0d1117; /* Dark background */
-  color: #c9d1d9; /* Light text for dark background */
+  background-color: #0d1117;
+  color: #c9d1d9;
   margin: 0;
   line-height: 1.6;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
 .container {
   width: 90%;
-  max-width: 1100px; /* Consistent max-width for all pages */
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 15px;
   padding-right: 15px;
 }
 
-/* Typography - Global for consistency */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: #58a6ff; /* Blue accent for headings */
+  color: #58a6ff;
   margin-top: 1.5em;
   margin-bottom: 0.8em;
-  font-weight: 600; /* Consistent heading weight */
+  font-weight: 600;
 }
 
-h1 { font-size: 2.5em; text-align: center; } /* Main page titles on report pages */
-h2 { font-size: 2em;   text-align: center; } /* Section titles */
-h3 { font-size: 1.5em; text-align: center; } /* Sub-section or chart titles */
+h1 { font-size: 2.5em; text-align: center; }
+/* Specific h1 for report page titles, if different from header's h1 */
+main > h1 { 
+    font-size: 2.2em; /* Slightly smaller for content page titles */
+    margin-top: 1em; 
+    margin-bottom: 1em;
+} 
 
-/* Specific override for index.html section titles if they need to be left-aligned */
-.index-section-title { /* Add this class to h2 elements on index.html that should be left-aligned */
+h2 { font-size: 1.8em;   text-align: center; } /* REDUCED default h2 size */
+h3 { font-size: 1.3em; text-align: center; } /* REDUCED default h3 size */
+
+.index-section-title {
     text-align: left;
 }
-
 
 p {
   margin: 1em 0;
   color: #c9d1d9;
   text-align: left;
 }
-p.center-text, div.center-text p { /* Utility class for centered paragraph text */
+p.center-text, div.center-text p {
     text-align: center;
 }
-p.subtle-text, span.subtle-text { /* For less prominent text like source lines or notes */
+p.subtle-text, span.subtle-text {
     color: #8b949e;
     font-size: 0.9em;
     font-style: italic;
 }
 
-
-/* Header */
+/* Header - MODIFIED FOR COMPACTNESS */
 header {
   background: linear-gradient(145deg, #161b22, #21262d);
-  padding: 30px 0; /* Reduced padding slightly */
-  margin-bottom: 30px;
-  border-bottom: 1px solid #30363d; /* Slightly thinner border */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Softer shadow */
+  padding: 20px 0; /* REDUCED padding */
+  margin-bottom: 25px; /* REDUCED margin */
+  border-bottom: 1px solid #30363d;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
-header .container { /* Ensure header content also uses container for alignment */
+header .container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 header h1 { /* Site title in header */
-  font-size: 2.8em; /* Adjusted size */
-  margin-bottom: 8px;
+  font-size: 2.2em; /* REDUCED font size */
+  margin-bottom: 5px; /* REDUCED margin */
   color: #58a6ff;
-  animation: fadeInDown 1s ease-in-out;
+  animation: fadeInDown 0.8s ease-out; /* Slightly faster animation */
 }
 header p { /* Subtitle in header */
   color: #8b949e;
-  animation: fadeInUp 1.5s ease-in-out;
+  animation: fadeInUp 1s ease-out; /* Slightly faster animation */
   margin-bottom: 0;
-  font-size: 1.1em;
-  max-width: 600px; /* Prevent subtitle from being too wide */
+  font-size: 1em; /* REDUCED font size */
+  max-width: 600px;
+  line-height: 1.4; /* Adjusted line height */
 }
 
-/* Profile Picture */
+/* Profile Picture - MODIFIED FOR COMPACTNESS */
 .profile-pic {
-  width: 120px; /* Slightly larger */
-  height: 120px;
+  width: 80px; /* REDUCED size */
+  height: 80px; /* REDUCED size */
   border-radius: 50%;
-  border: 3px solid #58a6ff; /* Accent border */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  margin: 15px auto;
+  border: 3px solid #58a6ff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* Adjusted shadow */
+  margin: 10px auto; /* REDUCED margin */
   display: block;
-  animation: zoomIn 1.2s ease-in-out;
+  animation: zoomIn 1s ease-out; /* Slightly faster animation */
 }
 
 /* Buttons */
 .btn, .cv-button {
   display: inline-block;
-  padding: 10px 25px; /* Adjusted padding */
-  border-radius: 6px; /* Slightly more rounded */
+  padding: 10px 25px;
+  border-radius: 6px;
   font-weight: 600;
   text-decoration: none;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
@@ -141,28 +146,26 @@ header p { /* Subtitle in header */
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
-  border: none; /* Ensure no default browser borders */
+  border: none;
   cursor: pointer;
 }
 .btn:hover, .cv-button:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px); /* Slight lift effect */
+  transform: translateY(-2px);
 }
-
-.btn { /* Specific to .btn (e.g., currency convert button) */
-  background-color: #238636; /* Greenish button like GitHub */
+.btn {
+  background-color: #238636;
   color: #ffffff;
 }
 .btn:hover {
   background-color: #2ea043;
 }
-
-.cv-button { /* Specific to .cv-button (download, project links) */
+.cv-button {
   background-color: #58a6ff;
   color: #0d1117;
 }
 .cv-button:hover {
-  background-color: #79c0ff; /* Lighter blue on hover */
+  background-color: #79c0ff;
   color: #0d1117;
 }
 
@@ -171,7 +174,7 @@ header p { /* Subtitle in header */
   border: 0;
   height: 1px;
   background-color: #30363d;
-  margin: 50px 0; /* Increased margin for more separation */
+  margin: 40px 0; /* Kept larger margin for content dividers */
 }
 
 /* Styles for Report Pages Elements */
@@ -179,80 +182,90 @@ header p { /* Subtitle in header */
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin: 30px 0;
+    margin: 25px 0; /* Adjusted margin */
 }
 .kpi {
     background-color: #161b22;
     color: #c9d1d9;
-    padding: 20px;
+    padding: 15px; /* Adjusted padding */
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
     text-align: center;
-    margin: 10px;
-    min-width: 200px; /* Slightly wider KPI */
+    margin: 8px; /* Adjusted margin */
+    min-width: 180px;
     flex: 1;
 }
-.kpi h3 { /* Using global h3 style, but can override if needed */
+.kpi h3 {
     margin-top: 0;
-    font-size: 1.1em; /* Adjusted */
+    font-size: 1em; /* Adjusted */
     color: #8b949e;
-    margin-bottom: 8px;
+    margin-bottom: 6px; /* Adjusted */
 }
 .kpi p {
-    font-size: 1.6em; /* Larger KPI value */
-    font-weight: 600; /* Bolder */
+    font-size: 1.5em; /* Adjusted */
+    font-weight: 600;
     color: #58a6ff;
     margin-bottom: 0;
     text-align: center;
 }
 
-.chart-wrapper, .chart-container-small { /* Common styles for chart containers */
-    margin-bottom: 40px;
+.chart-wrapper, .chart-container-small {
+    margin-bottom: 30px; /* Adjusted */
     background-color: #161b22;
-    padding: 20px;
+    padding: 15px; /* Adjusted */
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
 .chart-container-small { 
-    height: 380px; /* Increased height slightly */
+    height: 350px; /* Kept height */
 }
 
 .data-section {
-    margin-top: 40px;
-    padding-top: 20px;
-    /* border-top: 1px solid #30363d; Removed if sections are clearly distinct */
+    margin-top: 30px; /* Adjusted */
+    padding-top: 15px; /* Adjusted */
 }
-.data-section p.subtle-text { /* For source lines under section titles */
+.data-section h2 {
+    color: #58a6ff;
     text-align: center;
-    margin-top: -10px; /* Pull it up a bit */
-    margin-bottom: 30px;
+    margin-bottom: 15px; /* Adjusted */
+    font-size: 1.7em; /* Adjusted */
 }
-
+.data-section h3 {
+    color: #58a6ff;
+    text-align: center;
+    margin-bottom: 10px; /* Adjusted */
+    font-size: 1.25em; /* Adjusted */
+}
+.data-section p.subtle-text {
+    text-align: center;
+    margin-top: -5px; 
+    margin-bottom: 20px; /* Adjusted */
+}
 
 .bank-list-section-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    gap: 25px; /* Increased gap */
+    gap: 20px;
 }
 .bank-list-container {
     flex: 1;
-    min-width: 320px; /* Adjusted min-width */
-    max-width: 48%; /* Allow two to fit nicely */
+    min-width: 300px;
+    max-width: 48%;
     margin-bottom: 20px;
     background-color: #161b22;
-    padding: 20px;
+    padding: 15px; /* Adjusted */
     border-radius: 8px;
     border: 1px solid #30363d;
     box-shadow: 0 3px 6px rgba(0,0,0,0.25);
 }
 .bank-list-container h3 {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Adjusted */
 }
-.bank-list-container h3 span { /* Currency unit span */
+.bank-list-container h3 span {
     font-size: 0.8em;
     font-weight: normal;
     color: #8b949e;
@@ -261,12 +274,12 @@ header p { /* Subtitle in header */
 table.styled-table { 
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95em; /* Slightly larger table font */
+    font-size: 0.9em; /* Adjusted */
     color: #c9d1d9;
 }
 table.styled-table th, table.styled-table td {
     border-bottom: 1px solid #30363d;
-    padding: 10px 12px;
+    padding: 8px 10px; /* Adjusted */
     text-align: left;
     vertical-align: middle;
 }
@@ -285,23 +298,22 @@ table.styled-table tbody tr:hover {
 /* Loading and Error Messages */
 .loading-message-placeholder, .error-message-placeholder {
     text-align: center;
-    font-size: 1.1em; /* Adjusted */
-    padding: 20px;
-    color: #8b949e; /* Subtler color for loading */
+    font-size: 1.1em;
+    padding: 15px; /* Adjusted */
+    color: #8b949e;
     border: 1px dashed #30363d;
     border-radius: 5px;
-    margin-top: 20px;
+    margin-top: 15px; /* Adjusted */
 }
 .error-message-placeholder {
     color: #f85149;
     border-color: #f85149;
 }
-/* Apply to specific IDs if still needed, or switch HTML to use the classes above */
 #loadingMessage, #errorMessage,
 #loadingTaiwanBankingMessagePage, #errorTaiwanBankingMessagePage,
 #loadingTopBanksMessage, #errorTopBanksMessage {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.2em; /* Kept these slightly larger if used by ID */
     padding: 20px;
     color: #c9d1d9;
 }
@@ -309,28 +321,27 @@ table.styled-table tbody tr:hover {
     color: #f85149;
 }
 
-
-/* Market Data Table (from your original styles.css) - Adapted for dark theme */
-.market-section { /* Container for the market prices section */
+/* Market Data Table */
+.market-section {
     background-color: #161b22;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #30363d;
-    margin-bottom: 40px;
+    margin-bottom: 30px; /* Adjusted */
 }
-.market-section h2 { text-align: left; margin-top:0; }
+.market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; }
 
 .market-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px; /* Reduced margin */
-  border-radius: 0; /* Remove radius if section has it */
-  overflow: hidden; /* Still good for responsive table */
-  box-shadow: none; /* Remove shadow if section has it */
+  margin-top: 15px;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
   color: #c9d1d9;
 }
 .market-table thead th {
-  background-color: #21262d; /* Darker header for table within dark section */
+  background-color: #21262d;
   color: #8b949e;
   padding: 10px 12px;
   text-align: left;
@@ -338,7 +349,7 @@ table.styled-table tbody tr:hover {
   border-bottom: 1px solid #30363d;
 }
 .market-table tbody tr {
-  background-color: #161b22; /* Match section background */
+  background-color: #161b22;
   border-bottom: 1px solid #30363d;
   transition: background-color 0.3s;
 }
@@ -354,14 +365,14 @@ table.styled-table tbody tr:hover {
     margin-right: 8px;
 }
 .price-change {
-  padding: 4px 8px; /* Adjusted padding */
+  padding: 4px 8px;
   border-radius: 4px;
   color: #fff;
   display: inline-block;
   font-size: 0.85em;
 }
-.positive { background-color: #238636; } /* Green */
-.negative { background-color: #da3633; } /* Red */
+.positive { background-color: #238636; }
+.negative { background-color: #da3633; }
 
 .graph-container {
   width: 100%;
@@ -381,89 +392,87 @@ table.styled-table tbody tr:hover {
   .graph-container { max-width: 80px; height: 30px; }
 }
 
-
-/* Currency Exchange (from your original styles.css) - Adapted for dark theme */
-/* Assuming the HTML for this section is <section><h2>Currency Exchange</h2>...</section> */
-section:has(> #fromCurrency) { /* Targeting the currency exchange section specifically */
+/* Currency Exchange */
+section:has(> #fromCurrency) {
   background-color: #161b22;
-  padding: 20px 30px 30px 30px; /* Adjusted padding */
+  padding: 20px 30px 30px 30px;
   border-radius: 8px;
   border: 1px solid #30363d;
-  max-width: 500px;
+  max-width: 450px; /* Reduced max-width */
   margin-left: auto;
   margin-right: auto;
 }
 section:has(> #fromCurrency) h2 {
-  text-align: center; /* Center the "Currency Exchange" title */
+  text-align: center;
   margin-top: 0;
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Adjusted */
+  font-size: 1.8em;
 }
-.form-group { /* Used by currency exchange */
-  margin-bottom: 15px; /* Reduced margin */
+.form-group {
+  margin-bottom: 12px; /* Reduced margin */
   text-align: left;
 }
 .form-group label {
   display: block;
-  margin-bottom: 6px; /* Reduced margin */
+  margin-bottom: 5px; /* Reduced margin */
   color: #8b949e;
   font-weight: 600;
-  font-size: 0.9em;
+  font-size: 0.85em; /* Adjusted */
 }
-/* Generalizing input/select for sections, can be made more specific if needed */
 section select, section input[type="number"], section input[type="text"] {
   width: 100%; 
-  padding: 10px 12px; /* Consistent padding */
+  padding: 8px 10px; /* Adjusted padding */
   border: 1px solid #30363d;
-  border-radius: 6px; /* Consistent radius */
-  background-color: #0d1117; /* Darker input background */
+  border-radius: 6px;
+  background-color: #0d1117;
   color: #c9d1d9;
-  font-size: 1em;
+  font-size: 0.95em; /* Adjusted */
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
 section select:focus, section input[type="number"]:focus, section input[type="text"]:focus {
   outline: none;
   border-color: #58a6ff;
-  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2); /* Focus ring */
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
 }
-#convert.btn { /* Targeting the convert button specifically */
+#convert.btn {
   width: 100%;
-  margin-top: 15px; /* Reduced margin */
-  background-color: #238636; /* Green button */
+  margin-top: 15px;
+  background-color: #238636;
   color: #ffffff;
+  padding: 10px 25px; /* Ensure consistent padding with other .btn */
 }
 #convert.btn:hover {
   background-color: #2ea043;
 }
 #result { 
-  margin-top: 20px;
-  font-size: 1.1em; /* Adjusted size */
+  margin-top: 15px; /* Adjusted */
+  font-size: 1.1em;
   color: #c9d1d9;
   font-weight: bold;
   text-align: center;
 }
-#error-message.error-message { /* Used by currency exchange */
+#error-message.error-message {
   color: #f85149;
-  margin-top: 10px;
-  font-size: 0.9em;
+  margin-top: 8px; /* Adjusted */
+  font-size: 0.85em;
   text-align: center;
-  min-height: 1.2em; /* Prevent layout shift */
+  min-height: 1.2em;
 }
-
 
 /* Footer */
 footer {
   text-align: center;
-  padding: 25px 0; /* Adjusted padding */
-  margin-top: 50px; /* Increased margin */
+  padding: 20px 0; /* REDUCED padding */
+  margin-top: 30px; /* REDUCED margin */
   border-top: 1px solid #30363d;
   color: #8b949e;
 }
 footer p {
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     color: #8b949e;
     text-align: center;
-    font-size: 0.9em; /* Slightly smaller footer text */
+    font-size: 0.85em; /* Slightly smaller */
 }
 footer a {
   color: #58a6ff;
@@ -473,11 +482,11 @@ footer a:hover {
 }
 
 /* Animations */
-@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } } /* More subtle zoom */
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } } /* REDUCED distance */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } /* REDUCED distance */
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-/* Background Animation (Placeholder - as in your original) */
+/* Background Animation */
 .background-animation {
   position: fixed;
   top: 0;
@@ -485,49 +494,5 @@ footer a:hover {
   width: 100%;
   height: 100%;
   z-index: -1;
-  /* If you have specific gradient/animation rules for this, add them here.
-     Example: background: #0d1117; (if it's just a solid color)
-     Example: background: linear-gradient(to bottom, #0d1117, #010409); (subtle gradient)
-  */
-   background-color: #0d1117; /* Fallback solid color */
+   background-color: #0d1117;
 }
-```
-**Explanation of Changes and Merges:**
-
-1.  **Normalize.css:** Kept as is from your original file.
-2.  **General Styles (`body`, `.container`):** Based on your original, with slight adjustments to `.container` max-width and padding for better content flow on report pages.
-3.  **Typography (`h1-h6`, `p`, `a`):** Made these more global to ensure consistent font sizes, colors (matching your dark theme's blue accent for headings, light text for paragraphs), and text alignment. Added a `.index-section-title` class if you need some `h2` on the index page to remain left-aligned.
-4.  **Header, Footer, Profile Pic:** Taken from your original, with minor color/spacing tweaks to fit the overall dark theme better.
-5.  **Buttons (`.btn`, `.cv-button`):** Combined common properties and then styled specifics. Adjusted colors for better contrast and a more "GitHub-like" feel for the general `.btn`.
-6.  **Report Page Elements:**
-    * `.kpi-container`, `.kpi`: Styled with dark backgrounds, appropriate text colors, and borders.
-    * `.chart-wrapper`, `.chart-container-small`: Given dark backgrounds, padding, and borders to frame the charts nicely.
-    * `.data-section`: Generic class for these sections.
-    * `.bank-list-container`, `table.styled-table`: Styled for readability on a dark background.
-    * Loading/Error Messages: Provided generic classes `.loading-message-placeholder`, `.error-message-placeholder` you can use, or the ID-based styles will still work. Ensured text colors are appropriate for the dark theme.
-7.  **Market Data & Currency Exchange:** Styles from your original file are included and adapted for better dark theme consistency (e.g., table row backgrounds, input field backgrounds and text colors).
-8.  **Animations & Background:** Kept as is. Added a fallback solid color for `.background-animation`.
-9.  **Color Palette Used:**
-    * Background: `#0d1117` (very dark, almost black)
-    * Slightly Lighter Backgrounds (for cards, sections): `#161b22`
-    * Even Lighter (input fields, some table headers): `#21262d`
-    * Borders/Dividers: `#30363d`
-    * Primary Text: `#c9d1d9` (light gray/off-white)
-    * Secondary Text (subtitles, less important info): `#8b949e` (medium gray)
-    * Accent/Link Color: `#58a6ff` (blue)
-    * Success/Positive: `#238636` or `#3fb950` (green)
-    * Error/Negative: `#f85149` or `#da3633` (red)
-
-**Important Next Steps for You:**
-
-1.  **Replace the entire content of your `styles.css` file** with the code provided above.
-2.  **Remove ALL `<style>...</style>` blocks** from the `<head>` sections of your `index.html`, `trade_report.html`, and `taiwan_banking_report.html` files. They should *only* link to the main `styles.css` like this: `<link href="styles.css" rel="stylesheet">`.
-3.  **Test Thoroughly:**
-    * Open `index.html`. Check its appearance.
-    * Navigate to `trade_report.html`. Check its header, footer, KPIs, chart styling, and bank tables.
-    * Navigate to `taiwan_banking_report.html`. Check its header, footer, and chart styling.
-4.  **Iterate and Refine `styles.css`:**
-    * You will almost certainly need to make small adjustments to margins, paddings, font sizes, or specific colors in `styles.css` to get everything looking *exactly* how you want it across all three pages.
-    * Use your browser's developer tools (Inspect Element) to see which styles are being applied and to experiment with changes live before editing `styles.css`.
-
-This consolidated `styles.css` is a significant step towards a professional and unified website. Good luck with the testing and refineme
