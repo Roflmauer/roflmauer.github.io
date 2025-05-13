@@ -1,0 +1,32 @@
+// taiwan_banking_overview_data.json
+{
+  "title": "Overview of Taiwan's Domestic Banking Sector",
+  "source": "Data reported by domestic banks (Source: Provided Image IMG_0823.jpg)",
+  "unit_assets_profit": "NT$ Hundred Million",
+  "unit_ratios": "%",
+  "annual_data": [
+    { "gregorian_year": 2002, "roc_year": "91年", "total_assets": 219189, "average_equity": 15096, "profit_before_tax": -1046, "roa": -0.48, "roe": -6.93 },
+    { "gregorian_year": 2003, "roc_year": "92年", "total_assets": 229190, "average_equity": 14324, "profit_before_tax": 505, "roa": 0.22, "roe": 3.52 },
+    { "gregorian_year": 2004, "roc_year": "93年", "total_assets": 246230, "average_equity": 15082, "profit_before_tax": 1553, "roa": 0.63, "roe": 10.30 },
+    { "gregorian_year": 2005, "roc_year": "94年", "total_assets": 261903, "average_equity": 16361, "profit_before_tax": 786, "roa": 0.30, "roe": 4.81 },
+    { "gregorian_year": 2006, "roc_year": "95年", "total_assets": 272086, "average_equity": 17063, "profit_before_tax": -74, "roa": -0.03, "roe": -0.43 },
+    { "gregorian_year": 2007, "roc_year": "96年", "total_assets": 276275, "average_equity": 17550, "profit_before_tax": 388, "roa": 0.14, "roe": 2.21 },
+    { "gregorian_year": 2008, "roc_year": "97年", "total_assets": 283461, "average_equity": 17964, "profit_before_tax": 444, "roa": 0.16, "roe": 2.47 },
+    { "gregorian_year": 2009, "roc_year": "98年", "total_assets": 297970, "average_equity": 18671, "profit_before_tax": 839, "roa": 0.28, "roe": 4.49 },
+    { "gregorian_year": 2010, "roc_year": "99年", "total_assets": 317417, "average_equity": 20129, "profit_before_tax": 1832, "roa": 0.58, "roe": 9.10 },
+    { "gregorian_year": 2011, "roc_year": "100年", "total_assets": 336699, "average_equity": 21441, "profit_before_tax": 2000, "roa": 0.59, "roe": 9.33 },
+    { "gregorian_year": 2012, "roc_year": "101年", "total_assets": 354378, "average_equity": 23076, "profit_before_tax": 2402, "roa": 0.68, "roe": 10.41 },
+    { "gregorian_year": 2013, "roc_year": "102年", "total_assets": 376764, "average_equity": 25115, "profit_before_tax": 2576, "roa": 0.68, "roe": 10.26 },
+    { "gregorian_year": 2014, "roc_year": "103年", "total_assets": 404226, "average_equity": 27477, "profit_before_tax": 3201, "roa": 0.79, "roe": 11.65 },
+    { "gregorian_year": 2015, "roc_year": "104年", "total_assets": 428359, "average_equity": 30212, "profit_before_tax": 3196, "roa": 0.75, "roe": 10.58 },
+    { "gregorian_year": 2016, "roc_year": "105年", "total_assets": 444255, "average_equity": 32483, "profit_before_tax": 3001, "roa": 0.68, "roe": 9.24 },
+    { "gregorian_year": 2017, "roc_year": "106年", "total_assets": 459181, "average_equity": 34094, "profit_before_tax": 3059, "roa": 0.67, "roe": 8.97 },
+    { "gregorian_year": 2018, "roc_year": "107年", "total_assets": 479305, "average_equity": 35918, "profit_before_tax": 3342, "roa": 0.70, "roe": 9.31 },
+    { "gregorian_year": 2019, "roc_year": "108年", "total_assets": 501305, "average_equity": 38477, "profit_before_tax": 3607, "roa": 0.72, "roe": 9.38 },
+    { "gregorian_year": 2020, "roc_year": "109年", "total_assets": 534080, "average_equity": 40606, "profit_before_tax": 3127, "roa": 0.59, "roe": 7.70 },
+    { "gregorian_year": 2021, "roc_year": "110年", "total_assets": 574068, "average_equity": 41972, "profit_before_tax": 3370, "roa": 0.59, "roe": 8.03 },
+    { "gregorian_year": 2022, "roc_year": "111年", "total_assets": 612807, "average_equity": 42607, "profit_before_tax": 3910, "roa": 0.64, "roe": 9.19 },
+    { "gregorian_year": 2023, "roc_year": "112年", "total_assets": 651576, "average_equity": 45426, "profit_before_tax": 4794, "roa": 0.73, "roe": 10.55 }
+  ],
+  "monthly_data_note": "Monthly data for 2024 (113年) and partial 2025 (114年) also available in source image but not included in this annual summary."
+}
