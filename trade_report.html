@@ -3,63 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan-Germany Trade & Top Banks - Pierre Meyer</title>
+    <title>Taiwan-Germany Trade & Top Banks Comparison - Pierre Meyer</title>
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <style>
-        /* Styles specific to trade_report.html content, IF NOT MOVED TO styles.css */
-        /* e.g., .kpi-container, .kpi, .chart-wrapper, .data-section, .bank-list-container, table.styled-table etc. */
-        /* It's better to move these to your main styles.css */
-        /* For example, the .main-container in your report pages is similar to .container in index.html */
-        /* You might want to ensure your main .container style in styles.css is sufficient, */
-        /* or give the content area of report pages a specific class styled in styles.css */
-
-        /* Keeping the structure from your last trade_report.html for reference: */
-        .kpi-container { /* This should ideally be in styles.css */
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 20px 0 30px 0;
-        }
-        .kpi { /* This should ideally be in styles.css */
-            background-color: #fff; /* Note: your index.html uses a dark theme. These elements might need theme adjustment */
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-align: center;
-            margin: 10px;
-            min-width: 180px;
-            flex-grow: 1;
-        }
-        .kpi h3 { margin-top: 0; font-size: 1em; color: #555; }
-        .kpi p { font-size: 1.4em; font-weight: bold; color: #1A73E8; margin-bottom: 0; }
-        .chart-wrapper { margin-bottom: 40px; }
-        .data-section { margin-top: 50px; padding-top: 30px; border-top: 1px solid #30363d; } /* Matched divider color */
-        .bank-list-section-container { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; }
-        .bank-list-container { flex: 1; min-width: 300px; max-width: 450px; margin-bottom: 20px; }
-        table.styled-table { width: 100%; border-collapse: collapse; font-size: 0.9em; color: #c9d1d9; } /* Text color for dark theme */
-        table.styled-table th, table.styled-table td { border-bottom: 1px solid #30363d; padding: 8px 10px; text-align: left; }
-        table.styled-table th { background-color: #161b22; color: #8b949e; font-weight: bold; } /* Dark theme table header */
-        table.styled-table td:last-child, table.styled-table td:nth-last-child(2) { text-align: right; }
-        #loadingMessage, #errorMessage,
-        #loadingTopBanksMessage, #errorTopBanksMessage { text-align: center; font-size: 1.2em; padding: 20px; color: #c9d1d9; }
-        #errorMessage, #errorTopBanksMessage { color: #f85149; }
-    </style>
-</head>
+    </head>
 <body>
-    <div class="background-animation"></div> <header>
+    <div class="background-animation"></div>
+
+    <header>
         <div class="container">
             <h1>Pierre Meyer</h1>
             <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic">
             <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
-            </div>
+        </div>
     </header>
 
-    <main class="container"> {/* Use your existing .container class from styles.css for consistent width/centering */}
-        <h1 style="font-size: 2.5em; color: #58a6ff; margin-bottom: 30px;">Taiwan-Germany Trade & Top Banks Comparison</h1> {/* Page specific H1 */}
+    <main class="container">
+        <h1 style="font-size: 2.5em; color: #58a6ff; margin-bottom: 30px;">Taiwan-Germany Trade & Top Banks Comparison</h1>
 
         <div class="kpi-container">
             <div class="kpi">
@@ -80,16 +43,16 @@
             <h2 id="chartTitleTrade" style="color: #58a6ff;">Trade Value Over Time</h2>
             <canvas id="tradeChart"></canvas>
         </div>
-        <div id="loadingMessage">Loading trade data...</div>
-        <div id="errorMessage" style="display:none;"></div>
+        <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
+        <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
 
         <section class="data-section top-banks-section">
             <h2 style="color: #58a6ff;">Top 5 Banks by Total Assets</h2>
-            <p style="text-align: center; font-style: italic; color: #8b949e;" id="banksDataAsOf">Data as of: Researching...</p>
-            <p style="text-align: center; font-size: 0.8em; color: #8b949e;" id="exchangeRateInfo">USD conversions based on approximate fixed rates.</p>
+            <p class="subtle-text center-text" id="banksDataAsOf">Data as of: Researching...</p>
+            <p class="subtle-text center-text" id="exchangeRateInfo" style="font-size: 0.9em;">USD conversions based on approximate fixed rates.</p>
             <div class="bank-list-section-container">
                 <div class="bank-list-container">
-                    <h3 style="color: #58a6ff;">Taiwan <span id="taiwanBankCurrency" style="font-size: 0.8em; font-weight: normal; color: #8b949e;"></span></h3>
+                    <h3>Taiwan <span id="taiwanBankCurrency" class="subtle-text" style="font-size: 0.8em; font-weight: normal;"></span></h3>
                     <table id="taiwanTopBanksTable" class="styled-table">
                         <thead>
                             <tr>
@@ -103,7 +66,7 @@
                     </table>
                 </div>
                 <div class="bank-list-container">
-                    <h3 style="color: #58a6ff;">Germany <span id="germanyBankCurrency" style="font-size: 0.8em; font-weight: normal; color: #8b949e;"></span></h3>
+                    <h3>Germany <span id="germanyBankCurrency" class="subtle-text" style="font-size: 0.8em; font-weight: normal;"></span></h3>
                     <table id="germanyTopBanksTable" class="styled-table">
                         <thead>
                             <tr>
@@ -117,20 +80,18 @@
                     </table>
                 </div>
             </div>
-            <div id="loadingTopBanksMessage">Loading top banks data...</div>
-            <div id="errorTopBanksMessage" style="display:none;"></div>
+            <div id="loadingTopBanksMessage" class="loading-message-placeholder">Loading top banks data...</div>
+            <div id="errorTopBanksMessage" class="error-message-placeholder" style="display:none;"></div>
         </section>
     </main>
     <footer>
         <div class="container">
-            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de" style="color: #58a6ff;">Contact Me</a></p>
-            <p><a href="index.html" style="color: #58a6ff; text-decoration: none;">Back to Home</a></p> {/* Added a back to home link */}
+            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+            <p><a href="index.html">Back to Home</a></p>
         </div>
     </footer>
 
     <script>
-        // All the JavaScript specific to trade_report.html (trade chart, top banks) goes here
-        // (As in your last correct version of trade_report.html)
         // --- Configuration ---
         const TRADE_IMPORT_FILE_NAME = 'Imports_from_Germany_to_Taiwan_Over_Time.json';
         const TRADE_EXPORT_FILE_NAME = 'Exports_from_Taiwan_to_Germany_Over_Time.json';
@@ -142,13 +103,14 @@
         const APPROX_EUR_TO_USD = 1.08; 
         const APPROX_TWD_TO_USD = 0.031;
 
+        // --- Helper Functions ---
         function formatCurrency(value, symbol) {
             if (isNaN(value)) return 'N/A';
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
         
         function formatLargeCurrency(value, symbol, targetUnit = "Billion") {
-            if (isNaN(value)) return 'N/A';
+            if (isNaN(value) || value === null) return 'N/A'; // Added null check
             let displayValue = value;
             let displayUnit = targetUnit;
 
@@ -160,6 +122,7 @@
             return symbol + displayValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + displayUnit;
         }
 
+        // --- Trade Data Functions ---
         async function fetchTradeData(fileName) {
             try {
                 const response = await fetch(fileName);
@@ -184,7 +147,7 @@
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
-            const chartTitleTradeEl = document.getElementById('chartTitleTrade');
+            // const chartTitleTradeEl = document.getElementById('chartTitleTrade'); // Title is static in HTML
 
             loadingMessageEl.style.display = 'block';
             errorMessageEl.style.display = 'none';
@@ -204,7 +167,7 @@
                 document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
-                // chartTitleTradeEl.textContent = `Trade Value (${TRADE_CURRENCY_CODE}) Over Time`; // Title is now in HTML h2
+                
                 const ctx = document.getElementById('tradeChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
@@ -214,30 +177,38 @@
                             {
                                 label: 'Imports from Germany',
                                 data: importValues,
-                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', // Adjusted alpha for dark theme
                                 tension: 0.1, fill: true,
+                                pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
                             },
                             {
                                 label: 'Exports to Germany',
                                 data: exportValues,
-                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', // Adjusted alpha
                                 tension: 0.1, fill: true,
+                                pointBackgroundColor: 'rgba(54, 162, 235, 1)', pointBorderColor: '#fff'
                             }
                         ]
                     },
                     options: {
                         responsive: true, maintainAspectRatio: true,
                         scales: {
-                            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, title: { display: true, text: 'Date' }, ticks: {color: '#8b949e'}, grid: {color: '#30363d'} },
-                            y: { beginAtZero: true, title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#8b949e'}, ticks: {color: '#8b949e', callback: function(value) {
+                            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
+                                 title: { display: true, text: 'Date', color: '#c9d1d9'},
+                                 ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
+                               },
+                            y: { beginAtZero: true, 
+                                 title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
+                                 ticks: {color: '#8b949e', callback: function(value) {
                                     if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
                                     if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
                                     return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
-                                }}, grid: {color: '#30363d'}
+                                }}, 
+                                grid: {color: '#30363d'}
                             }
                         },
                         plugins: {
-                            tooltip: { mode: 'index', intersect: false, callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }},
+                            tooltip: { mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }},
                             legend: { position: 'top', labels: {color: '#c9d1d9'} }
                         }
                     }
@@ -250,6 +221,7 @@
             }
         }
 
+        // --- Top Banks Data Functions ---
         async function fetchTopBanksData() {
             try {
                 const response = await fetch(TOP_BANKS_DATA_FILE);
@@ -322,7 +294,6 @@
 
                 asOfEl.textContent = banksJsonData.data_as_of ? `Data as of: ${banksJsonData.data_as_of}` : 'Data as of: To be determined';
                 exchangeRateInfoEl.textContent = `USD conversions based on approximate fixed rates (1 EUR ≈ ${APPROX_EUR_TO_USD.toFixed(3)} USD, 1 TWD ≈ ${APPROX_TWD_TO_USD.toFixed(3)} USD).`;
-                // exchangeRateInfoEl.style.color = '#8b949e'; // Matched to other p text in dark theme
                 
                 if (banksJsonData.taiwan) {
                     taiwanCurrencyEl.textContent = banksJsonData.taiwan.currency ? `(${banksJsonData.taiwan.currency})` : '';
@@ -350,6 +321,7 @@
             }
         }
 
+        // --- Initial Load ---
         async function initializePage() {
             await displayTradeVisualizations();
             await displayTopBanks();
