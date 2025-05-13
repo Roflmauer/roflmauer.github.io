@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan-Germany Trade Report - Pierre Meyer</title> {/* Updated title slightly */}
+    <title>Taiwan-Germany Trade Report - Pierre Meyer</title>
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -23,7 +23,7 @@
     </header>
 
     <main class="container">
-        <h1>Taiwan-Germany Trade Report</h1> {/* Updated main title slightly */}
+        <h1>Taiwan-Germany Trade Report</h1>
 
         <div class="kpi-container">
             <div class="kpi">
@@ -54,8 +54,6 @@
         <div id="loadingYearlyTradeBalance" class="loading-message-placeholder" style="display:none;">Calculating yearly balance...</div>
         <div id="errorYearlyTradeBalance" class="error-message-placeholder" style="display:none;"></div>
         
-        {/* Top Banks Section has been completely removed from here */}
-
     </main>
     <footer>
         <div class="container">
@@ -70,7 +68,7 @@
         const TRADE_EXPORT_FILE_NAME = 'Exports_from_Taiwan_to_Germany_Over_Time.json';
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
-        const ROLLING_AVERAGE_WINDOW = 12; // 12-month rolling average
+        const ROLLING_AVERAGE_WINDOW = 12; 
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
@@ -78,8 +76,6 @@
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
         
-        // formatLargeCurrency function removed as it was specific to banks table
-
         function calculateRollingAverage(data, windowSize) {
             const rollingAvg = [];
             if (!data || data.length === 0) return rollingAvg;
@@ -368,10 +364,6 @@
             }
         }
 
-        // --- Top Banks Data Functions ---
-        // All functions related to Top Banks (fetchTopBanksData, populateBankTable, displayTopBanks) have been removed.
-        // APPROX_EUR_TO_USD and APPROX_TWD_TO_USD constants have been removed as they were only for bank assets.
-
         // --- Initial Load ---
         async function initializePage() {
             try {
@@ -379,7 +371,6 @@
             } catch (tradeError) {
                 console.error("Error during trade visualizations.", tradeError);
             }
-            // Call to displayTopBanks() has been removed.
         }
 
         initializePage();
