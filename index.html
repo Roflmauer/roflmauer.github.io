@@ -8,8 +8,7 @@
  <link href="styles.css" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
  <link rel="icon" href="favicon.ico" type="image/x-icon">
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+ </head>
 
 <body>
  <div class="background-animation"></div>
@@ -44,7 +43,7 @@
   </p>
  </section>
 
-  <hr class="divider">
+ <hr class="divider">
 
  <section>
   <h2>Projects & Visualizations</h2>
@@ -56,6 +55,7 @@
    <a href="taiwan_banking_report.html" class="cv-button">Overview of Taiwan's Domestic Banking Sector</a>
   </p>
  </section>
+
  <hr class="divider">
 
  <section class="market-section">
@@ -141,14 +141,23 @@
  <footer>
  <div class="container">
   <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
- </div>
+  </div>
  </footer>
 
  <script>
+  // Scripts for Live Market Prices and Currency Exchange (from your original index.html.txt)
   const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
   const marketTableBody = document.getElementById('market-table-body');
-  const charts = {};
-  const FETCH_INTERVAL = 120000;
+  // const charts = {}; // This was defined but not used in the provided script snippet
+  const FETCH_INTERVAL = 120000; // 2 minutes
+
+  // Chart.js library is needed for this part
+  if (typeof Chart === 'undefined') {
+      const chartScript = document.createElement('script');
+      chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+      document.head.appendChild(chartScript);
+  }
+
 
   function formatPrice(price) {
    return `$${price.toLocaleString(undefined, {
@@ -160,10 +169,11 @@
   function updatePrice(coin, price, change) {
    const priceElement = document.getElementById(`${coin}-price`);
    const changeElement = document.getElementById(`${coin}-change`);
-   priceElement.textContent = `$${price.toFixed(2)}`;
-   changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
-   changeElement.className = `price-change ${change > 0 ?
-'positive' : 'negative'}`;
+   if (priceElement) priceElement.textContent = `$${price.toFixed(2)}`;
+   if (changeElement) {
+    changeElement.textContent = `${change > 0 ? '▲' : '▼'} ${change.toFixed(2)}%`;
+    changeElement.className = `price-change ${change > 0 ? 'positive' : 'negative'}`;
+   }
   }
 
   async function fetchMarketData() {
@@ -175,19 +185,24 @@
      throw new Error(`Failed to fetch market data: ${response.status}`);
     }
 
-    updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
-    updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
+    if (data.bitcoin) updatePrice('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
+    if (data.ethereum) updatePrice('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
 
-    fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
-    fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
+    // Only fetch chart data if the canvas elements exist
+    if (document.getElementById('btc-chart')) fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
+    if (document.getElementById('eth-chart')) fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
+
    } catch (error) {
     console.error('Error fetching market data:', error);
-    marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
+    if(marketTableBody) marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message">Failed to load market data. Please try again later.</td></tr>';
    }
   }
 
   async function fetchAndRenderChart(coinId, currency, days, chartId) {
    try {
+    const chartCanvas = document.getElementById(chartId);
+    if (!chartCanvas) return; // Don't proceed if canvas doesn't exist
+
     const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
     const historicalData = await response.json();
 
@@ -196,55 +211,74 @@
     }
 
     const prices = historicalData.prices.map(p => p[1]);
-    const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
+    const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString()); // Simple date string for labels
+
     renderChart(chartId, timestamps, prices, coinId);
 
    } catch (error) {
     console.error(`Error fetching chart data for ${coinId}:`, error);
     const chartContainer = document.getElementById(chartId);
-    if (chartContainer) { // Check if element exists before trying to set its innerHTML
-        chartContainer.innerHTML = `<p class="error-message">Failed to load chart data.</p>`;
+    if (chartContainer && chartContainer.parentElement) { // Check parent for replacing content
+        chartContainer.parentElement.innerHTML = `<p class="error-message" style="color: #f85149; text-align:center;">Chart data unavailable.</p>`;
     }
    }
   }
 
+  let activeCharts = {}; // Keep track of active charts to destroy them before re-rendering
+
   function renderChart(chartId, labels, data, coin) {
-   const ctx = document.getElementById(chartId).getContext('2d');
-   new Chart(ctx, {
-    type: 'line',
-    data: {
-     labels: labels,
-     datasets: [{
-      label: `${coin.toUpperCase()} Price (USD)`,
-      data: data,
-      borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
-      borderWidth: 2,
-      fill: false,
-      pointRadius: 0
-     }]
-    },
-    options: {
-     responsive: true,
-     maintainAspectRatio: false,
-     animation: false,
-     scales: {
-      x: { display: false },
-      y: {
-       display: true,
-       ticks: {
-        callback: function(value) {
-         return '$' + value;
-        }
-       }
-      },
+    const ctx = document.getElementById(chartId).getContext('2d');
+    
+    // If a chart already exists for this canvas, destroy it first
+    if (activeCharts[chartId]) {
+        activeCharts[chartId].destroy();
+    }
+
+    activeCharts[chartId] = new Chart(ctx, { // Store the new chart instance
+     type: 'line',
+     data: {
+      labels: labels,
+      datasets: [{
+       label: `${coin.toUpperCase()} Price (USD)`, // This label won't be visible due to legend: {display: false}
+       data: data,
+       borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
+       borderWidth: 2,
+       fill: false,
+       pointRadius: 0,
+       tension: 0.4 // Smoother line
+      }]
      },
-     plugins: {
-      legend: {
-       display: false,
+     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false, // Consider true for initial load, then false for updates if you prefer
+      scales: {
+       x: { display: false }, // Hiding x-axis labels as they are just date strings
+       y: {
+        display: false, // Hiding y-axis as it's a sparkline-like graph
+        ticks: {
+         callback: function(value) {
+          return '$' + value.toFixed(0); // Simplified tick
+         }
+        }
+       },
+      },
+      plugins: {
+       legend: {
+        display: false, // Hiding legend for a cleaner sparkline look
+       },
+       tooltip: { // Basic tooltip
+           mode: 'index',
+           intersect: false,
+           callbacks: {
+               label: function(context) {
+                   return `Price: $${parseFloat(context.parsed.y).toFixed(2)}`;
+               }
+           }
+       }
       }
      }
-    }
-   });
+    });
   }
 
    const fromCurrencySelect = document.getElementById('fromCurrency');
@@ -252,52 +286,54 @@
    const amountInput = document.getElementById('amount');
    const resultDiv = document.getElementById('result');
    const convertButton = document.getElementById('convert');
-   const errorMessage = document.getElementById('error-message');
+   const errorMessageDisplay = document.getElementById('error-message'); // Renamed to avoid conflict
 
-   const API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp';
-   const BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
+   // Ensure elements exist before adding event listeners
+   if (convertButton) {
+       convertButton.addEventListener('click', () => {
+           const fromCurrency = fromCurrencySelect.value;
+           const toCurrency = toCurrencySelect.value;
+           const amount = parseFloat(amountInput.value);
 
-   convertButton.addEventListener('click', () => {
-       const fromCurrency = fromCurrencySelect.value;
-       const toCurrency = toCurrencySelect.value;
-       const amount = parseFloat(amountInput.value);
+           if (isNaN(amount) || amount <= 0) {
+               if(errorMessageDisplay) errorMessageDisplay.textContent = 'Please enter a valid amount.';
+               if(resultDiv) resultDiv.textContent = '';
+               return;
+           }
 
-       if (isNaN(amount) || amount <= 0) {
-           errorMessage.textContent = 'Please enter a valid amount.';
-           resultDiv.textContent = '';
-           return;
-       }
+           if(errorMessageDisplay) errorMessageDisplay.textContent = '';
+           if(resultDiv) resultDiv.textContent = 'Loading...';
 
-       errorMessage.textContent = '';
-       resultDiv.textContent = 'Loading...';
+           fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${API_KEY}&base_currency=${fromCurrency}&currencies=${toCurrency}`)
+               .then(response => {
+                   if (!response.ok) {
+                       throw new Error(`HTTP error! status: ${response.status}`);
+                   }
+                   return response.json();
+               })
+               .then(data => {
+                   if (data.data && data.data[toCurrency]) {
+                       const conversionRate = data.data[toCurrency];
+                       const convertedAmount = amount * conversionRate;
+                       if(resultDiv) resultDiv.textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+                   } else {
+                       if(errorMessageDisplay) errorMessageDisplay.textContent = 'Invalid currency selection or data not available.';
+                       if(resultDiv) resultDiv.textContent = '';
+                   }
+               })
+               .catch(error => {
+                   console.error('Error fetching conversion rate:', error);
+                   if(errorMessageDisplay) errorMessageDisplay.textContent = 'Failed to fetch conversion rate. Please try again later.';
+                   if(resultDiv) resultDiv.textContent = '';
+               });
+       });
+   }
 
-       fetch(`${BASE_URL}?apikey=${API_KEY}&base_currency=${fromCurrency}&currencies=${toCurrency}`)
-           .then(response => {
-               if (!response.ok) {
-                   throw new Error(`HTTP error! status: ${response.status}`);
-               }
-               return response.json();
-           })
-           .then(data => {
-               if (data.data && data.data[toCurrency]) {
-                   const conversionRate = data.data[toCurrency];
-                   const convertedAmount = amount * conversionRate;
-                   resultDiv.textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
-               } else {
-                   errorMessage.textContent = 'Invalid currency selection.';
-                   resultDiv.textContent = '';
-               }
-           })
-           .catch(error => {
-               console.error('Error fetching conversion rate:', error);
-               errorMessage.textContent = 'Failed to fetch conversion rate. Please try again later.';
-               resultDiv.textContent = '';
-           });
-   });
-
-  fetchMarketData();
-  setInterval(fetchMarketData, 120000);
+  // Initial fetch and interval only if the market table body exists
+  if (marketTableBody) {
+    fetchMarketData();
+    setInterval(fetchMarketData, FETCH_INTERVAL);
+  }
  </script>
 </body>
-
 </html>
