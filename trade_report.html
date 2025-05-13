@@ -106,7 +106,7 @@
             background-color: #f0f0f0;
             font-weight: bold;
         }
-        table.styled-table td:last-child, table.styled-table td:nth-last-child(2) {
+        table.styled-table td:last-child, table.styled-table td:nth-last-child(2) { /* Align last two columns right */
             text-align: right;
         }
     </style>
@@ -206,24 +206,25 @@
         const TOP_BANKS_DATA_FILE = 'top_banks_data.json';
         
         // --- Fixed Approximate Exchange Rates (as of May 13, 2025) ---
-        // These rates mean: 1 unit of original currency = X units of USD
         const APPROX_EUR_TO_USD = 1.08; // 1 EUR = 1.08 USD
         const APPROX_TWD_TO_USD = 0.031; // 1 TWD = 0.031 USD
-        // Note: For the top_banks_data.json, Taiwan assets are in NT$ Trillion, Germany in EUR Billion.
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
             if (isNaN(value)) return 'N/A';
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
-        function formatLargeCurrency(value, symbol, unit) {
+        
+        function formatLargeCurrency(value, symbol, targetUnit = "Billion") {
             if (isNaN(value)) return 'N/A';
             let displayValue = value;
-            let displayUnit = unit || "";
-            if (Math.abs(value) >= 1000 && unit === "Billion") {
+            let displayUnit = targetUnit;
+
+            if (targetUnit === "Billion" && Math.abs(value) >= 1000) {
                 displayValue = value / 1000;
                 displayUnit = "Trillion";
             }
+            
             return symbol + displayValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + displayUnit;
         }
 
@@ -232,9 +233,8 @@
             return parseFloat(value).toFixed(2) + '%';
         }
 
-        // --- Trade Data Functions (Keep as is) ---
+        // --- Trade Data Functions ---
         async function fetchTradeData(fileName) {
-            // ... (your existing function)
             try {
                 const response = await fetch(fileName);
                 if (!response.ok) {
@@ -256,7 +256,6 @@
         }
 
         async function displayTradeVisualizations() {
-            // ... (your existing function - no changes needed here)
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
             const chartTitleTradeEl = document.getElementById('chartTitleTrade');
@@ -326,10 +325,8 @@
             }
         }
 
-
-        // --- Taiwan Banking Overview Functions (Keep as is) ---
+        // --- Taiwan Banking Overview Functions ---
         async function fetchTaiwanBankingData() {
-            // ... (your existing function)
              try {
                 const response = await fetch(TAIWAN_BANKING_DATA_FILE);
                 if (!response.ok) {
@@ -343,7 +340,6 @@
         }
 
         function displayTaiwanBankingOverview() {
-            // ... (your existing function)
             const loadingEl = document.getElementById('loadingTaiwanBankingMessage');
             const errorEl = document.getElementById('errorTaiwanBankingMessage');
             const titleEl = document.getElementById('taiwanBankingTitle');
@@ -449,8 +445,8 @@
             });
         }
 
-        // --- Top Banks Data Functions (MODIFIED for fixed exchange rates) ---
-        async function fetchTopBanksData() { // No API call needed for exchange rates here anymore
+        // --- Top Banks Data Functions ---
+        async function fetchTopBanksData() {
             try {
                 const response = await fetch(TOP_BANKS_DATA_FILE);
                 if (!response.ok) {
@@ -463,14 +459,14 @@
             }
         }
 
-        function populateBankTable(tableId, banksData, originalCurrencyUnit) { // Removed exchangeRates parameter
+        function populateBankTable(tableId, banksData, originalCurrencyUnit) {
             const tableBody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';
 
             if (!banksData || banksData.length === 0) {
                 const row = tableBody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 4; // Adjusted for new column
+                cell.colSpan = 4;
                 cell.textContent = 'Data to be researched.';
                 cell.style.textAlign = 'center';
                 return;
@@ -486,22 +482,15 @@
                 assetsCell.style.textAlign = 'right';
 
                 const usdAssetsCell = row.insertCell();
-                let usdEquivalent = 'N/A';
-                let usdUnit = "Billion"; // Default to Billion for USD
+                let usdEquivalentBillion = 'N/A';
 
                 if (originalCurrencyUnit === "NT$ Trillion") {
-                    // bank.total_assets is in NT$ Trillion. Convert to USD Trillion.
-                    // (NT$ Trillion value) * (USD per TWD)
-                    usdEquivalent = bank.total_assets * APPROX_TWD_TO_USD;
-                    usdUnit = "Trillion";
+                    usdEquivalentBillion = (bank.total_assets * 1000) * APPROX_TWD_TO_USD; // Converts NT$ Trillion to USD Billion
                 } else if (originalCurrencyUnit === "EUR Billion") {
-                    // bank.total_assets is in EUR Billion. Convert to USD Billion.
-                    // (EUR Billion value) * (USD per EUR)
-                    usdEquivalent = bank.total_assets * APPROX_EUR_TO_USD;
-                    usdUnit = "Billion";
+                    usdEquivalentBillion = bank.total_assets * APPROX_EUR_TO_USD; // Converts EUR Billion to USD Billion
                 }
                 
-                usdAssetsCell.textContent = formatLargeCurrency(usdEquivalent, "$", usdUnit);
+                usdAssetsCell.textContent = formatLargeCurrency(usdEquivalentBillion, "$", "Billion");
                 usdAssetsCell.style.textAlign = 'right';
 
                 if (bank.notes) {
@@ -523,8 +512,7 @@
             errorEl.textContent = '';
 
             try {
-                // No longer fetching exchange rates via API here
-                const banksJsonData = await fetchTopBanksData();
+                const banksJsonData = await fetchTopBanksData(); // No separate exchange rate fetch
                 
                 loadingEl.style.display = 'none';
 
@@ -536,14 +524,14 @@
                     taiwanCurrencyEl.textContent = banksJsonData.taiwan.currency ? `(${banksJsonData.taiwan.currency})` : '';
                     populateBankTable('taiwanTopBanksTable', banksJsonData.taiwan.banks, banksJsonData.taiwan.currency);
                 } else {
-                     populateBankTable('taiwanTopBanksTable', [], '', null);
+                     populateBankTable('taiwanTopBanksTable', [], ''); 
                 }
 
                 if (banksJsonData.germany) {
                     germanyCurrencyEl.textContent = banksJsonData.germany.currency ? `(${banksJsonData.germany.currency})` : '';
                     populateBankTable('germanyTopBanksTable', banksJsonData.germany.banks, banksJsonData.germany.currency);
                 } else {
-                    populateBankTable('germanyTopBanksTable', [], '', null);
+                    populateBankTable('germanyTopBanksTable', [], '');
                 }
 
             } catch (error) {
@@ -553,8 +541,8 @@
                 errorEl.style.display = 'block';
                 asOfEl.textContent = 'Could not load bank ranking data.';
                 exchangeRateInfoEl.textContent = 'USD conversion rates not applied due to error.';
-                populateBankTable('taiwanTopBanksTable', [], '', null);
-                populateBankTable('germanyTopBanksTable', [], '', null);
+                populateBankTable('taiwanTopBanksTable', [], '');
+                populateBankTable('germanyTopBanksTable', [], '');
             }
         }
 
