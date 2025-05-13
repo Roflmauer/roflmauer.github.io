@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan-Germany Trade & Top Banks Comparison - Pierre Meyer</title>
+    <title>Taiwan-Germany Trade Report - Pierre Meyer</title> {/* Updated title slightly */}
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -23,7 +23,7 @@
     </header>
 
     <main class="container">
-        <h1>Taiwan-Germany Trade & Top Banks Comparison</h1>
+        <h1>Taiwan-Germany Trade Report</h1> {/* Updated main title slightly */}
 
         <div class="kpi-container">
             <div class="kpi">
@@ -53,44 +53,9 @@
         </div>
         <div id="loadingYearlyTradeBalance" class="loading-message-placeholder" style="display:none;">Calculating yearly balance...</div>
         <div id="errorYearlyTradeBalance" class="error-message-placeholder" style="display:none;"></div>
+        
+        {/* Top Banks Section has been completely removed from here */}
 
-        <section class="data-section top-banks-section">
-            <h2>Top 5 Banks by Total Assets</h2>
-            <p class="subtle-text center-text" id="banksDataAsOf">Data as of: Researching...</p>
-            <p class="subtle-text center-text" id="exchangeRateInfo" style="font-size: 0.9em;">USD conversions based on approximate fixed rates.</p>
-            <div class="bank-list-section-container">
-                <div class="bank-list-container">
-                    <h3>Taiwan <span id="taiwanBankCurrency" class="subtle-text" style="font-size: 0.8em; font-weight: normal;"></span></h3>
-                    <table id="taiwanTopBanksTable" class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Bank Name</th>
-                                <th>Total Assets</th>
-                                <th>Assets (USD Approx.)</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="bank-list-container">
-                    <h3>Germany <span id="germanyBankCurrency" class="subtle-text" style="font-size: 0.8em; font-weight: normal;"></span></h3>
-                    <table id="germanyTopBanksTable" class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Bank Name</th>
-                                <th>Total Assets</th>
-                                <th>Assets (USD Approx.)</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="loadingTopBanksMessage" class="loading-message-placeholder">Loading top banks data...</div>
-            <div id="errorTopBanksMessage" class="error-message-placeholder" style="display:none;"></div>
-        </section>
     </main>
     <footer>
         <div class="container">
@@ -107,54 +72,35 @@
         const TRADE_CURRENCY_CODE = 'USD';
         const ROLLING_AVERAGE_WINDOW = 12; // 12-month rolling average
 
-        const TOP_BANKS_DATA_FILE = 'top_banks_data.json';
-        
-        const APPROX_EUR_TO_USD = 1.08; 
-        const APPROX_TWD_TO_USD = 0.031;
-
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
-            if (isNaN(value) || value === null) return 'N/A'; // Added null check
+            if (isNaN(value) || value === null) return 'N/A';
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
         
-        function formatLargeCurrency(value, symbol, targetUnit = "Billion") {
-            if (isNaN(value) || value === null) return 'N/A';
-            let displayValue = value;
-            let displayUnit = targetUnit;
-
-            if (targetUnit === "Billion" && Math.abs(value) >= 1000) {
-                displayValue = value / 1000;
-                displayUnit = "Trillion";
-            }
-            
-            return symbol + displayValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + displayUnit;
-        }
+        // formatLargeCurrency function removed as it was specific to banks table
 
         function calculateRollingAverage(data, windowSize) {
             const rollingAvg = [];
-            if (!data || data.length === 0) return rollingAvg; // Handle empty or undefined data
+            if (!data || data.length === 0) return rollingAvg;
 
             for (let i = 0; i < data.length; i++) {
                 if (i < windowSize - 1) {
-                    rollingAvg.push(null); // Not enough data points yet
+                    rollingAvg.push(null); 
                 } else {
                     let sum = 0;
-                    let count = 0;
+                    let count = 0; 
                     for (let j = 0; j < windowSize; j++) {
-                        // Ensure data[i-j] is a number and not null before adding to sum
                         if (typeof data[i - j] === 'number' && data[i-j] !== null) {
                            sum += data[i - j];
                            count++;
                         }
                     }
-                     // Only calculate average if there are valid numbers in window
                     rollingAvg.push(count > 0 ? sum / count : null);
                 }
             }
             return rollingAvg;
         }
-
 
         // --- Trade Data Functions ---
         async function fetchTradeData(fileName) {
@@ -206,16 +152,12 @@
             };
 
             const sortedYears = Object.keys(yearlyData).sort();
-            const currentActualYear = new Date().getFullYear(); // Get the actual current year
 
             for (const year of sortedYears) {
                 result.labels.push(year);
                 result.balances.push(yearlyData[year].exports - yearlyData[year].imports);
                 
                 const isLastYearInDataset = year === sortedYears[sortedYears.length -1];
-                // A year is partial if it's the last year in the dataset AND it has less than 12 months of data for either flow
-                // OR if it's the very first year and it starts mid-year (less common for this type of data).
-                // We will primarily focus on the last year being partial.
                 if (isLastYearInDataset && (yearlyData[year].exportMonths < 12 || yearlyData[year].importMonths < 12)) {
                      result.isPartial.push(true);
                 } else {
@@ -230,14 +172,17 @@
             const errorEl = document.getElementById('errorYearlyTradeBalance');
             const canvasEl = document.getElementById('yearlyTradeBalanceChart');
 
-            if (loadingEl) loadingEl.style.display = 'none';
             if (!canvasEl) {
+                console.error('Yearly Trade Balance chart canvas element not found!');
                 if(errorEl) {
-                    errorEl.textContent = 'Yearly Trade Balance chart canvas not found.';
+                    errorEl.textContent = 'Chart canvas missing for yearly balance.';
                     errorEl.style.display = 'block';
                 }
+                if (loadingEl) loadingEl.style.display = 'none';
                 return;
             }
+
+            if (loadingEl) loadingEl.style.display = 'none';
             canvasEl.style.display = 'block';
 
 
@@ -292,7 +237,6 @@
                                     if (context.parsed.y !== null) {
                                         label += formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL);
                                     }
-                                    // Check if the current bar's year is marked as partial
                                     const currentYearIndex = context.dataIndex;
                                     if (yearlyBalanceData.isPartial[currentYearIndex]) {
                                          label += ' (Partial Year)';
@@ -306,24 +250,22 @@
             });
         }
 
-
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
             const loadingYearlyBalanceEl = document.getElementById('loadingYearlyTradeBalance');
             const errorYearlyBalanceEl = document.getElementById('errorYearlyTradeBalance');
             
-            loadingMessageEl.style.display = 'block';
+            if(loadingMessageEl) loadingMessageEl.style.display = 'block';
             if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'block';
-            errorMessageEl.style.display = 'none';
+            if(errorMessageEl) errorMessageEl.style.display = 'none';
             if(errorYearlyBalanceEl) errorYearlyBalanceEl.style.display = 'none';
-
 
             try {
                 const importData = await fetchTradeData(TRADE_IMPORT_FILE_NAME);
                 const exportData = await fetchTradeData(TRADE_EXPORT_FILE_NAME);
                 
-                loadingMessageEl.style.display = 'none'; 
+                if(loadingMessageEl) loadingMessageEl.style.display = 'none'; 
 
                 if (!importData.length || !exportData.length) {
                    throw new Error("No trade data points found after processing files.");
@@ -332,117 +274,112 @@
                 const importValues = importData.map(item => item.value);
                 const exportValues = exportData.map(item => item.value);
 
-                // Calculate Rolling Averages
                 const importRollingAvg = calculateRollingAverage(importValues, ROLLING_AVERAGE_WINDOW);
                 const exportRollingAvg = calculateRollingAverage(exportValues, ROLLING_AVERAGE_WINDOW);
 
-
                 const latestImport = importData[importData.length - 1];
                 const latestExport = exportData[exportData.length - 1];
-                document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
-                document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
-                document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
+                if(document.getElementById('latestImportValue')) document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
+                if(document.getElementById('latestExportValue')) document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
+                if(document.getElementById('latestTradeBalance')) document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
                 
-                const ctxMonthly = document.getElementById('tradeChart').getContext('2d');
-                new Chart(ctxMonthly, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Imports from Germany',
-                                data: importValues,
-                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                tension: 0.1, fill: true,
-                                pointRadius: 2, // Adjusted for visibility
-                                pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
-                            },
-                            {
-                                label: `Imports (${ROLLING_AVERAGE_WINDOW}-Month Avg)`,
-                                data: importRollingAvg,
-                                borderColor: 'rgba(255, 99, 132, 0.7)', // Darker or different shade
-                                borderWidth: 2,
-                                fill: false,
-                                tension: 0.1,
-                                pointRadius: 0, // No points for rolling average line
-                            },
-                            {
-                                label: 'Exports to Germany',
-                                data: exportValues,
-                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                tension: 0.1, fill: true,
-                                pointRadius: 2, // Adjusted for visibility
-                                pointBackgroundColor: 'rgba(54, 162, 235, 1)', pointBorderColor: '#fff'
-                            },
-                            {
-                                label: `Exports (${ROLLING_AVERAGE_WINDOW}-Month Avg)`,
-                                data: exportRollingAvg,
-                                borderColor: 'rgba(54, 162, 235, 0.7)', // Darker or different shade
-                                borderWidth: 2,
-                                fill: false,
-                                tension: 0.1,
-                                pointRadius: 0, // No points for rolling average line
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: true,
-                        scales: {
-                            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
-                                title: { display: true, text: 'Date', color: '#c9d1d9'},
-                                ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
-                              },
-                            y: { beginAtZero: true, 
-                                title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
-                                ticks: {color: '#8b949e', callback: function(value) {
-                                    if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
-                                    if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
-                                    return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
-                                }}, 
-                                grid: {color: '#30363d'}
-                            }
+                const monthlyChartCanvas = document.getElementById('tradeChart');
+                if (monthlyChartCanvas) {
+                    const ctxMonthly = monthlyChartCanvas.getContext('2d');
+                    new Chart(ctxMonthly, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Imports from Germany', data: importValues,
+                                    borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    tension: 0.1, fill: true, pointRadius: 2, 
+                                    pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
+                                },
+                                {
+                                    label: `Imports (${ROLLING_AVERAGE_WINDOW}-Month Avg)`, data: importRollingAvg,
+                                    borderColor: 'rgba(255, 99, 132, 0.7)', borderWidth: 2,
+                                    fill: false, tension: 0.1, pointRadius: 0,
+                                },
+                                {
+                                    label: 'Exports to Germany', data: exportValues,
+                                    borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    tension: 0.1, fill: true, pointRadius: 2,
+                                    pointBackgroundColor: 'rgba(54, 162, 235, 1)', pointBorderColor: '#fff'
+                                },
+                                {
+                                    label: `Exports (${ROLLING_AVERAGE_WINDOW}-Month Avg)`, data: exportRollingAvg,
+                                    borderColor: 'rgba(54, 162, 235, 0.7)', borderWidth: 2,
+                                    fill: false, tension: 0.1, pointRadius: 0,
+                                }
+                            ]
                         },
-                        plugins: {
-                            tooltip: { mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }},
-                            legend: { position: 'top', labels: {color: '#c9d1d9'} }
+                        options: {
+                            responsive: true, maintainAspectRatio: true,
+                            scales: {
+                                x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
+                                    title: { display: true, text: 'Date', color: '#c9d1d9'},
+                                    ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
+                                  },
+                                y: { beginAtZero: true, 
+                                    title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
+                                    ticks: {color: '#8b949e', callback: function(value) {
+                                        if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
+                                        if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
+                                        return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
+                                    }}, 
+                                    grid: {color: '#30363d'}
+                                }
+                            },
+                            plugins: {
+                                tooltip: { mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }},
+                                legend: { position: 'top', labels: {color: '#c9d1d9'} }
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    console.error("Monthly trade chart canvas not found!");
+                }
 
-                if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'block'; 
                 const yearlyBalanceData = calculateYearlyTradeBalance(importData, exportData);
                 if (yearlyBalanceData.labels.length > 0) {
                     renderYearlyTradeBalanceChart(yearlyBalanceData);
                 } else {
                     if(errorYearlyBalanceEl) {
-                        errorYearlyBalanceEl.textContent = 'Not enough data to calculate yearly balance.';
+                        errorYearlyBalanceEl.textContent = 'Not enough data for yearly balance chart.';
                         errorYearlyBalanceEl.style.display = 'block';
                     }
-                    if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
+                   if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
                 }
 
             } catch (error) {
-                console.error("Failed to display trade data:", error);
-                loadingMessageEl.style.display = 'none';
-                errorMessageEl.textContent = `Error loading trade data: ${error.message}.`;
-                errorMessageEl.style.display = 'block';
+                console.error("Failed to display trade visualizations:", error);
+                if(loadingMessageEl) loadingMessageEl.style.display = 'none';
+                if(errorMessageEl) {
+                    errorMessageEl.textContent = `Error loading trade data: ${error.message}.`;
+                    errorMessageEl.style.display = 'block';
+                }
                 if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
                 if(errorYearlyBalanceEl) {
-                     errorYearlyBalanceEl.textContent = `Could not generate yearly balance chart due to previous error.`;
+                     errorYearlyBalanceEl.textContent = `Could not generate yearly balance chart: ${error.message}`;
                      errorYearlyBalanceEl.style.display = 'block';
                 }
             }
         }
 
-        // --- Top Banks Data Functions (remains the same) ---
-        async function fetchTopBanksData() { /* ... */ }
-        function populateBankTable(tableId, banksData, originalCurrencyUnit) { /* ... */ }
-        async function displayTopBanks() { /* ... */ }
+        // --- Top Banks Data Functions ---
+        // All functions related to Top Banks (fetchTopBanksData, populateBankTable, displayTopBanks) have been removed.
+        // APPROX_EUR_TO_USD and APPROX_TWD_TO_USD constants have been removed as they were only for bank assets.
 
         // --- Initial Load ---
         async function initializePage() {
-            await displayTradeVisualizations(); 
-            await displayTopBanks();
+            try {
+                await displayTradeVisualizations(); 
+            } catch (tradeError) {
+                console.error("Error during trade visualizations.", tradeError);
+            }
+            // Call to displayTopBanks() has been removed.
         }
 
         initializePage();
