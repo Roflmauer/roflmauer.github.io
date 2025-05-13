@@ -7,7 +7,7 @@
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script> 
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
@@ -16,40 +16,31 @@
         }
         /* Styles from your styles.css that are relevant if not overridden by Tailwind or local styles */
         .introductory-narrative {
-             color: #a0aec0; 
-             margin-top: 1.5rem; 
-             margin-bottom: 2.5rem; 
-             line-height: 1.7; 
+            color: #a0aec0;
+            margin-top: 1.5rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
         }
         .introductory-narrative p {
             margin-bottom: 1rem;
         }
-        .introductory-narrative ul {
-            list-style-type: disc;
-            padding-left: 1.75rem; 
-            margin-bottom: 1rem;
+        .introductory-narrative strong { /* For bolding within paragraphs */
+            color: #cbd5e0; /* Or your preferred emphasis color */
+            font-weight: 600;
         }
-        .introductory-narrative li {
-            margin-bottom: 0.5rem;
-        }
-        .introductory-narrative strong {
-            color: #cbd5e0;
-            font-weight: 600; 
-        }
-
         /* Ensuring chart titles within chart-wrapper are styled if not covered by general H2 in styles.css for this context */
         .chart-wrapper > h2 {
-            font-size: 1.25em; 
+            font-size: 1.25em;
             font-weight: 600;
             text-align: center;
             color: #cbd5e0; /* Using a color consistent with other sub-titles if #58a6ff is too bright here */
             margin-top: 0; /* Remove top margin if it's the first child of chart-wrapper */
             margin-bottom: 1rem; /* Space before canvas */
         }
-        
+
         /* Ensure canvas background is transparent to show chart-wrapper's dark background */
         .chart-wrapper canvas {
-             background-color: transparent !important; /* Key change for darker charts */
+            background-color: transparent !important; /* Key change for darker charts */
         }
 
         /* KPIs might get their primary styling from styles.css, these are fallbacks or overrides if needed */
@@ -85,15 +76,15 @@
             margin-bottom: 0;
             text-align: center; /* Explicitly center KPI value */
         }
-        
+
         .loading-message-placeholder, .error-message-placeholder {
             text-align: center;
             color: #a0aec0;
             padding: 1rem;
-            min-height: 40px; 
+            min-height: 40px;
         }
         .error-message-placeholder {
-            color: #f87171; 
+            color: #f87171;
         }
 
         /* Chart.js Global Defaults (Best placed in script, but can be set via CSS variables if themeable) */
@@ -107,7 +98,7 @@
 
     <header>
         <div class="container header-content-wrapper">
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> 
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
             <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
@@ -116,19 +107,25 @@
     </header>
 
     <main class="container">
-        <div class="trade-report-main-content"> 
+        <div class="trade-report-main-content">
             <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">Taiwan-Germany Trade Report</h1>
 
             <div class="introductory-narrative max-w-4xl mx-auto px-4">
-                <p>Welcome! Germany and Taiwan stand as significant players in the global landscape of advanced manufacturing and technology. Their trade relationship, therefore, isn't just a set of numbers; it's a dynamic story of economic partnership, innovation, and response to global trends. The visualizations you're about to explore unpack this fascinating narrative over the past decade, tracking the flow of goods from early 2014 through April 2024.</p>
-                <p>As you delve into the charts, I invite you to look out for a few compelling developments that the data reveals:</p>
-                <ul>
-                    <li><strong>The Upward Journey:</strong> You'll first notice the overall growth in trade volume. This reflects the deepening economic ties and the consistent demand for high-quality goods between these two export-oriented economies.</li>
-                    <li><strong>A Period of Acceleration:</strong> Keep a close eye on the period around <strong>2019-2020</strong>. The data suggests this was a pivotal time, marking the onset of a notable surge in trade activity. It's particularly interesting to observe the trajectory of Taiwan's exports to Germany during these years. What global events or specific industry demands do you think might have contributed to this shift?</li>
-                    <li><strong>The Evolving Trade Balance:</strong> Perhaps one of the most striking insights lies in how these dynamics have reshaped Taiwan's yearly trade balance with Germany. As you examine the yearly breakdown, see if you can pinpoint how Taiwan's trade surplus didn't just incrementally increase, but actually <strong>more than doubled between 2018 and 2023.</strong></li>
-                </ul>
-                <p>These patterns offer more than just economic statistics; they provide a window into how bilateral trade relationships adapt to and reflect broader global economic currents, the resilience and adjustments in international supply chains, and the ever-evolving demands of key industries.</p>
-                <p>Now, let's explore the data.</p>
+                <p>The trade between Taiwan and Germany, both key players in advanced manufacturing and technology, reveals how global events and industry needs shape economic ties. Let's uncover the reasons behind the trends you see in the graphs, particularly the significant shifts since 2014.</p>
+                <p><strong>The Upward Journey: Complementary Strengths</strong><br>
+                The general growth in trade volume isn't accidental. It stems from deep economic interdependence. Germany's prowess in machinery, automotive, and chemicals complements Taiwan's leadership in semiconductors and ICT. As global demand for their respective specializations has grown, so has their bilateral trade.</p>
+                <p><strong>The Acceleration (2019-2022) & Taiwan's Surplus Boom: Key Drivers</strong><br>
+                The period around 2019-2022 saw a notable surge in trade activity and a significant increase in Taiwan's trade surplus with Germany. This was driven by several powerful factors:</p>
+                <p><strong>Semiconductor Demand & Shortage:</strong> This was the primary catalyst. The global hunger for semiconductors, crucial for 5G, AI, and everyday electronics, intensified dramatically during the COVID-19 pandemic. Taiwan, a semiconductor manufacturing titan, saw its exports (especially to Germany's chip-starved automotive sector) soar in value.</p>
+                <p><strong>Pandemic-Driven Demand:</strong> COVID-19 also boosted demand for consumer electronics, remote work infrastructure, and medical equipment—all key Taiwanese exports.</p>
+                <p><strong>Supply Chain Adjustments:</strong> US-China trade tensions encouraged some businesses to diversify supply chains, potentially benefiting Taiwan as a reliable tech source.</p>
+                <p>These factors led to Taiwan's exports to Germany growing much faster than its imports, causing the trade surplus to more than double between 2018 and 2022, as your text notes.</p>
+                <p><strong>Recent Shifts (Post-2022): Normalization and New Influences</strong><br>
+                The graphs likely show a moderation in Taiwan's trade surplus after its 2022 peak. This shift can be attributed to:</p>
+                <p><strong>Easing of Chip Shortages:</strong> As semiconductor supply caught up with demand, the extraordinary export values began to normalize.</p>
+                <p><strong>Global Economic Headwinds:</strong> Economic slowdowns and inflation in various parts of the world, including Germany, likely dampened overall import demand.</p>
+                <p><strong>In Conclusion: A Dynamic Relationship</strong><br>
+                The Taiwan-Germany trade figures reflect a dynamic interplay of industrial strengths, technological waves (especially in semiconductors), and global events. The "Latest" figures on your chart are a snapshot of this ever-evolving economic story. To explore further, consider official trade statistics from both nations or reports from international economic organizations.</p>
             </div>
 
             <div class="kpi-container">
@@ -171,37 +168,37 @@
     <script>
         // Set Chart.js Global Defaults
         Chart.defaults.font.family = 'Montserrat';
-        Chart.defaults.color = '#a0aec0'; 
-        Chart.defaults.borderColor = '#4a5568'; 
-        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
+        Chart.defaults.color = '#a0aec0';
+        Chart.defaults.borderColor = '#4a5568';
+        Chart.defaults.plugins.legend.labels.color = '#cbd5e0';
 
         // --- Configuration ---
         const TRADE_IMPORT_FILE_NAME = 'Imports_from_Germany_to_Taiwan_Over_Time.json';
         const TRADE_EXPORT_FILE_NAME = 'Exports_from_Taiwan_to_Germany_Over_Time.json';
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
-        const ROLLING_AVERAGE_WINDOW = 12; 
+        const ROLLING_AVERAGE_WINDOW = 12;
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
             if (isNaN(value) || value === null) return 'N/A';
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
-        
+
         function calculateRollingAverage(data, windowSize) {
             const rollingAvg = [];
             if (!data || data.length === 0) return rollingAvg;
 
             for (let i = 0; i < data.length; i++) {
                 if (i < windowSize - 1) {
-                    rollingAvg.push(null); 
+                    rollingAvg.push(null);
                 } else {
                     let sum = 0;
-                    let count = 0; 
+                    let count = 0;
                     for (let j = 0; j < windowSize; j++) {
                         if (typeof data[i - j] === 'number' && data[i-j] !== null) {
-                           sum += data[i - j];
-                           count++;
+                            sum += data[i - j];
+                            count++;
                         }
                     }
                     rollingAvg.push(count > 0 ? sum / count : null);
@@ -233,7 +230,7 @@
         }
 
         function calculateYearlyTradeBalance(importData, exportData) {
-            const yearlyData = {}; 
+            const yearlyData = {};
 
             exportData.forEach(item => {
                 const year = item.date.getFullYear().toString();
@@ -256,7 +253,7 @@
             const result = {
                 labels: [],
                 balances: [],
-                isPartial: [] 
+                isPartial: []
             };
 
             const sortedYears = Object.keys(yearlyData).sort();
@@ -264,12 +261,12 @@
             for (const year of sortedYears) {
                 result.labels.push(year);
                 result.balances.push(yearlyData[year].exports - yearlyData[year].imports);
-                
+
                 const isLastYearInDataset = year === sortedYears[sortedYears.length -1];
                 if (isLastYearInDataset && (yearlyData[year].exportMonths < 12 || yearlyData[year].importMonths < 12)) {
-                     result.isPartial.push(true);
+                    result.isPartial.push(true);
                 } else {
-                     result.isPartial.push(false);
+                    result.isPartial.push(false);
                 }
             }
             return result;
@@ -348,7 +345,7 @@
                                     }
                                     const currentYearIndex = context.dataIndex;
                                     if (yearlyBalanceData.isPartial[currentYearIndex]) {
-                                         label += ' (Partial Year)';
+                                        label += ' (Partial Year)';
                                     }
                                     return label;
                                 }
@@ -364,7 +361,7 @@
             const errorMessageEl = document.getElementById('errorMessage');
             const loadingYearlyBalanceEl = document.getElementById('loadingYearlyTradeBalance');
             const errorYearlyBalanceEl = document.getElementById('errorYearlyTradeBalance');
-            
+
             if(loadingMessageEl) loadingMessageEl.style.display = 'block';
             if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'block';
             if(errorMessageEl) errorMessageEl.style.display = 'none';
@@ -373,13 +370,13 @@
             try {
                 const importData = await fetchTradeData(TRADE_IMPORT_FILE_NAME);
                 const exportData = await fetchTradeData(TRADE_EXPORT_FILE_NAME);
-                
-                if(loadingMessageEl) loadingMessageEl.style.display = 'none'; 
+
+                if(loadingMessageEl) loadingMessageEl.style.display = 'none';
 
                 if (!importData.length || !exportData.length) {
                    throw new Error("No trade data points found after processing files.");
                 }
-                const labels = importData.map(item => item.date); 
+                const labels = importData.map(item => item.date);
                 const importValues = importData.map(item => item.value);
                 const exportValues = exportData.map(item => item.value);
 
@@ -391,7 +388,7 @@
                 if(document.getElementById('latestImportValue')) document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
                 if(document.getElementById('latestExportValue')) document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
                 if(document.getElementById('latestTradeBalance')) document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
-                
+
                 const monthlyChartCanvas = document.getElementById('tradeChart');
                 if (monthlyChartCanvas) {
                     const ctxMonthly = monthlyChartCanvas.getContext('2d');
@@ -403,7 +400,7 @@
                                 {
                                     label: 'Imports from Germany', data: importValues,
                                     borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                    tension: 0.1, fill: true, pointRadius: 2, 
+                                    tension: 0.1, fill: true, pointRadius: 2,
                                     pointBackgroundColor: 'rgba(255, 99, 132, 1)', pointBorderColor: '#fff'
                                 },
                                 {
@@ -427,24 +424,24 @@
                         options: {
                             responsive: true, maintainAspectRatio: true,
                             scales: {
-                                x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
+                                x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }},
                                     title: { display: true, text: 'Date', color: '#c9d1d9', font: { family: 'Montserrat'} },
                                     ticks: {color: '#8b949e', font: { family: 'Montserrat'}}, grid: {color: '#30363d'}
                                   },
-                                y: { beginAtZero: true, 
-                                    title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9', font: { family: 'Montserrat'}}, 
+                                y: { beginAtZero: true,
+                                    title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9', font: { family: 'Montserrat'}},
                                     ticks: {color: '#8b949e', font: { family: 'Montserrat'}, callback: function(value) {
                                         if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
                                         if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
                                         return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
-                                    }}, 
+                                    }},
                                     grid: {color: '#30363d'}
                                 }
                             },
                             plugins: {
                                 legend: { position: 'top', labels: {color: '#c9d1d9', font: { family: 'Montserrat'}} },
-                                tooltip: { 
-                                    mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)', 
+                                tooltip: {
+                                    mode: 'index', intersect: false, titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)',
                                     titleFont: { family: 'Montserrat' }, bodyFont: { family: 'Montserrat' },
                                     callbacks: { label: context => `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL)}` }
                                 }
@@ -475,8 +472,8 @@
                 }
                 if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
                 if(errorYearlyBalanceEl) {
-                     errorYearlyBalanceEl.textContent = `Could not generate yearly balance chart: ${error.message}`;
-                     errorYearlyBalanceEl.style.display = 'block';
+                    errorYearlyBalanceEl.textContent = `Could not generate yearly balance chart: ${error.message}`;
+                    errorYearlyBalanceEl.style.display = 'block';
                 }
             }
         }
@@ -484,7 +481,7 @@
         // --- Initial Load ---
         async function initializePage() {
             try {
-                await displayTradeVisualizations(); 
+                await displayTradeVisualizations();
             } catch (tradeError) {
                 console.error("Error during trade visualizations.", tradeError);
             }
