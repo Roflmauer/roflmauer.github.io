@@ -41,12 +41,18 @@
         </div>
 
         <div class="chart-wrapper">
-            <h2 id="chartTitleTrade">Trade Value Over Time</h2>
+            <h2 id="chartTitleTrade">Trade Value Over Time (Monthly)</h2>
             <canvas id="tradeChart"></canvas>
         </div>
         <div id="loadingMessage" class="loading-message-placeholder">Loading trade data...</div>
         <div id="errorMessage" class="error-message-placeholder" style="display:none;"></div>
 
+        <div class="chart-wrapper">
+            <h2 id="chartTitleYearlyBalance">Yearly Trade Balance (Exports - Imports)</h2>
+            <canvas id="yearlyTradeBalanceChart"></canvas>
+        </div>
+        <div id="loadingYearlyTradeBalance" class="loading-message-placeholder" style="display:none;">Calculating yearly balance...</div>
+        <div id="errorYearlyTradeBalance" class="error-message-placeholder" style="display:none;"></div>
         <section class="data-section top-banks-section">
             <h2>Top 5 Banks by Total Assets</h2>
             <p class="subtle-text center-text" id="banksDataAsOf">Data as of: Researching...</p>
@@ -145,31 +151,167 @@
             }
         }
 
+        function calculateYearlyTradeBalance(importData, exportData) {
+            const yearlyData = {}; 
+
+            exportData.forEach(item => {
+                const year = item.date.getFullYear().toString();
+                if (!yearlyData[year]) {
+                    yearlyData[year] = { exports: 0, imports: 0, exportMonths: 0, importMonths: 0 };
+                }
+                yearlyData[year].exports += item.value;
+                yearlyData[year].exportMonths++;
+            });
+
+            importData.forEach(item => {
+                const year = item.date.getFullYear().toString();
+                if (!yearlyData[year]) {
+                    yearlyData[year] = { exports: 0, imports: 0, exportMonths: 0, importMonths: 0 };
+                }
+                yearlyData[year].imports += item.value;
+                yearlyData[year].importMonths++;
+            });
+
+            const result = {
+                labels: [],
+                balances: [],
+                isPartial: [] // To mark if a year's data is partial
+            };
+
+            const sortedYears = Object.keys(yearlyData).sort();
+
+            for (const year of sortedYears) {
+                result.labels.push(year);
+                result.balances.push(yearlyData[year].exports - yearlyData[year].imports);
+                // A year is partial if it doesn't have 12 months of data for both imports and exports (unless it's the very first year with less than 12 months from start)
+                // For simplicity, we'll check if it's the current year and doesn't have data up to December.
+                // A more robust check would involve knowing the full date range of the dataset.
+                // The latest data point for exports (and presumably imports) is April 2024.
+                const isCurrentYear = new Date().getFullYear().toString() === year;
+                const isLastYearOfData = year === sortedYears[sortedYears.length -1];
+
+                if (isLastYearOfData && (yearlyData[year].exportMonths < 12 || yearlyData[year].importMonths < 12) ) {
+                     result.isPartial.push(true);
+                } else {
+                     result.isPartial.push(false);
+                }
+            }
+            return result;
+        }
+
+        function renderYearlyTradeBalanceChart(yearlyBalanceData) {
+            const loadingEl = document.getElementById('loadingYearlyTradeBalance');
+            const errorEl = document.getElementById('errorYearlyTradeBalance');
+            const canvasEl = document.getElementById('yearlyTradeBalanceChart');
+
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (!canvasEl) {
+                if(errorEl) {
+                    errorEl.textContent = 'Yearly Trade Balance chart canvas not found.';
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+            canvasEl.style.display = 'block';
+
+
+            const ctx = canvasEl.getContext('2d');
+            const barColors = yearlyBalanceData.balances.map(balance => balance >= 0 ? 'rgba(75, 192, 192, 0.7)' : 'rgba(255, 99, 132, 0.7)');
+            const borderColors = yearlyBalanceData.balances.map(balance => balance >= 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: yearlyBalanceData.labels,
+                    datasets: [{
+                        label: 'Yearly Trade Balance',
+                        data: yearlyBalanceData.balances,
+                        backgroundColor: barColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            title: { display: true, text: `Trade Balance (${TRADE_CURRENCY_CODE})`, color: '#c9d1d9' },
+                            ticks: {
+                                color: '#8b949e',
+                                callback: function(value) {
+                                    if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
+                                    if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
+                                    return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
+                                }
+                            },
+                            grid: { color: '#30363d' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Year', color: '#c9d1d9' },
+                            ticks: { color: '#8b949e' },
+                            grid: { color: '#30363d' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            titleColor: '#fff', bodyColor: '#fff', backgroundColor: 'rgba(0,0,0,0.8)',
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += formatCurrency(context.parsed.y, TRADE_CURRENCY_SYMBOL);
+                                    }
+                                    if (yearlyBalanceData.isPartial[context.dataIndex] && context.label === yearlyBalanceData.labels[yearlyBalanceData.labels.length - 1]) {
+                                        label += ' (Partial Year)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
         async function displayTradeVisualizations() {
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
+            const loadingYearlyBalanceEl = document.getElementById('loadingYearlyTradeBalance');
+            const errorYearlyBalanceEl = document.getElementById('errorYearlyTradeBalance');
             
             loadingMessageEl.style.display = 'block';
+            if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'block';
             errorMessageEl.style.display = 'none';
+            if(errorYearlyBalanceEl) errorYearlyBalanceEl.style.display = 'none';
+
 
             try {
                 const importData = await fetchTradeData(TRADE_IMPORT_FILE_NAME);
                 const exportData = await fetchTradeData(TRADE_EXPORT_FILE_NAME);
-                loadingMessageEl.style.display = 'none';
+                
+                loadingMessageEl.style.display = 'none'; // Hide monthly chart loading
+
                 if (!importData.length || !exportData.length) {
                    throw new Error("No trade data points found after processing files.");
                 }
-                const labels = importData.map(item => item.date);
+                const labels = importData.map(item => item.date); // Assuming importData and exportData cover the same date range
                 const importValues = importData.map(item => item.value);
                 const exportValues = exportData.map(item => item.value);
+
                 const latestImport = importData[importData.length - 1];
                 const latestExport = exportData[exportData.length - 1];
                 document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
                 
-                const ctx = document.getElementById('tradeChart').getContext('2d');
-                new Chart(ctx, {
+                const ctxMonthly = document.getElementById('tradeChart').getContext('2d');
+                new Chart(ctxMonthly, {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -194,12 +336,12 @@
                         responsive: true, maintainAspectRatio: true,
                         scales: {
                             x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, 
-                                 title: { display: true, text: 'Date', color: '#c9d1d9'},
-                                 ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
-                               },
+                                title: { display: true, text: 'Date', color: '#c9d1d9'},
+                                ticks: {color: '#8b949e'}, grid: {color: '#30363d'}
+                              },
                             y: { beginAtZero: true, 
-                                 title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
-                                 ticks: {color: '#8b949e', callback: function(value) {
+                                title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` , color: '#c9d1d9'}, 
+                                ticks: {color: '#8b949e', callback: function(value) {
                                     if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
                                     if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
                                     return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
@@ -213,15 +355,34 @@
                         }
                     }
                 });
+
+                // --- Process and display yearly trade balance ---
+                if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'block'; // Show loading for yearly
+                const yearlyBalanceData = calculateYearlyTradeBalance(importData, exportData);
+                if (yearlyBalanceData.labels.length > 0) {
+                    renderYearlyTradeBalanceChart(yearlyBalanceData);
+                } else {
+                    if(errorYearlyBalanceEl) {
+                        errorYearlyBalanceEl.textContent = 'Not enough data to calculate yearly balance.';
+                        errorYearlyBalanceEl.style.display = 'block';
+                    }
+                    if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
+                }
+
             } catch (error) {
                 console.error("Failed to display trade data:", error);
                 loadingMessageEl.style.display = 'none';
                 errorMessageEl.textContent = `Error loading trade data: ${error.message}.`;
                 errorMessageEl.style.display = 'block';
+                if(loadingYearlyBalanceEl) loadingYearlyBalanceEl.style.display = 'none';
+                if(errorYearlyBalanceEl) {
+                     errorYearlyBalanceEl.textContent = `Could not generate yearly balance chart due to previous error.`;
+                     errorYearlyBalanceEl.style.display = 'block';
+                }
             }
         }
 
-        // --- Top Banks Data Functions ---
+        // --- Top Banks Data Functions (remains the same as your provided code) ---
         async function fetchTopBanksData() {
             try {
                 const response = await fetch(TOP_BANKS_DATA_FILE);
@@ -299,7 +460,7 @@
                     taiwanCurrencyEl.textContent = banksJsonData.taiwan.currency ? `(${banksJsonData.taiwan.currency})` : '';
                     populateBankTable('taiwanTopBanksTable', banksJsonData.taiwan.banks, banksJsonData.taiwan.currency);
                 } else {
-                     populateBankTable('taiwanTopBanksTable', [], ''); 
+                    populateBankTable('taiwanTopBanksTable', [], ''); 
                 }
 
                 if (banksJsonData.germany) {
@@ -323,7 +484,7 @@
 
         // --- Initial Load ---
         async function initializePage() {
-            await displayTradeVisualizations();
+            await displayTradeVisualizations(); // This will now also trigger yearly balance chart
             await displayTopBanks();
         }
 
