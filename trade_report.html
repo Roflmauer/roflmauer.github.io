@@ -176,10 +176,13 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        const ALPHA_VANTAGE_API_KEY = "ODD2V19YX7IJRSCC"; // Your API Key
+        // === YOUR NEW PERSONAL API KEY ===
+        const ALPHA_VANTAGE_API_KEY = "H83U1JUK9AYBAKZT"; // <--- YOUR NEW KEY HERE
+        // =================================
         const AV_COUNTRY_GERMANY = "Germany";
-        const AV_COUNTRY_TAIWAN = "Taiwan";
+        const AV_COUNTRY_TAIWAN = "Taiwan"; // May need to be "Taiwan, Province of China" - test this
         const NUMBER_OF_YEARS_ECONOMIC_DATA = 10;
+        const PLACEHOLDER_API_KEY_STRING = "YOUR_ALPHA_VANTAGE_API_KEY"; // Generic placeholder string to check against
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
@@ -303,13 +306,10 @@
             }
         }
 
-        // --- Economic Data Functions (with DEBUG CONSOLE LOGS) ---
+        // --- Economic Data Functions (with DEBUG CONSOLE LOGS and new API key check) ---
         async function fetchEconomicData(indicator, country) {
-            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "" || ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
-                let warningMessage = "Alpha Vantage API Key not set or is a placeholder/demo key. Economic data will not be fetched.";
-                if (ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC" && ALPHA_VANTAGE_API_KEY !== "YOUR_ALPHA_VANTAGE_API_KEY") {
-                    warningMessage = "The Alpha Vantage API Key 'ODD2V19YX7IJRSCC' might be a demo key with very strict limits or could be invalid. Please use your personal API key for reliable data loading.";
-                }
+            if (ALPHA_VANTAGE_API_KEY === PLACEHOLDER_API_KEY_STRING || ALPHA_VANTAGE_API_KEY === "") {
+                const warningMessage = "Alpha Vantage API Key is missing or is a placeholder. Economic data will not be fetched.";
                 console.warn(warningMessage);
                 throw new Error("API Key Issue: " + warningMessage);
             }
@@ -332,7 +332,8 @@
 
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`Failed to fetch ${indicator} for ${country}: ${response.status}`);
+                 const errorText = await response.text(); // Try to get more details from response body
+                throw new Error(`Failed to fetch ${indicator} for ${country}: ${response.status} ${response.statusText}. Response: ${errorText}`);
             }
             const result = await response.json();
             // --- DEBUG: Log RAW API RESPONSE ---
@@ -343,19 +344,23 @@
                 console.warn(`Alpha Vantage API call limit likely reached for ${indicator} ${country}. Data: `, result.Information);
                 throw new Error(`API Limit Reached for ${indicator} ${country}`);
             }
-            if (result["Error Message"]){
+            if (result["Error Message"]){ // Typically indicates an issue with the API call parameters or key
                 console.warn(`Alpha Vantage API error for ${indicator} ${country}: ${result["Error Message"]}`);
                 throw new Error(`API Error for ${indicator} ${country}: ${result["Error Message"]}`);
             }
+            // Check for a "Note" which often indicates a premium feature or incorrect parameter for free tier
+            if (result.Note) {
+                 console.warn(`Note from Alpha Vantage for ${indicator} - ${country}: ${result.Note}`);
+                 // If the note implies data isn't available (e.g. premium feature), treat as no data
+                 if (result.Note.toLowerCase().includes("premium") || result.Note.toLowerCase().includes("not available")) {
+                    return [];
+                 }
+            }
+
 
             if (!result.data || result.data.length === 0) {
-                if (result.Note && country === AV_COUNTRY_TAIWAN) {
-                     console.warn(`Note from API for ${indicator} for ${country}: ${result.Note}. This might indicate no direct data under this name.`);
-                } else if (result.Information && country === AV_COUNTRY_TAIWAN){
-                     console.warn(`Information from API for ${indicator} for ${country}: ${result.Information}.`);
-                } else {
-                     console.warn(`No data array found for ${indicator} for ${country}. Response:`, result);
-                }
+                // This block might now be covered by the "Note" or "Error Message" check above for many cases
+                console.warn(`No data array found or data array is empty for ${indicator} for ${country}. Response:`, result);
                 return [];
             }
 
@@ -394,15 +399,19 @@
         function createEconomicChart(canvasId, chartLabelPrefix, dataTW, dataDE) {
             const ctx = document.getElementById(canvasId).getContext('2d');
 
-            const allYears = [...new Set([...dataTW.map(d => d.date.getFullYear()), ...dataDE.map(d => d.date.getFullYear())])].sort((a,b) => a - b);
+            // Ensure dataTW and dataDE are arrays before mapping
+            const yearsTW = Array.isArray(dataTW) ? dataTW.map(d => d.date.getFullYear()) : [];
+            const yearsDE = Array.isArray(dataDE) ? dataDE.map(d => d.date.getFullYear()) : [];
+
+            const allYears = [...new Set([...yearsTW, ...yearsDE])].sort((a,b) => a - b);
             const limitedYears = allYears.slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
 
             const twValues = limitedYears.map(year => {
-                const entry = dataTW.find(d => d.date.getFullYear() === year);
+                const entry = Array.isArray(dataTW) ? dataTW.find(d => d.date.getFullYear() === year) : undefined;
                 return entry ? entry.value : null;
             });
             const deValues = limitedYears.map(year => {
-                const entry = dataDE.find(d => d.date.getFullYear() === year);
+                const entry = Array.isArray(dataDE) ? dataDE.find(d => d.date.getFullYear() === year) : undefined;
                 return entry ? entry.value : null;
             });
 
@@ -458,16 +467,15 @@
 
             loadingEconomicEl.style.display = 'block';
             errorEconomicEl.style.display = 'none';
+            errorEconomicEl.textContent = '';
             economicDataContentEl.style.display = 'none';
 
-            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY" || ALPHA_VANTAGE_API_KEY === "" || ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
-                let warningMessage = "Alpha Vantage API Key is missing or is a placeholder/demo key. Economic indicators cannot be loaded.";
-                 if (ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC" && ALPHA_VANTAGE_API_KEY !== "YOUR_ALPHA_VANTAGE_API_KEY") {
-                    warningMessage = "The Alpha Vantage API Key 'ODD2V19YX7IJRSCC' might be a demo key with very strict limits or could be invalid. Please use your personal API key for reliable data loading.";
-                }
+            if (ALPHA_VANTAGE_API_KEY === PLACEHOLDER_API_KEY_STRING || ALPHA_VANTAGE_API_KEY === "") {
+                const warningMessage = "Alpha Vantage API Key is missing or is the default placeholder. Please replace it with your personal key. Economic indicators cannot be loaded.";
                 loadingEconomicEl.style.display = 'none';
                 errorEconomicEl.textContent = warningMessage;
                 errorEconomicEl.style.display = 'block';
+                console.warn(warningMessage);
                 return;
             }
 
@@ -485,6 +493,7 @@
                 const inflationDE = results[3].status === 'fulfilled' ? results[3].value : [];
 
                 let hasFetchError = false;
+                let specificErrorMessages = [];
                 results.forEach((result, index) => {
                     if (result.status === 'rejected') {
                         hasFetchError = true;
@@ -492,15 +501,19 @@
                         const countryIndex = index % 2;
                         const indicatorName = ['GDP', 'INFLATION'][indicatorIndex];
                         const countryName = countryIndex === 0 ? AV_COUNTRY_TAIWAN : AV_COUNTRY_GERMANY;
+                        const reasonMessage = result.reason && result.reason.message ? result.reason.message : "Unknown fetch error";
                         console.error(`Failed to fetch ${indicatorName} for ${countryName}:`, result.reason);
-                         if (errorEconomicEl.textContent === "" || errorEconomicEl.textContent.includes("API Key Issue")) {
-                            errorEconomicEl.textContent = `Error loading some economic data: ${result.reason.message}. Check console.`;
-                            errorEconomicEl.style.display = 'block';
-                        } else if (!errorEconomicEl.textContent.includes(result.reason.message)) {
-                            errorEconomicEl.textContent += ` | ${result.reason.message}`;
+                        if (!specificErrorMessages.includes(reasonMessage)) {
+                            specificErrorMessages.push(reasonMessage);
                         }
                     }
                 });
+
+                if (hasFetchError) {
+                    errorEconomicEl.textContent = `Error loading some economic data: ${specificErrorMessages.join(' | ')}. Check console.`;
+                    errorEconomicEl.style.display = 'block';
+                }
+
 
                 loadingEconomicEl.style.display = 'none';
                 economicDataContentEl.style.display = 'block';
@@ -511,16 +524,16 @@
                 document.getElementById('inflation-de-kpi').textContent = inflationDE.length ? formatPercentage(inflationDE[inflationDE.length - 1].value) : 'N/A';
 
                 if (gdpTW.length || gdpDE.length) createEconomicChart('gdpChart', 'GDP Growth', gdpTW, gdpDE);
-                else document.getElementById('gdpChart').parentElement.innerHTML = '<p class="error-economic">GDP data unavailable for charting.</p>';
+                else document.getElementById('gdpChart').parentElement.innerHTML = '<p class="error-economic">GDP data currently unavailable for charting.</p>';
 
                 if (inflationTW.length || inflationDE.length) createEconomicChart('inflationChart', 'Inflation', inflationTW, inflationDE);
-                else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">Inflation data unavailable for charting.</p>';
+                else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">Inflation data currently unavailable for charting.</p>';
 
-            } catch (error) {
+            } catch (error) { 
                 console.error("General error in displayEconomicIndicators:", error);
                 loadingEconomicEl.style.display = 'none';
-                if (!errorEconomicEl.textContent || errorEconomicEl.textContent.includes("API Key Issue")) { 
-                    errorEconomicEl.textContent = `A general error occurred: ${error.message}. Check console.`;
+                 if (!errorEconomicEl.textContent || errorEconomicEl.textContent.includes("API Key Issue")) { 
+                    errorEconomicEl.textContent = `A general unexpected error occurred: ${error.message}. Check console.`;
                     errorEconomicEl.style.display = 'block';
                 }
             }
