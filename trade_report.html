@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan-Germany Trade Data</title> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Taiwan-Germany Trade & Taiwan Banking Overview</title> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         body {
@@ -21,7 +21,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        h1, h2 {
+        h1, h2, h3 {
             text-align: center;
             color: #333;
         }
@@ -55,19 +55,66 @@
         .chart-wrapper {
             margin-bottom: 40px;
         }
-        #loadingMessage, #errorMessage { /* Removed economic status messages */
+        #loadingMessage, #errorMessage,
+        #loadingTaiwanBankingMessage, #errorTaiwanBankingMessage,
+        #loadingTopBanksMessage, #errorTopBanksMessage {
             text-align: center;
             font-size: 1.2em;
             padding: 20px;
         }
-        #errorMessage {
+        #errorMessage, #errorTaiwanBankingMessage, #errorTopBanksMessage {
             color: red;
+        }
+        .data-section { /* Generic class for new sections */
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+        .chart-grid { /* For side-by-side charts if needed */
+            display: grid;
+            grid-template-columns: 1fr; /* Default to 1 column */
+            gap: 30px;
+        }
+        .chart-container-small { /* For banking overview charts */
+            height: 350px; /* Adjust as needed */
+            margin-bottom:20px;
+        }
+        .bank-list-section-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        .bank-list-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px; /* Adjusted for better fit */
+            margin-bottom: 20px;
+        }
+        table.styled-table { /* Class for bank tables */
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        table.styled-table th, table.styled-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        table.styled-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        table.styled-table td:last-child {
+            text-align: right;
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <h1>Taiwan-Germany Trade Overview</h1> <div class="kpi-container">
+        <h1>Taiwan-Germany Trade & Taiwan Banking Overview</h1>
+
+        <div class="kpi-container">
             <div class="kpi">
                 <h3>Latest Imports (Trade)</h3>
                 <p id="latestImportValue">---</p>
@@ -89,7 +136,62 @@
         <div id="loadingMessage">Loading trade data...</div>
         <div id="errorMessage" style="display:none;"></div>
 
-        </div>
+        <section class="data-section taiwan-banking-overview-section">
+            <h2 id="taiwanBankingTitle">Overview of Taiwan's Domestic Banking Sector</h2>
+            <p style="text-align: center; font-style: italic;" id="taiwanBankingSource"></p>
+            <div id="taiwanBankingChartsContainer" style="display:none;">
+                <div class="chart-grid">
+                    <div class="chart-container-small">
+                        <h3 style="text-align:center;">Total Assets & Profit Before Tax</h3>
+                        <canvas id="taiwanAssetsProfitChart"></canvas>
+                    </div>
+                    <div class="chart-container-small">
+                        <h3 style="text-align:center;">ROA & ROE</h3>
+                        <canvas id="taiwanRatiosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="loadingTaiwanBankingMessage">Loading Taiwan banking overview data...</div>
+            <div id="errorTaiwanBankingMessage" style="display:none;"></div>
+        </section>
+
+        <section class="data-section top-banks-section">
+            <h2>Top 5 Banks by Total Assets</h2>
+            <p style="text-align: center; font-style: italic;" id="banksDataAsOf">Data as of: Researching...</p>
+            <div class="bank-list-section-container">
+                <div class="bank-list-container">
+                    <h3>Taiwan <span id="taiwanBankCurrency" style="font-size: 0.8em; font-weight: normal;"></span></h3>
+                    <table id="taiwanTopBanksTable" class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Bank Name</th>
+                                <th>Total Assets</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+                <div class="bank-list-container">
+                    <h3>Germany <span id="germanyBankCurrency" style="font-size: 0.8em; font-weight: normal;"></span></h3>
+                    <table id="germanyTopBanksTable" class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Bank Name</th>
+                                <th>Total Assets</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="loadingTopBanksMessage">Loading top banks data...</div>
+            <div id="errorTopBanksMessage" style="display:none;"></div>
+        </section>
+    </div>
 
     <script>
         // --- Configuration ---
@@ -98,7 +200,8 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        // Economic data configurations removed for now
+        const TAIWAN_BANKING_DATA_FILE = 'taiwan_banking_overview_data.json'; // From your image transcription
+        const TOP_BANKS_DATA_FILE = 'top_banks_data.json'; // You will create this
 
         // --- Helper Functions ---
         function formatCurrency(value, symbol) {
@@ -106,9 +209,12 @@
             return symbol + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         }
 
-        // formatPercentage function can be removed if no longer used by any part
+        function formatPercentage(value) { // Needed for ROA/ROE charts
+            if (value === null || value === undefined || isNaN(parseFloat(value))) return 'N/A';
+            return parseFloat(value).toFixed(2) + '%';
+        }
 
-        // --- Trade Data Functions ---
+        // --- Trade Data Functions (Keep as is) ---
         async function fetchTradeData(fileName) {
             try {
                 const response = await fetch(fileName);
@@ -141,25 +247,19 @@
             try {
                 const importData = await fetchTradeData(TRADE_IMPORT_FILE_NAME);
                 const exportData = await fetchTradeData(TRADE_EXPORT_FILE_NAME);
-
                 loadingMessageEl.style.display = 'none';
-
                 if (!importData.length || !exportData.length) {
                    throw new Error("No trade data points found after processing files.");
                 }
-
                 const labels = importData.map(item => item.date);
                 const importValues = importData.map(item => item.value);
                 const exportValues = exportData.map(item => item.value);
-
                 const latestImport = importData[importData.length - 1];
                 const latestExport = exportData[exportData.length - 1];
-
                 document.getElementById('latestImportValue').textContent = formatCurrency(latestImport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestExportValue').textContent = formatCurrency(latestExport.value, TRADE_CURRENCY_SYMBOL);
                 document.getElementById('latestTradeBalance').textContent = formatCurrency(latestExport.value - latestImport.value, TRADE_CURRENCY_SYMBOL);
                 chartTitleTradeEl.textContent = `Trade Value (${TRADE_CURRENCY_CODE}) Over Time`;
-
                 const ctx = document.getElementById('tradeChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
@@ -169,40 +269,27 @@
                             {
                                 label: 'Imports from Germany',
                                 data: importValues,
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                                tension: 0.1,
-                                fill: true,
+                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                tension: 0.1, fill: true,
                             },
                             {
                                 label: 'Exports to Germany',
                                 data: exportValues,
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                                tension: 0.1,
-                                fill: true,
+                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                tension: 0.1, fill: true,
                             }
                         ]
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
+                        responsive: true, maintainAspectRatio: true,
                         scales: {
-                            x: {
-                                type: 'time',
-                                time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }},
-                                title: { display: true, text: 'Date' }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` },
-                                ticks: {
-                                    callback: function(value) {
-                                        if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
-                                        if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
-                                        return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
-                                    }
-                                }
+                            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM yy', displayFormats: { month: 'MMM yy', year: 'yyyy' }}, title: { display: true, text: 'Date' }},
+                            y: { beginAtZero: true, title: { display: true, text: `Trade Value (${TRADE_CURRENCY_CODE})` },
+                                ticks: { callback: function(value) {
+                                    if (Math.abs(value) >= 1e9) return TRADE_CURRENCY_SYMBOL + (value / 1e9).toFixed(1) + 'B';
+                                    if (Math.abs(value) >= 1e6) return TRADE_CURRENCY_SYMBOL + (value / 1e6).toFixed(1) + 'M';
+                                    return TRADE_CURRENCY_SYMBOL + value.toLocaleString('en-US');
+                                }}
                             }
                         },
                         plugins: {
@@ -219,12 +306,216 @@
             }
         }
 
-        // Economic Data Functions (fetchEconomicData, createEconomicChart, displayEconomicIndicators) removed for now
+        // --- Taiwan Banking Overview Functions ---
+        async function fetchTaiwanBankingData() {
+            try {
+                const response = await fetch(TAIWAN_BANKING_DATA_FILE);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} for ${TAIWAN_BANKING_DATA_FILE}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error(`Error fetching or parsing ${TAIWAN_BANKING_DATA_FILE}:`, error);
+                throw error;
+            }
+        }
+
+        function displayTaiwanBankingOverview() {
+            const loadingEl = document.getElementById('loadingTaiwanBankingMessage');
+            const errorEl = document.getElementById('errorTaiwanBankingMessage');
+            const titleEl = document.getElementById('taiwanBankingTitle');
+            const sourceEl = document.getElementById('taiwanBankingSource');
+            const chartsContainerEl = document.getElementById('taiwanBankingChartsContainer');
+
+
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            chartsContainerEl.style.display = 'none';
+
+
+            fetchTaiwanBankingData().then(data => {
+                loadingEl.style.display = 'none';
+                chartsContainerEl.style.display = 'block';
+                titleEl.textContent = data.title || "Overview of Taiwan's Domestic Banking Sector";
+                sourceEl.textContent = data.source || "";
+
+                if (!data.annual_data || data.annual_data.length === 0) {
+                    throw new Error("No annual data found in Taiwan banking overview file.");
+                }
+
+                const years = data.annual_data.map(d => d.gregorian_year);
+                const totalAssets = data.annual_data.map(d => d.total_assets / 10000); // NT$100M to NT$ Trillion
+                const profitBeforeTax = data.annual_data.map(d => d.profit_before_tax);
+                const roa = data.annual_data.map(d => d.roa);
+                const roe = data.annual_data.map(d => d.roe);
+
+                const ctxAssetsProfit = document.getElementById('taiwanAssetsProfitChart').getContext('2d');
+                new Chart(ctxAssetsProfit, {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: 'Total Assets (NT$ Trillion)', data: totalAssets,
+                                borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                yAxisID: 'yAssets', tension: 0.1, fill: false
+                            },
+                            {
+                                label: `Profit Before Tax (${data.unit_assets_profit || 'NT$ 100M'})`, data: profitBeforeTax,
+                                borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                yAxisID: 'yProfit', tension: 0.1, fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            x: { title: { display: true, text: 'Year' }},
+                            yAssets: {
+                                type: 'linear', position: 'left', title: { display: true, text: 'Total Assets (NT$ Trillion)' },
+                                ticks: { callback: value => value.toFixed(1) + 'T' }
+                            },
+                            yProfit: {
+                                type: 'linear', position: 'right', title: { display: true, text: `Profit Before Tax (${data.unit_assets_profit || 'NT$ 100M'})` },
+                                grid: { drawOnChartArea: false }, ticks: { callback: value => value.toLocaleString() }
+                            }
+                        },
+                        plugins: { tooltip: { mode: 'index', intersect: false } }
+                    }
+                });
+
+                const ctxRatios = document.getElementById('taiwanRatiosChart').getContext('2d');
+                new Chart(ctxRatios, {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: 'Return on Assets (ROA %)', data: roa,
+                                borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                                tension: 0.1, fill: false
+                            },
+                            {
+                                label: 'Return on Equity (ROE %)', data: roe,
+                                borderColor: 'rgba(153, 102, 255, 1)', backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                                tension: 0.1, fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            x: { title: { display: true, text: 'Year' }},
+                            y: { title: { display: true, text: 'Percentage (%)' },
+                                ticks: { callback: value => formatPercentage(value) }
+                            }
+                        },
+                        plugins: { tooltip: { mode: 'index', intersect: false, callbacks: {label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed.y !== null) { label += formatPercentage(context.parsed.y); }
+                            return label;
+                        }}}}
+                    }
+                });
+            }).catch(error => {
+                console.error("Failed to display Taiwan banking overview:", error);
+                loadingEl.style.display = 'none';
+                errorEl.textContent = `Error loading Taiwan banking overview data: ${error.message}. Ensure '${TAIWAN_BANKING_DATA_FILE}' exists and is correct.`;
+                errorEl.style.display = 'block';
+                titleEl.textContent = "Could not load Taiwan Banking Overview";
+                chartsContainerEl.style.display = 'none';
+            });
+        }
+
+        // --- Top Banks Data Functions ---
+        async function fetchTopBanksData() {
+            try {
+                const response = await fetch(TOP_BANKS_DATA_FILE);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} for ${TOP_BANKS_DATA_FILE}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error(`Error fetching or parsing ${TOP_BANKS_DATA_FILE}:`, error);
+                throw error; // Re-throw to be caught by displayTopBanks
+            }
+        }
+
+        function populateBankTable(tableId, banksData) { // Currency already in span
+            const tableBody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+
+            if (!banksData || banksData.length === 0) {
+                const row = tableBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 3;
+                cell.textContent = 'Data to be researched.'; // Placeholder message
+                cell.style.textAlign = 'center';
+                return;
+            }
+
+            banksData.forEach(bank => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = bank.rank;
+                row.insertCell().textContent = bank.name;
+                const assetsCell = row.insertCell();
+                // Assuming bank.total_assets is a number
+                assetsCell.textContent = bank.total_assets.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+                if (bank.notes) { // Optionally display notes
+                    assetsCell.title = bank.notes;
+                }
+                assetsCell.style.textAlign = 'right';
+            });
+        }
+
+        async function displayTopBanks() {
+            const loadingEl = document.getElementById('loadingTopBanksMessage');
+            const errorEl = document.getElementById('errorTopBanksMessage');
+            const asOfEl = document.getElementById('banksDataAsOf');
+            const taiwanCurrencyEl = document.getElementById('taiwanBankCurrency');
+            const germanyCurrencyEl = document.getElementById('germanyBankCurrency');
+
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+
+            try {
+                const data = await fetchTopBanksData();
+                loadingEl.style.display = 'none';
+
+                asOfEl.textContent = data.data_as_of ? `Data as of: ${data.data_as_of}` : 'Data as of: To be determined';
+                
+                if (data.taiwan) {
+                    taiwanCurrencyEl.textContent = data.taiwan.currency ? `(${data.taiwan.currency})` : '';
+                    populateBankTable('taiwanTopBanksTable', data.taiwan.banks);
+                } else {
+                     populateBankTable('taiwanTopBanksTable', []); // Show placeholder
+                }
+
+                if (data.germany) {
+                    germanyCurrencyEl.textContent = data.germany.currency ? `(${data.germany.currency})` : '';
+                    populateBankTable('germanyTopBanksTable', data.germany.banks);
+                } else {
+                    populateBankTable('germanyTopBanksTable', []); // Show placeholder
+                }
+
+            } catch (error) {
+                console.error("Failed to display top banks data:", error);
+                loadingEl.style.display = 'none';
+                errorEl.textContent = `Error loading top banks data. Please create '${TOP_BANKS_DATA_FILE}'. (${error.message})`;
+                errorEl.style.display = 'block';
+                asOfEl.textContent = 'Could not load bank ranking data.';
+                populateBankTable('taiwanTopBanksTable', []);
+                populateBankTable('germanyTopBanksTable', []);
+            }
+        }
 
         // --- Initial Load ---
         async function initializePage() {
             await displayTradeVisualizations();
-            // Call to displayEconomicIndicators removed
+            await displayTaiwanBankingOverview();
+            await displayTopBanks();
         }
 
         initializePage();
