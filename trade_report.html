@@ -186,7 +186,7 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        const ALPHA_VANTAGE_API_KEY = "YOUR_ALPHA_VANTAGE_API_KEY"; // <-- REPLACE THIS WITH YOUR KEY
+        const ALPHA_VANTAGE_API_KEY = "ODD2V19YX7IJRSCC"; 
         const AV_COUNTRY_GERMANY = "Germany";
         const AV_COUNTRY_TAIWAN = "Taiwan"; // Alpha Vantage sometimes uses "Taiwan, Province of China". Test what works.
                                            // Or you might need to find specific series IDs from their docs for Taiwan.
@@ -319,7 +319,7 @@
 
         // --- Economic Data Functions ---
         async function fetchEconomicData(indicator, country) {
-            if (ALPHA_VANTAGE_API_KEY === "ODD2V19YX7IJRSCC") {
+            if (ALPHA_VANTAGE_API_KEY === "YOUR_ALPHA_VANTAGE_API_KEY") {
                 console.warn("Alpha Vantage API Key not set. Economic data will not be fetched.");
                 throw new Error("API Key Missing");
             }
