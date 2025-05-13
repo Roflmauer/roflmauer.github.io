@@ -3,77 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Overview of Taiwan's Domestic Banking Sector</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Overview of Taiwan's Domestic Banking Sector - Pierre Meyer</title>
+    <link href="styles.css" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a202c; /* Dark background for the page */
-            color: #e2e8f0; /* Light text color */
+            font-family: 'Montserrat', sans-serif; /* Matching your preferred page font */
+            /* Assuming background-color and base text color are handled by styles.css or your .background-animation */
+            /* These styles are specific to the banking charts section if not covered by Tailwind/styles.css */
+        }
+        .banking-charts-section { /* A wrapper for the banking charts content */
+            background-color: #1a202c; /* Dark background from previous chart page */
+            color: #e2e8f0; /* Light text color from previous chart page */
+            padding-top: 2rem;
+            padding-bottom: 2rem;
         }
         .chart-container {
-            background-color: #2d3748; /* Darker background for chart cards */
-            padding: 2rem; /* Padding around the content (title + chart) */
+            background-color: #2d3748; 
+            padding: 2rem; 
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            height: 450px; /* Fixed height for the container */
+            height: 450px; 
             display: flex;
-            flex-direction: column; /* Stack title and chart vertically */
+            flex-direction: column; 
         }
-        .chart-title { /* Renamed from .chart-container h2.chart-title for clarity */
-            font-size: 1.25rem; /* 20px */
-            font-weight: 600;
-            margin-bottom: 1rem; /* Reduced margin slightly */
+        .chart-title {
+            font-size: 1.25rem; 
+            font-weight: 600; /* Montserrat bold */
+            margin-bottom: 1rem;
             text-align: center;
-            color: #cbd5e0; /* Lighter title color */
-            flex-shrink: 0; /* Prevent title from shrinking if space is tight */
+            color: #cbd5e0; 
+            flex-shrink: 0;
         }
-
         .chart-container canvas {
-            display: block; /* Ensure canvas is block for layout */
-            width: 100%;   /* Canvas should take full width of its allocated space */
-            flex-grow: 1;  /* Canvas will take up remaining vertical space in the flex container */
-            min-height: 0; /* Crucial for flex items to shrink properly, prevents canvas from forcing container larger */
+            display: block;
+            width: 100%;
+            flex-grow: 1;
+            min-height: 0;
         }
+        /* Ensure Chart.js defaults align with Montserrat and dark theme if not overridden by global styles.css */
+        /* These might need adjustment based on your styles.css */
+        /* Chart.defaults.font.family = 'Montserrat'; */ /* This can be set in JS if needed */
+        Chart.defaults.color = '#a0aec0'; 
+        Chart.defaults.borderColor = '#4a5568'; 
+        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; 
 
-        /* Chart.js global defaults for dark theme */
-        Chart.defaults.color = '#a0aec0'; /* Default text color for chart elements (axes, ticks) */
-        Chart.defaults.borderColor = '#4a5568'; /* Default border color for chart elements (grid lines) */
-        Chart.defaults.plugins.legend.labels.color = '#cbd5e0'; /* Legend text color */
-
-        /* Loading and Error Message Styling */
         .message-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-grow: 1; /* If it's the only thing visible (before canvas or on error), it should fill available space */
+            flex-grow: 1;
             color: #cbd5e0;
             font-size: 1.1rem;
-            /* Removed height: 100% as flex-grow handles filling space */
         }
-
-        /* Basic styling for the inserted text block for better readability */
+        .explanation-text { /* For the text block we added */
+             color: #a0aec0; /* Base text color for paragraphs */
+        }
         .explanation-text h3 {
-            font-size: 1.75rem; /* Larger than chart titles */
-            font-weight: 700;
-            color: #e2e8f0; /* Main light text color */
+            font-size: 1.75rem;
+            font-weight: 700; /* Montserrat bold */
+            color: #e2e8f0;
             margin-top: 1.5rem;
             margin-bottom: 1rem;
             text-align: center;
         }
         .explanation-text h4 {
             font-size: 1.25rem;
-            font-weight: 600;
-            color: #cbd5e0; /* Slightly less prominent than h3 */
+            font-weight: 600; /* Montserrat bold */
+            color: #cbd5e0;
             margin-top: 1.25rem;
             margin-bottom: 0.75rem;
         }
         .explanation-text p, .explanation-text li {
             line-height: 1.6;
             margin-bottom: 0.75rem;
-            color: #a0aec0; /* Softer color for paragraph text */
         }
         .explanation-text ul {
             list-style-type: disc;
@@ -81,106 +88,124 @@
             margin-bottom: 1rem;
         }
         .explanation-text strong {
-            color: #cbd5e0; /* Make bold text a bit brighter */
+            color: #cbd5e0;
+            font-weight: 700; /* Montserrat bold */
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8">
+<body>
+    <div class="background-animation"></div>
 
-    <div class="w-full max-w-6xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl sm:text-4xl font-bold text-white">Overview of Taiwan's Domestic Banking Sector</h1>
-            <p class="text-lg text-slate-400 mt-2">Data reported by domestic banks</p>
-        </header>
+    <header>
+        <div class="container header-content-wrapper"> {/* Assuming .container and .header-content-wrapper are defined in styles.css */}
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> {/* Assuming .profile-pic-header is in styles.css */}
+            <div class="header-text"> {/* Assuming .header-text is in styles.css */}
+                <h1>Pierre Meyer</h1>
+                <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+            </div>
+        </div>
+    </header>
 
-        <div class="explanation-text max-w-4xl mx-auto mb-12 px-4"> 
-            <h3>Understanding Taiwan's Banking Sector Performance: A Story of Growth and Resilience</h3>
+    <main class="container"> {/* Assuming .container provides appropriate padding/max-width from styles.css */}
+        
+        <section class="banking-charts-section my-8"> {/* Added my-8 for vertical margin */}
+            <div class="w-full max-w-6xl mx-auto px-4 sm:px-0"> {/* Container for banking content, px-4 for small screens */}
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white"> {/* Adjusted for main page title style consistency */}
+                        Overview of Taiwan's Domestic Banking Sector
+                    </h1>
+                    <p class="text-lg text-slate-400 mt-2">Data reported by domestic banks</p>
+                </div>
 
-            <p>The data presented on this site offers a fascinating look into the Taiwanese domestic banking sector over more than two decades (2002-2023). Two key aspects stand out: a consistent long-term growth in both total assets and profitability, and a notable dip between 2004 and 2006 that highlights real-world economic impacts.</p>
+                <div class="grid grid-cols-1 gap-8">
+                    <div class="chart-container" id="totalAssetsContainer">
+                        <h2 class="chart-title">Total Assets of Domestic Banking Sector</h2>
+                        <canvas id="totalAssetsChart"></canvas>
+                        <div id="loadingTotalAssets" class="message-container">Loading data...</div>
+                    </div>
+                    <div class="chart-container" id="profitBeforeTaxContainer">
+                        <h2 class="chart-title">Profit Before Tax</h2>
+                        <canvas id="profitBeforeTaxChart"></canvas>
+                        <div id="loadingProfitBeforeTax" class="message-container">Loading data...</div>
+                    </div>
+                    <div class="chart-container" id="roaRoeContainer">
+                        <h2 class="chart-title">ROA & ROE</h2>
+                        <canvas id="roaAndRoeChart"></canvas>
+                        <div id="loadingRoaRoe" class="message-container">Loading data...</div>
+                    </div>
+                </div>
 
-            <h4>The Big Picture: Steady Upward Trajectory</h4>
-            <p>If you look at the graph for "Total Assets of Domestic Banking Sector," you'll see a remarkably steady climb over the 20-year period, rising from approximately NT$25 trillion in 2002 to around NT$65 trillion by 2023. Similarly, the "Profit Before Tax" graph, while showing more year-to-year fluctuations, demonstrates a clear overall trend of increasing profitability, remaining consistently positive and reaching significant peaks, especially in more recent years.</p>
-            <p>This long-term growth in assets and profitability is generally characteristic of a healthy, developing banking sector within an expanding economy like Taiwan's. Several factors contribute to this:</p>
-            <ul>
-                <li><strong>Economic Expansion:</strong> As Taiwan's economy has grown, so has the demand for banking services like loans and deposits, naturally increasing banks' asset bases.</li>
-                <li><strong>Financial Deepening:</strong> Mature economies often see their financial sectors grow, indicating increased financial activity relative to the overall economy.</li>
-                <li><strong>Retained Earnings & Reinvestment:</strong> Consistent profits allow banks to build capital and reinvest, further fueling asset growth.</li>
-            </ul>
-            <p>Generally, this sustained performance points to a stable and resilient banking environment.</p>
-
-            <h4>A Closer Look: The 2004-2006 Dip and the Credit Card Phenomenon</h4>
-            <p>While the long-term trend is upward, the graphs for "Profit Before Tax" and "Return on Equity (ROE)" show a distinct downturn between 2004 and 2006. Profit Before Tax, after a peak in 2004, declined noticeably in 2005 and 2006. Correspondingly, ROE, a key measure of how effectively shareholder investments are generating profits (ROE = Net Income / Shareholders' Equity ), also fell sharply during this time.</p>
-            <p>This dip wasn't an anomaly but was directly linked to a significant event in Taiwan's financial history: the <strong>credit card and cash card crisis</strong> (often termed the "dual-card crisis" or 「卡債風暴」).</p>
-            <ul>
-                <li><strong>The Context:</strong> In the early 2000s, Taiwanese banks engaged in aggressive marketing and issuance of credit cards and cash cards (a form of revolving personal loan). This led to a rapid increase in consumer credit, often extended with less stringent lending standards due to intense competition.</li>
-                <li><strong>The Crisis Unfolds:</strong> By 2005-2006, a substantial number of individuals found themselves over-leveraged and unable to repay their debts. This resulted in a surge in defaults and non-performing loans (NPLs) specifically from these card products.</li>
-                <li><strong>Impact on Bank Financials:</strong>
+                <div class="explanation-text max-w-4xl mx-auto mt-12 mb-6"> 
+                    <h3>Understanding Taiwan's Banking Sector Performance: A Story of Growth and Resilience</h3>
+                    <p>The data presented on this site offers a fascinating look into the Taiwanese domestic banking sector over more than two decades (2002-2023). Two key aspects stand out: a consistent long-term growth in both total assets and profitability, and a notable dip between 2004 and 2006 that highlights real-world economic impacts.</p>
+                    <h4>The Big Picture: Steady Upward Trajectory</h4>
+                    <p>If you look at the graph for "Total Assets of Domestic Banking Sector," you'll see a remarkably steady climb over the 20-year period, rising from approximately NT$25 trillion in 2002 to around NT$65 trillion by 2023. Similarly, the "Profit Before Tax" graph, while showing more year-to-year fluctuations, demonstrates a clear overall trend of increasing profitability, remaining consistently positive and reaching significant peaks, especially in more recent years.</p>
+                    <p>This long-term growth in assets and profitability is generally characteristic of a healthy, developing banking sector within an expanding economy like Taiwan's. Several factors contribute to this:</p>
                     <ul>
-                        <li><strong>Reduced Profits:</strong> To cover the losses from these bad debts, banks had to significantly increase their <strong>loan loss provisions</strong> (money set aside to cover expected defaults) and undertake substantial <strong>write-offs</strong> (removing unrecoverable loans from their books). Both provisions and write-offs are expenses that directly reduce a bank's Profit Before Tax.</li>
-                        <li><strong>Lower ROE:</strong> With Profit Before Tax (and consequently Net Income) falling due to these increased expenses, the ROE naturally declined. This illustrates how a crisis in a specific lending segment can impact overall bank profitability and returns to shareholders.</li>
+                        <li><strong>Economic Expansion:</strong> As Taiwan's economy has grown, so has the demand for banking services like loans and deposits, naturally increasing banks' asset bases.</li>
+                        <li><strong>Financial Deepening:</strong> Mature economies often see their financial sectors grow, indicating increased financial activity relative to the overall economy.</li>
+                        <li><strong>Retained Earnings & Reinvestment:</strong> Consistent profits allow banks to build capital and reinvest, further fueling asset growth.</li>
                     </ul>
-                </li>
-            </ul>
-            <p>The dip in your graphs during 2005-2006 clearly visualizes the financial impact of this real-world event on the banking sector.</p>
+                    <p>Generally, this sustained performance points to a stable and resilient banking environment.</p>
+                    <h4>A Closer Look: The 2004-2006 Dip and the Credit Card Phenomenon</h4>
+                    <p>While the long-term trend is upward, the graphs for "Profit Before Tax" and "Return on Equity (ROE)" show a distinct downturn between 2004 and 2006. Profit Before Tax, after a peak in 2004, declined noticeably in 2005 and 2006. Correspondingly, ROE, a key measure of how effectively shareholder investments are generating profits (ROE = Net Income / Shareholders' Equity ), also fell sharply during this time.</p>
+                    <p>This dip wasn't an anomaly but was directly linked to a significant event in Taiwan's financial history: the <strong>credit card and cash card crisis</strong> (often termed the "dual-card crisis" or 「卡債風暴」).</p>
+                    <ul>
+                        <li><strong>The Context:</strong> In the early 2000s, Taiwanese banks engaged in aggressive marketing and issuance of credit cards and cash cards (a form of revolving personal loan). This led to a rapid increase in consumer credit, often extended with less stringent lending standards due to intense competition.</li>
+                        <li><strong>The Crisis Unfolds:</strong> By 2005-2006, a substantial number of individuals found themselves over-leveraged and unable to repay their debts. This resulted in a surge in defaults and non-performing loans (NPLs) specifically from these card products.</li>
+                        <li><strong>Impact on Bank Financials:</strong>
+                            <ul>
+                                <li><strong>Reduced Profits:</strong> To cover the losses from these bad debts, banks had to significantly increase their <strong>loan loss provisions</strong> (money set aside to cover expected defaults) and undertake substantial <strong>write-offs</strong> (removing unrecoverable loans from their books). Both provisions and write-offs are expenses that directly reduce a bank's Profit Before Tax.</li>
+                                <li><strong>Lower ROE:</strong> With Profit Before Tax (and consequently Net Income) falling due to these increased expenses, the ROE naturally declined. This illustrates how a crisis in a specific lending segment can impact overall bank profitability and returns to shareholders.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>The dip in your graphs during 2005-2006 clearly visualizes the financial impact of this real-world event on the banking sector.</p>
+                    <h4>Resilience and Recovery</h4>
+                    <p>Importantly, the story doesn't end with the downturn. The graphs also show that following this challenging period, Taiwanese banks managed to recover. Profits and ROE began to climb again in subsequent years, demonstrating the resilience of the sector and the effectiveness of measures taken to address the crisis. This recovery and return to long-term growth underscores the underlying stability of Taiwan's banking system.</p>
+                    <p>In summary, the data reveals that while Taiwan's banking sector has enjoyed robust long-term growth in assets and profitability, it, like any financial system, is subject to economic cycles and specific challenges. The 2004-2006 period serves as a clear example of how external events can impact financial performance, and how understanding these relationships provides a richer context to the numbers.</p>
+                </div>
+            </div>
+        </section>
+        </main>
 
-            <h4>Resilience and Recovery</h4>
-            <p>Importantly, the story doesn't end with the downturn. The graphs also show that following this challenging period, Taiwanese banks managed to recover. Profits and ROE began to climb again in subsequent years, demonstrating the resilience of the sector and the effectiveness of measures taken to address the crisis. This recovery and return to long-term growth underscores the underlying stability of Taiwan's banking system.</p>
-            <p>In summary, the data reveals that while Taiwan's banking sector has enjoyed robust long-term growth in assets and profitability, it, like any financial system, is subject to economic cycles and specific challenges. The 2004-2006 period serves as a clear example of how external events can impact financial performance, and how understanding these relationships provides a richer context to the numbers.</p>
+    <footer>
+        <div class="container"> {/* Assuming .container is defined in styles.css */}
+            <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+            <p><a href="index.html">Back to Home</a></p>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8"> <div class="chart-container" id="totalAssetsContainer">
-                <h2 class="chart-title">Total Assets of Domestic Banking Sector</h2>
-                <canvas id="totalAssetsChart"></canvas>
-                <div id="loadingTotalAssets" class="message-container">Loading data...</div>
-            </div>
-
-            <div class="chart-container" id="profitBeforeTaxContainer">
-                <h2 class="chart-title">Profit Before Tax</h2>
-                <canvas id="profitBeforeTaxChart"></canvas>
-                <div id="loadingProfitBeforeTax" class="message-container">Loading data...</div>
-            </div>
-
-            <div class="chart-container" id="roaRoeContainer">
-                <h2 class="chart-title">ROA & ROE</h2>
-                <canvas id="roaAndRoeChart"></canvas>
-                <div id="loadingRoaRoe" class="message-container">Loading data...</div>
-            </div>
-        </div>
-
-        <footer class="text-center mt-12 py-6 border-t border-slate-700">
-            <p class="text-sm text-slate-500">&copy; 2025 Pierre Meyer | <a href="#" class="hover:text-slate-300">Contact Me</a></p>
-            <a href="#" class="mt-2 inline-block text-sm text-blue-400 hover:text-blue-300">Back to Home</a>
-        </footer>
-    </div>
+    </footer>
 
     <script>
-        // Function to display an error message in a chart container
+        // --- JavaScript for Banking Sector Charts ---
+        // (This is the same script from your previous banking_overview.html,
+        // with error handling and chart initialization for totalAssets, profitBeforeTax, and roaRoe)
+
         function displayChartError(containerId, canvasId, message) {
             const container = document.getElementById(containerId);
             const canvas = document.getElementById(canvasId);
-            const loadingMessage = container.querySelector('.message-container'); // Target specific loading message
+            const loadingMessage = container.querySelector('.message-container'); 
             
-            if (canvas) canvas.style.display = 'none'; // Hide canvas
+            if (canvas) canvas.style.display = 'none'; 
 
-            // Ensure loading message exists and is targeted correctly
-            const specificLoadingMsg = document.getElementById('loading' + canvasId.replace('Chart', '').replace('AndR', 'R')); // Adjusted for RoaRoe id
+            const specificLoadingMsg = document.getElementById('loading' + canvasId.replace('Chart', '').replace('AndR', 'R')); 
             if (specificLoadingMsg) {
                 specificLoadingMsg.textContent = message;
-                specificLoadingMsg.style.color = '#f56565'; // Red color for error
-                specificLoadingMsg.style.display = 'flex'; // Ensure it's visible
-            } else if (loadingMessage) { // Fallback to generic message-container if specific one not found
+                specificLoadingMsg.style.color = '#f56565'; 
+                specificLoadingMsg.style.display = 'flex'; 
+            } else if (loadingMessage) { 
                 loadingMessage.textContent = message;
                 loadingMessage.style.color = '#f56565';
                 loadingMessage.style.display = 'flex';
-            } else { // Absolute fallback: create error div
+            } else { 
                 const errorDiv = document.createElement('div');
-                errorDiv.className = 'message-container'; // Re-add class for styling
+                errorDiv.className = 'message-container'; 
                 errorDiv.style.color = '#f56565';
-                errorDiv.style.display = 'flex'; // Ensure it's visible and styled
+                errorDiv.style.display = 'flex'; 
                 errorDiv.style.justifyContent = 'center';
                 errorDiv.style.alignItems = 'center';
                 errorDiv.style.flexGrow = '1';
                 errorDiv.textContent = message;
-                // Try to append it after the title if possible
                 const titleEl = container.querySelector('.chart-title');
                 if (titleEl && titleEl.nextSibling) {
                     container.insertBefore(errorDiv, titleEl.nextSibling);
@@ -190,84 +215,50 @@
             }
         }
 
-        // Chart.js configurations
         const commonChartOptions = (yAxisLabel) => ({
             responsive: true,
-            maintainAspectRatio: false, // Important for chart to fill container height
+            maintainAspectRatio: false, 
             scales: {
                 x: {
-                    title: {
-                        display: true,
-                        text: 'Year',
-                        color: '#a0aec0'
-                    },
-                    grid: {
-                        color: '#4a5568' // X-axis grid lines
-                    },
-                    ticks: {
-                        color: '#a0aec0' // X-axis ticks color
-                    }
+                    title: { display: true, text: 'Year', color: '#a0aec0', font: { family: 'Montserrat'} },
+                    grid: { color: '#4a5568' },
+                    ticks: { color: '#a0aec0', font: { family: 'Montserrat'} }
                 },
                 y: {
-                    title: {
-                        display: true,
-                        text: yAxisLabel,
-                        color: '#a0aec0'
-                    },
-                    beginAtZero: false, // Allow negative values if necessary
-                    grid: {
-                        color: '#4a5568' // Y-axis grid lines
-                    },
+                    title: { display: true, text: yAxisLabel, color: '#a0aec0', font: { family: 'Montserrat'} },
+                    beginAtZero: false, 
+                    grid: { color: '#4a5568' },
                     ticks: {
-                        color: '#a0aec0', // Y-axis ticks color
-                        callback: function(value, index, values) {
-                            if (yAxisLabel.includes('%')) {
-                                return value.toLocaleString() + '%'; // Add toLocaleString for consistency
-                            }
-                            return value.toLocaleString(); // Format other numbers as well
+                        color: '#a0aec0', font: { family: 'Montserrat'},
+                        callback: function(value) {
+                            if (yAxisLabel.includes('%')) { return value.toLocaleString() + '%'; }
+                            return value.toLocaleString(); 
                         }
                     }
                 }
             },
             plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#cbd5e0' // Legend text color
-                    }
-                },
+                legend: { position: 'top', labels: { color: '#cbd5e0', font: { family: 'Montserrat'} }},
                 tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: 'rgba(0,0,0,0.7)',
-                    titleColor: '#ffffff',
-                    bodyColor: '#ffffff',
+                    mode: 'index', intersect: false, backgroundColor: 'rgba(0,0,0,0.7)', titleColor: '#ffffff', bodyColor: '#ffffff',
+                    titleFont: { family: 'Montserrat' }, bodyFont: { family: 'Montserrat' },
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
+                            if (label) { label += ': '; }
                             if (context.parsed.y !== null) {
                                 label += context.parsed.y.toLocaleString();
-                                if (context.chart.options.scales.y.title.text.includes('%')) {
-                                    label += '%';
-                                }
+                                if (context.chart.options.scales.y.title.text.includes('%')) { label += '%'; }
                             }
                             return label;
                         }
                     }
                 }
             },
-            interaction: {
-                mode: 'nearest',
-                axis: 'x',
-                intersect: false
-            }
+            interaction: { mode: 'nearest', axis: 'x', intersect: false }
         });
 
-        // Function to initialize charts with fetched data
-        async function initializeCharts() {
+        async function initializeBankingCharts() { // Renamed to avoid conflict if other JS is present
             const chartConfigs = [
                 { id: 'TotalAssets', title: 'Total Assets', yLabel: 'NT$ Trillion', containerId: 'totalAssetsContainer', canvasId: 'totalAssetsChart', dataKey: 'total_assets', divisor: 10000 },
                 { id: 'ProfitBeforeTax', title: 'Profit Before Tax', yLabel: 'NT$ Hundred Million', containerId: 'profitBeforeTaxContainer', canvasId: 'profitBeforeTaxChart', dataKey: 'profit_before_tax', divisor: 1 },
@@ -275,24 +266,19 @@
             ];
 
             try {
-                const response = await fetch('taiwan_banking_overview_data.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - Could not load data file. Check path & file existence.`);
-                }
+                const response = await fetch('taiwan_banking_overview_data.json'); // Ensure this JSON file is accessible
+                if (!response.ok) { throw new Error(`HTTP error! status: ${response.status} - Could not load banking data.`); }
                 const jsonData = await response.json();
-
                 if (!jsonData.annual_data || !Array.isArray(jsonData.annual_data) || jsonData.annual_data.length === 0) {
-                    throw new Error('JSON data is missing "annual_data" array or it is empty.');
+                    throw new Error('Banking JSON data "annual_data" is missing or empty.');
                 }
-
                 const years = jsonData.annual_data.map(item => item.gregorian_year.toString());
 
                 chartConfigs.forEach(config => {
                     const loadingElement = document.getElementById('loading' + config.id);
                     if (loadingElement) loadingElement.style.display = 'none';
-                    
                     const canvasElement = document.getElementById(config.canvasId);
-                    if(canvasElement) canvasElement.style.display = 'block'; // Make canvas visible
+                    if(canvasElement) canvasElement.style.display = 'block';
 
                     const ctx = canvasElement.getContext('2d');
                     let datasets;
@@ -301,18 +287,8 @@
                         const roaData = jsonData.annual_data.map(item => item.roa);
                         const roeData = jsonData.annual_data.map(item => item.roe);
                         datasets = [
-                            {
-                                label: 'Return on Assets (ROA %)',
-                                data: roaData,
-                                borderColor: 'rgb(20, 184, 166)', backgroundColor: 'rgba(20, 184, 166, 0.1)',
-                                borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(20, 184, 166)'
-                            },
-                            {
-                                label: 'Return on Equity (ROE %)',
-                                data: roeData,
-                                borderColor: 'rgb(139, 92, 246)', backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(139, 92, 246)'
-                            }
+                            { label: 'Return on Assets (ROA %)', data: roaData, borderColor: 'rgb(20, 184, 166)', backgroundColor: 'rgba(20, 184, 166, 0.1)', borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(20, 184, 166)'},
+                            { label: 'Return on Equity (ROE %)', data: roeData, borderColor: 'rgb(139, 92, 246)', backgroundColor: 'rgba(139, 92, 246, 0.1)', borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: 'rgb(139, 92, 246)'}
                         ];
                     } else {
                         const chartData = jsonData.annual_data.map(item => parseFloat((item[config.dataKey] / config.divisor).toFixed(2)));
@@ -322,36 +298,22 @@
                         } else { // ProfitBeforeTax
                             borderColor = 'rgb(236, 72, 153)'; backgroundColor = 'rgba(236, 72, 153, 0.1)'; pointBackgroundColor = 'rgb(236, 72, 153)';
                         }
-                        datasets = [{
-                            label: `${config.title} (${config.yLabel.split('(')[1] ? config.yLabel.split('(')[1].replace(')','') : config.yLabel})`, // Extract unit for label
-                            data: chartData,
-                            borderColor: borderColor, backgroundColor: backgroundColor,
-                            borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: pointBackgroundColor
-                        }];
+                        datasets = [{ label: `${config.title} (${config.yLabel.split('(')[1] ? config.yLabel.split('(')[1].replace(')','') : config.yLabel})`, data: chartData, borderColor: borderColor, backgroundColor: backgroundColor, borderWidth: 2, tension: 0.1, fill: true, pointRadius: 3, pointBackgroundColor: pointBackgroundColor }];
                     }
-                    
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: { labels: years, datasets: datasets },
-                        options: commonChartOptions(config.yLabel)
-                    });
+                    new Chart(ctx, { type: 'line', data: { labels: years, datasets: datasets }, options: commonChartOptions(config.yLabel) });
                 });
-
             } catch (error) {
-                console.error('Error initializing charts:', error);
+                console.error('Error initializing banking charts:', error);
                 chartConfigs.forEach(config => {
                     displayChartError(config.containerId, config.canvasId, `Error: ${error.message}`);
                 });
             }
         }
 
-        // Hide canvas elements initially and ensure loading messages are visible
         document.querySelectorAll('canvas').forEach(canvas => canvas.style.display = 'none');
         document.querySelectorAll('.message-container').forEach(msg => msg.style.display = 'flex');
-
-
-        document.addEventListener('DOMContentLoaded', initializeCharts);
+        // Call the function to initialize banking charts
+        document.addEventListener('DOMContentLoaded', initializeBankingCharts); 
     </script>
-
 </body>
 </html>
