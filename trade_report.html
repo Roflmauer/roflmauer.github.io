@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan-Germany Trade & Economic Data</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Taiwan-Germany Trade & German Economic Data</title> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         body {
@@ -74,6 +73,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+            justify-content: center; /* Center KPIs if fewer than grid columns */
         }
         .economic-kpi {
             background-color: #f9f9f9;
@@ -88,13 +88,13 @@
             font-size: 1.1em;
             text-align: center;
         }
-        .economic-kpi-values {
-            display: flex;
-            justify-content: space-around;
-            font-size: 1em;
+        .economic-kpi-values { /* Adjusted for single country display */
+            text-align: center;
+            font-size: 1.1em;
         }
         .economic-kpi-values span {
             font-weight: bold;
+            color: #1A73E8;
         }
         .economic-chart-grid {
             display: grid;
@@ -133,31 +133,26 @@
         <div id="errorMessage" style="display:none;"></div>
 
         <section class="economic-indicators-section">
-            <h2>Comparative Economic Indicators: Taiwan & Germany</h2>
-            <div class="loading-economic" id="loadingEconomicMessage">Loading economic data...</div>
+            <h2>German Economic Indicators</h2> <div class="loading-economic" id="loadingEconomicMessage">Loading economic data...</div>
             <div class="error-economic" id="errorEconomicMessage" style="display:none;"></div>
 
             <div id="economicDataContent" style="display:none;">
-                <h3>Latest Available Annual Data</h3>
-                <div class="economic-kpi-grid">
+                <h3>Latest Available Annual Data (Germany)</h3> <div class="economic-kpi-grid">
                     <div class="economic-kpi">
                         <h4>Real GDP Growth (%)</h4>
                         <div class="economic-kpi-values">
-                            <div>Taiwan: <span id="gdp-tw-kpi">N/A</span></div>
-                            <div>Germany: <span id="gdp-de-kpi">N/A</span></div>
+                             Germany: <span id="gdp-de-kpi">N/A</span>
                         </div>
                     </div>
                     <div class="economic-kpi">
                         <h4>Inflation Rate (CPI, %)</h4>
                         <div class="economic-kpi-values">
-                            <div>Taiwan: <span id="inflation-tw-kpi">N/A</span></div>
-                            <div>Germany: <span id="inflation-de-kpi">N/A</span></div>
+                            Germany: <span id="inflation-de-kpi">N/A</span>
                         </div>
                     </div>
                 </div>
 
-                <h3>Historical Trends (Last ~10 Years)</h3>
-                <div class="economic-chart-grid">
+                <h3>Historical Trends (Last ~10 Years - Germany)</h3> <div class="economic-chart-grid">
                     <div class="economic-chart-container">
                         <canvas id="gdpChart"></canvas>
                     </div>
@@ -176,9 +171,9 @@
         const TRADE_CURRENCY_SYMBOL = '$';
         const TRADE_CURRENCY_CODE = 'USD';
 
-        const ALPHA_VANTAGE_API_KEY = "H83U1JUK9AYBAKZT"; // Your NEW personal API Key
+        const ALPHA_VANTAGE_API_KEY = "H83U1JUK9AYBAKZT"; // Your PERSONAL Alpha Vantage API Key
         const AV_COUNTRY_GERMANY = "Germany";
-        const AV_COUNTRY_TAIWAN = "Taiwan, Province of China"; // MODIFIED - Try this for Taiwan
+        // const AV_COUNTRY_TAIWAN = "Taiwan, Province of China"; // Commented out for now
         const NUMBER_OF_YEARS_ECONOMIC_DATA = 10;
         const PLACEHOLDER_API_KEY_STRING = "YOUR_ALPHA_VANTAGE_API_KEY";
 
@@ -216,6 +211,7 @@
         }
 
         async function displayTradeVisualizations() {
+            // ... (This function remains the same as your last correct version) ...
             const loadingMessageEl = document.getElementById('loadingMessage');
             const errorMessageEl = document.getElementById('errorMessage');
             const chartTitleTradeEl = document.getElementById('chartTitleTrade');
@@ -304,8 +300,9 @@
             }
         }
 
-        // --- Economic Data Functions (MODIFIED with new YoY for INFLATION and console logs) ---
-        async function fetchEconomicData(indicator, country) {
+
+        // --- Economic Data Functions (MODIFIED to fetch only Germany) ---
+        async function fetchEconomicData(indicator, country) { // Country parameter still here but we'll only call with Germany
             if (ALPHA_VANTAGE_API_KEY === PLACEHOLDER_API_KEY_STRING || ALPHA_VANTAGE_API_KEY === "") {
                 const warningMessage = "Alpha Vantage API Key is missing or is a placeholder. Economic data will not be fetched.";
                 console.warn(warningMessage);
@@ -318,7 +315,6 @@
                     url = `https://www.alphavantage.co/query?function=REAL_GDP&country=${country}&interval=annual&apikey=${ALPHA_VANTAGE_API_KEY}`;
                     break;
                 case 'INFLATION':
-                    // Even if we request annual, AlphaVantage might send monthly for CPI with some keys/countries
                     url = `https://www.alphavantage.co/query?function=CPI&country=${country}&interval=annual&apikey=${ALPHA_VANTAGE_API_KEY}`;
                     break;
                 default:
@@ -334,7 +330,6 @@
             }
             const result = await response.json();
             console.log(`Raw API response for ${indicator} - ${country}:`, JSON.parse(JSON.stringify(result)));
-
 
             if (result.Information && result.Information.includes("API call frequency")) {
                 console.warn(`Alpha Vantage API call limit likely reached for ${indicator} ${country}. Data: `, result.Information);
@@ -361,7 +356,7 @@
                 .filter(d => !isNaN(d.value) && d.date instanceof Date && !isNaN(d.date.getFullYear()))
                 .sort((a, b) => a.date - b.date);
 
-            console.log(`Data pre-YoY calc for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5)))); // Log last 5 raw data points
+            console.log(`Data pre-YoY calc for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5))));
 
             if (indicator === 'GDP') {
                 if (processedData.length > 1) {
@@ -380,17 +375,14 @@
                     processedData = [];
                 }
             } else if (indicator === 'INFLATION') {
-                // Check if data appears to be monthly (e.g. many more points than years covered, or interval in response is monthly)
-                // For simplicity, we'll assume if result.interval === 'monthly' (from raw response) or if points > ~30 for ~10 years of data
-                const isMonthly = (result.interval && result.interval.toLowerCase() === 'monthly') || (processedData.length > NUMBER_OF_YEARS_ECONOMIC_DATA + 20); // Heuristic
+                const isMonthly = (result.interval && result.interval.toLowerCase() === 'monthly') || (processedData.length > NUMBER_OF_YEARS_ECONOMIC_DATA + 20);
                 if (isMonthly) {
                     console.log(`Inflation data for ${country} appears to be monthly. Calculating YoY from monthly CPI.`);
                     if (processedData.length > 12) {
                         let yoyInflationData = [];
                         for (let i = 12; i < processedData.length; i++) {
                             const currentEntry = processedData[i];
-                            const prevYearEntry = processedData[i-12]; // Direct look-back for monthly
-
+                            const prevYearEntry = processedData[i-12];
                             if (prevYearEntry && prevYearEntry.value !== 0 && prevYearEntry.value !== null && !isNaN(prevYearEntry.value)) {
                                 const percentageChange = ((currentEntry.value - prevYearEntry.value) / prevYearEntry.value) * 100;
                                 yoyInflationData.push({ date: currentEntry.date, value: percentageChange });
@@ -403,7 +395,7 @@
                         console.warn(`Not enough monthly CPI data points for ${country} to calculate YoY inflation. Found: ${processedData.length}`);
                         processedData = [];
                     }
-                } else { // Assume annual CPI, calculate YoY as with GDP
+                } else {
                     console.log(`Inflation data for ${country} appears to be annual. Calculating YoY from annual CPI.`);
                      if (processedData.length > 1) {
                         let yoyData = [];
@@ -423,37 +415,17 @@
                 }
             }
 
-            console.log(`Final processed data for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5)))); // Log last 5 processed
+            console.log(`Final processed data for ${indicator} - ${country} (Count: ${processedData.length}):`, JSON.parse(JSON.stringify(processedData.slice(-5))));
             return processedData;
         }
 
-        function createEconomicChart(canvasId, chartLabelPrefix, dataTW, dataDE) {
+        // --- MODIFIED to only show Germany's data ---
+        function createEconomicChart(canvasId, chartLabelPrefix, dataDE) { // dataTW parameter removed
             const ctx = document.getElementById(canvasId).getContext('2d');
 
-            const yearsTW = Array.isArray(dataTW) ? dataTW.map(d => d.date.getFullYear()) : [];
             const yearsDE = Array.isArray(dataDE) ? dataDE.map(d => d.date.getFullYear()) : [];
+            const chartYears = [...new Set([...yearsDE])].sort((a,b) => a - b).slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
 
-            const allYears = [...new Set([...yearsTW, ...yearsDE])].sort((a,b) => a - b);
-            // For YoY data, the first year of data might be, e.g., 1990 if raw data started in 1989.
-            // We need to make sure 'limitedYears' aligns with the years present in the YoY 'processedData'.
-            // The current 'limitedYears' from allYears.slice might not match perfectly if one dataset is shorter.
-
-            // Let's use the years from the actual processed data for labels, ensuring they are common or handled.
-            let chartYears = [];
-            if (dataTW.length > 0 && dataDE.length > 0) {
-                const allProcessedYears = [...new Set([...dataTW.map(d => d.date.getFullYear()), ...dataDE.map(d => d.date.getFullYear())])].sort((a,b) => a - b);
-                chartYears = allProcessedYears.slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
-            } else if (dataTW.length > 0) {
-                chartYears = dataTW.map(d => d.date.getFullYear()).sort((a,b) => a - b).slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
-            } else if (dataDE.length > 0) {
-                chartYears = dataDE.map(d => d.date.getFullYear()).sort((a,b) => a - b).slice(-NUMBER_OF_YEARS_ECONOMIC_DATA);
-            }
-
-
-            const twValues = chartYears.map(year => {
-                const entry = Array.isArray(dataTW) ? dataTW.find(d => d.date.getFullYear() === year) : undefined;
-                return entry ? entry.value : null;
-            });
             const deValues = chartYears.map(year => {
                 const entry = Array.isArray(dataDE) ? dataDE.find(d => d.date.getFullYear() === year) : undefined;
                 return entry ? entry.value : null;
@@ -464,19 +436,11 @@
                 data: {
                     labels: chartYears.map(String),
                     datasets: [
+                        // Taiwan dataset removed
                         {
-                            label: `Taiwan (${chartLabelPrefix})`,
-                            data: twValues,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                            tension: 0.1,
-                            fill: false,
-                            spanGaps: false,
-                        },
-                        {
-                            label: `Germany (${chartLabelPrefix})`,
+                            label: `Germany (${chartLabelPrefix})`, // Label updated
                             data: deValues,
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderColor: 'rgba(54, 162, 235, 1)', // Using blue for Germany
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
                             tension: 0.1,
                             fill: false,
@@ -484,7 +448,7 @@
                         }
                     ]
                 },
-                options: {
+                options: { // Options remain largely the same
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
@@ -504,6 +468,7 @@
             });
         }
 
+        // --- MODIFIED to fetch and display only Germany's economic data ---
         async function displayEconomicIndicators() {
             const loadingEconomicEl = document.getElementById('loadingEconomicMessage');
             const errorEconomicEl = document.getElementById('errorEconomicMessage');
@@ -524,27 +489,26 @@
             }
 
             try {
+                // Fetch only Germany's data
                 const results = await Promise.allSettled([
-                    fetchEconomicData('GDP', AV_COUNTRY_TAIWAN),
+                    //fetchEconomicData('GDP', AV_COUNTRY_TAIWAN), // Taiwan fetch removed
                     fetchEconomicData('GDP', AV_COUNTRY_GERMANY),
-                    fetchEconomicData('INFLATION', AV_COUNTRY_TAIWAN),
+                    //fetchEconomicData('INFLATION', AV_COUNTRY_TAIWAN), // Taiwan fetch removed
                     fetchEconomicData('INFLATION', AV_COUNTRY_GERMANY)
                 ]);
 
-                const gdpTW = results[0].status === 'fulfilled' ? results[0].value : [];
-                const gdpDE = results[1].status === 'fulfilled' ? results[1].value : [];
-                const inflationTW = results[2].status === 'fulfilled' ? results[2].value : [];
-                const inflationDE = results[3].status === 'fulfilled' ? results[3].value : [];
+                // Adjust indexing for results (Germany's data is now at index 0 and 1)
+                const gdpDE = results[0].status === 'fulfilled' ? results[0].value : [];
+                const inflationDE = results[1].status === 'fulfilled' ? results[1].value : [];
 
                 let hasFetchError = false;
                 let specificErrorMessages = [];
                 results.forEach((result, index) => {
                     if (result.status === 'rejected') {
                         hasFetchError = true;
-                        const indicatorIndex = Math.floor(index / 2);
-                        const countryIndex = index % 2;
-                        const indicatorName = ['GDP', 'INFLATION'][indicatorIndex];
-                        const countryName = countryIndex === 0 ? AV_COUNTRY_TAIWAN : AV_COUNTRY_GERMANY;
+                        // Adjust mapping for error messages since we only have Germany
+                        const indicatorName = index === 0 ? 'GDP' : 'INFLATION';
+                        const countryName = AV_COUNTRY_GERMANY;
                         const reasonMessage = result.reason && result.reason.message ? result.reason.message : "Unknown fetch error";
                         console.error(`Failed to fetch ${indicatorName} for ${countryName}:`, result.reason);
                         if (!specificErrorMessages.includes(reasonMessage)) {
@@ -554,25 +518,28 @@
                 });
 
                 if (hasFetchError) {
-                    // Display concatenated error messages if any fetch failed
-                    errorEconomicEl.textContent = `Error loading some economic data: ${specificErrorMessages.join(' | ')}. Check console.`;
+                    errorEconomicEl.textContent = `Error loading German economic data: ${specificErrorMessages.join(' | ')}. Check console.`;
                     errorEconomicEl.style.display = 'block';
                 }
-
 
                 loadingEconomicEl.style.display = 'none';
                 economicDataContentEl.style.display = 'block';
 
-                document.getElementById('gdp-tw-kpi').textContent = gdpTW.length ? formatPercentage(gdpTW[gdpTW.length - 1].value) : 'N/A';
+                // Update KPIs - Remove Taiwan KPIs or set them to N/A explicitly in HTML
+                // For now, just updating Germany's
                 document.getElementById('gdp-de-kpi').textContent = gdpDE.length ? formatPercentage(gdpDE[gdpDE.length - 1].value) : 'N/A';
-                document.getElementById('inflation-tw-kpi').textContent = inflationTW.length ? formatPercentage(inflationTW[inflationTW.length - 1].value) : 'N/A';
                 document.getElementById('inflation-de-kpi').textContent = inflationDE.length ? formatPercentage(inflationDE[inflationDE.length - 1].value) : 'N/A';
+                // Hide or clear Taiwan KPI spans if they still exist in HTML
+                if(document.getElementById('gdp-tw-kpi')) document.getElementById('gdp-tw-kpi').parentElement.style.display = 'none'; // Hide Taiwan's part
+                if(document.getElementById('inflation-tw-kpi')) document.getElementById('inflation-tw-kpi').parentElement.style.display = 'none';
 
-                if (gdpTW.length || gdpDE.length) createEconomicChart('gdpChart', 'GDP Growth', gdpTW, gdpDE);
-                else document.getElementById('gdpChart').parentElement.innerHTML = '<p class="error-economic">GDP data currently unavailable for charting.</p>';
 
-                if (inflationTW.length || inflationDE.length) createEconomicChart('inflationChart', 'Inflation', inflationTW, inflationDE);
-                else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">Inflation data currently unavailable for charting.</p>';
+                // Create Charts - Pass only Germany's data
+                if (gdpDE.length) createEconomicChart('gdpChart', 'GDP Growth', gdpDE); // Pass only gdpDE
+                else document.getElementById('gdpChart').parentElement.innerHTML = '<p class="error-economic">German GDP data currently unavailable for charting.</p>';
+
+                if (inflationDE.length) createEconomicChart('inflationChart', 'Inflation', inflationDE); // Pass only inflationDE
+                else document.getElementById('inflationChart').parentElement.innerHTML = '<p class="error-economic">German Inflation data currently unavailable for charting.</p>';
 
             } catch (error) {
                 console.error("General error in displayEconomicIndicators:", error);
