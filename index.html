@@ -9,6 +9,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Optional: Add these styles to your main styles.css file for the Chinese About Me section */
+        .divider-subtle {
+            border: 0;
+            height: 1px;
+            background-color: var(--border-color); /* Use your existing border color */
+            opacity: 0.5; /* Make it more subtle */
+            margin: 1.5em auto; /* Adjust spacing */
+            width: 80%; /* Or a fixed width like 200px */
+        }
+
+        .about-me-lang-section h3 { /* For the "關於我 (Traditional Chinese)" title */
+            font-size: 1.2em; /* Slightly smaller than main section titles */
+            color: var(--accent-color); /* Or your primary text color */
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            text-align: left; /* Match your other .index-section-title alignment */
+            font-weight: 600;
+        }
+        .about-me-lang-section .lang-tag {
+            font-size: 0.8em;
+            font-weight: normal;
+            color: var(--secondary-text-color);
+        }
+        .about-me-lang-section div[lang="zh-TW"] p {
+            font-size: 0.95em; /* Adjust if needed for Chinese characters */
+            line-height: 1.7;  /* Often good for Chinese text readability */
+            text-align: left;
+            color: var(--primary-text-color);
+        }
+    </style>
 </head>
 
 <body>
@@ -48,7 +79,20 @@
             new tools and methodologies to achieve results. If you're looking for someone who can connect with global
             partners and embrace the future of business, let's talk.
         </p>
-    </section>
+        
+        <div class="about-me-lang-section">
+            <hr class="divider-subtle">
+            <h3>關於我 <span class="lang-tag">(Traditional Chinese)</span></h3>
+            <div lang="zh-TW">
+                 <p>
+                    您好，我是馬彥和 (Pierre Meyer)。作為一名業務開發經理，我擁有七年經驗，致力於透過策略夥伴關係，連結亞洲（台灣／中國）與歐美市場。我能流利使用德文及英文，中文則具備進階溝通能力，並且擅長法規遵循與專案管理。
+                </p>
+                <p>
+                    我對人工智慧（AI）及區塊鏈等新興科技抱持濃厚興趣，能迅速學習並將其應用於打造數位解決方案，本網站的建置便是一個實例。我具備紮實的國際業務拓展能力，並能快速整合新技術。如果您正在尋找能夠串連全球夥伴、掌握未來商機的專業人士，期待與您進一步交流。
+                </p>
+            </div>
+        </div>
+        </section>
 
     <hr class="divider">
 
