@@ -9,6 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Optional: Add these styles to your main styles.css file */
+        .project-subsection-title {
+            font-size: 1.4em; /* Adjust as needed */
+            color: var(--accent-color); /* Or your preferred heading color */
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            text-align: left; /* Align with index-section-title */
+            /* border-bottom: 1px solid var(--border-color); /* Optional underline */
+            /* padding-bottom: 0.2em; /* Optional padding for underline */
+        }
+
+        .project-entry {
+            margin-bottom: 2em; /* Space between project entries */
+            padding: 1em; /* Optional padding inside each entry */
+            background-color: var(--card-bg-color); /* Optional: subtle background for each entry */
+            border-radius: 8px; /* Optional: rounded corners */
+            border: 1px solid var(--border-color); /* Optional: border */
+        }
+
+        .project-entry .cv-button { /* Keep button styling for links */
+            margin-bottom: 0.5em; /* Space between button and description */
+        }
+
+        .project-description {
+            font-size: 0.95em;
+            color: var(--primary-text-color); /* Or var(--secondary-text-color) for more subtlety */
+            line-height: 1.5;
+            margin-top: 0.5em; /* Space above description if button is above */
+            text-align: left; /* Ensure description text is left-aligned */
+        }
+    </style>
 </head>
 
 <body>
@@ -61,16 +93,39 @@
 
     <hr class="divider">
 
-    <section>
-        <h2 class="index-section-title">Projects & Visualizations</h2>
-        <p>Explore some of the data projects and visualizations I've worked on.</p>
-        <p style="margin-bottom: 15px;">
-            <a href="taiwan_banking_report.html" class="cv-button">Taiwans "dual-card crisis" or 「卡債風暴」</a>
-        </p>
-        <p style="margin-bottom: 15px;">  <a href="trade_report.html" class="cv-button">Taiwan-Germany Trade Report</a>
-        </p>
-        <p> <a href="taiwan_airlines_comparison.html" class="cv-button">Taiwan Airlines Comparison Report</a>
-        </p>
+    <section id="projects"> {/* Added an ID here for potential linking */}
+        <h2 class="index-section-title">Professional Showcase & Analytical Insights</h2>
+        <p>Explore a key professional achievement and some of the data-driven projects and market analyses I've developed.</p>
+
+        <h3 class="project-subsection-title">Key Professional Achievement</h3>
+        <div class="project-entry">
+            <p><a href="key_account_case_study.html" class="cv-button">Case Study: Key Account & Packaging Innovation</a></p>
+            <p class="project-description">
+                A detailed look at how proactive market analysis and strategic sourcing led to a multi-year, high-volume contract (1M+ units/year) with a leading German cosmetics firm, significantly expanding a key account.
+            </p>
+        </div>
+
+        <h3 class="project-subsection-title">Analytical Projects & Market Insights</h3>
+        <div class="project-entry">
+            <p><a href="taiwan_banking_report.html" class="cv-button">Taiwan's "Dual-Card Crisis" (卡債風暴) Analysis</a></p>
+            <p class="project-description">
+                An analysis of Taiwan's domestic banking sector performance, focusing on the economic impact and recovery from the 2004-2006 credit card crisis, visualized with key financial metrics.
+            </p>
+        </div>
+
+        <div class="project-entry">
+            <p><a href="trade_report.html" class="cv-button">Taiwan-Germany Trade Dynamics</a></p>
+            <p class="project-description">
+                Exploring the evolving trade relationship between Taiwan and Germany, highlighting key economic drivers like semiconductor demand and global shifts impacting bilateral trade.
+            </p>
+        </div>
+
+        <div class="project-entry">
+            <p><a href="taiwan_airlines_comparison.html" class="cv-button">Comparative Analysis: Taiwan's Major Airlines</a></p>
+            <p class="project-description">
+                A comparative report on Taiwan's leading full-service airlines, examining their operational, financial, and strategic differences in a competitive aviation market.
+            </p>
+        </div>
     </section>
 
     <hr class="divider">
@@ -251,7 +306,7 @@
                 datasets: [{
                     label: `${coin.toUpperCase()} Price (USD)`,
                     data: data,
-                    borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1',
+                    borderColor: coin === 'bitcoin' ? '#FF6B00' : '#4299E1', // Example colors
                     borderWidth: 1.5, 
                     fill: false,
                     pointRadius: 0,
