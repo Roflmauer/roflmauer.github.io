@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taiwan's Major Airlines: A Comparative Report - Pierre Meyer</title>
-    <link href="styles.css" rel="stylesheet"> <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0d1117; /* Matching dark theme */
+            background-color: #0d1117;
             color: #c9d1d9;
         }
         .container {
@@ -49,21 +51,22 @@
             margin: 0;
         }
         .page-title {
-            font-size: 2rem; /* Tailwind equiv: text-3xl sm:text-4xl */
-            font-weight: 700; /* Tailwind equiv: font-bold */
+            font-size: 2rem;
+            font-weight: 700;
             text-align: center;
-            margin-bottom: 1.5rem; /* Tailwind equiv: mb-6 */
-            color: #58a6ff; /* A highlight color */
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: #58a6ff;
         }
         .introductory-narrative {
             color: #a0aec0;
             margin-top: 1.5rem;
             margin-bottom: 2.5rem;
             line-height: 1.7;
-            max-width: 900px; /* Limit width for readability */
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            padding: 0 1rem; /* Padding for smaller screens */
+            padding: 0 1rem;
         }
         .introductory-narrative p {
             margin-bottom: 1rem;
@@ -73,8 +76,8 @@
             font-weight: 600;
         }
         .section-title {
-            font-size: 1.5em; /* Tailwind equiv: text-2xl */
-            font-weight: 600; /* Tailwind equiv: font-semibold */
+            font-size: 1.5em;
+            font-weight: 600;
             color: #58a6ff;
             margin-top: 2.5rem;
             margin-bottom: 1.5rem;
@@ -82,9 +85,8 @@
             padding-bottom: 0.5rem;
         }
         .kpi-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+            display: grid; /* Changed to grid for better responsiveness */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
             gap: 1rem;
             margin-bottom: 2.5rem;
         }
@@ -94,22 +96,21 @@
             padding: 1.5rem;
             border-radius: 0.5rem;
             text-align: center;
-            flex-grow: 1;
-            min-width: 220px; /* Adjusted min-width */
             border: 1px solid #30363d;
             box-shadow: 0 3px 6px rgba(0,0,0,0.25);
         }
         .kpi h3 {
-            font-size: 1rem;
+            font-size: 0.9rem; /* Slightly smaller KPI title */
             font-weight: 600;
             color: #8b949e;
             margin-top: 0;
             margin-bottom: 0.5rem;
+            word-wrap: break-word;
         }
         .kpi p {
-            font-size: 1.75rem; /* Slightly larger for emphasis */
+            font-size: 1.5rem; /* Adjusted KPI value size */
             font-weight: 700;
-            color: #58a6ff; /* Highlight color for KPI value */
+            color: #58a6ff;
             margin-bottom: 0;
         }
         table {
@@ -118,57 +119,79 @@
             margin-bottom: 2rem;
             background-color: #161b22;
             border: 1px solid #30363d;
-            font-size: 0.9em;
+            font-size: 0.85em; /* Slightly reduced base font for tables */
         }
         th, td {
             border: 1px solid #30363d;
-            padding: 0.75rem; /* Increased padding */
+            padding: 0.6rem; /* Adjusted padding */
             text-align: left;
             color: #c9d1d9;
+            vertical-align: top; /* Align content to top */
         }
         th {
-            background-color: #1f242c; /* Slightly different header bg */
+            background-color: #1f242c;
             font-weight: 600;
             color: #8b949e;
         }
-        tr:nth-child(even) {
-            background-color: #101419; /* Subtle striping for rows */
+        tr:nth-child(even) td { /* Apply to td for striping to not affect th if table has tbody/thead */
+            background-color: #101419;
         }
         .chart-title-style {
             font-size: 1.25em;
             font-weight: 600;
             text-align: center;
             color: #cbd5e0;
-            margin-top: 2rem; /* Add some space above chart titles */
+            margin-top: 2rem;
             margin-bottom: 1rem;
         }
         .chart-wrapper {
             background-color: #161b22;
-            padding: 1.5rem;
+            padding: 1rem; /* Adjusted padding */
             border-radius: 0.5rem;
             margin-bottom: 2rem;
             border: 1px solid #30363d;
         }
         .chart-wrapper canvas {
-             max-height: 400px; /* Control chart height */
+             max-height: 350px; /* Adjusted max-height */
         }
-        .map-placeholder { /* Placeholder for map visuals */
+        .map-placeholder {
             background-color: #22272e;
             border:1px dashed #4a5568;
-            padding: 2rem;
+            padding: 1.5rem; /* Adjusted padding */
             text-align:center;
             color: #a0aec0;
-            min-height: 200px;
+            min-height: 180px; /* Adjusted min-height */
             display:flex;
             align-items:center;
             justify-content:center;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
+            font-size: 0.9em;
         }
+        .map-placeholder strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cbd5e0;
+        }
+        .map-placeholder a {
+            color: #58a6ff;
+            text-decoration: underline;
+        }
+        .map-placeholder-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
         .airline-logo {
-            height: 24px; /* You can adjust this as needed */
-            margin-right: 8px;
+            height: 20px; /* Adjusted logo size */
+            margin-right: 6px;
             vertical-align: middle;
+        }
+        .footnote {
+            font-size: 0.75em;
+            color: #8b949e;
+            margin-top: 0.25rem;
         }
         footer {
             text-align: center;
@@ -186,14 +209,16 @@
             text-decoration: underline;
         }
 
-        /* Responsive table adjustments */
         @media screen and (max-width: 768px) {
             th, td {
-                font-size: 0.8em;
-                padding: 0.5rem;
+                font-size: 0.75em;
+                padding: 0.4rem;
             }
             .kpi {
-                min-width: 100%; /* Stack KPIs on smaller screens */
+                padding: 1rem;
+            }
+            .kpi p {
+                font-size: 1.3rem;
             }
             .page-title {
                 font-size: 1.75rem;
@@ -201,13 +226,18 @@
             .section-title {
                 font-size: 1.25rem;
             }
+            .map-placeholder-container {
+                grid-template-columns: 1fr; /* Stack maps on small screens */
+            }
         }
     </style>
 </head>
 <body>
-    <div class="background-animation"></div> <header>
+    <div class="background-animation"></div>
+
+    <header>
         <div class="container header-content-wrapper">
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
+            <img src="images/profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
@@ -219,25 +249,24 @@
 
         <div class="introductory-narrative">
             <p>Taiwan, strategically positioned in the heart of East Asia, boasts a dynamic and competitive aviation sector. Its airlines are not just crucial for connecting the island to the world but also play a significant role in global cargo transport and passenger transit. This report delves into a comparative analysis of Taiwan's three prominent full-service carriers: the flag carrier <strong>China Airlines</strong>, the privately-owned powerhouse <strong>EVA Air</strong>, and the ambitious newcomer <strong>Starlux Airlines</strong>.</p>
-            <p>We'll explore key operational and financial metrics, fleet compositions, network strategies, and market positioning to understand their individual strengths, competitive dynamics, and collective contribution to Taiwan's global presence. As the aviation industry continues to evolve post-pandemic, understanding these players is key to grasping regional travel and trade trends.</p>
+            <p>We'll explore key operational and financial metrics from 2023, 2024, and early 2025, including fleet compositions, network strategies, and market positioning. This analysis aims to shed light on their individual strengths, competitive dynamics, and collective contribution to Taiwan's global presence as the aviation industry navigates the post-pandemic landscape and new growth phases.</p>
         </div>
 
         <div class="kpi-container">
             <div class="kpi">
-                <h3>Combined Fleet (Approx.)</h3>
-                <p id="kpiCombinedFleet">~191+</p>
-            </div>
-            <div class="kpi">
                 <h3>EVA Air 2024 Passengers</h3>
-                <p id="kpiEvaPassengers">~13.16M</p>
+                <p id="kpiEvaPassengers">13.16M</p>
             </div>
             <div class="kpi">
-                <h3>Starlux Revenue Growth (2024)</h3>
-                <p id="kpiStarluxGrowth">+58%</p>
+                <h3>CAL 2024 Cargo Volume</h3>
+                <p id="kpiCalCargo">~1.58M tons</p> </div>
+            <div class="kpi">
+                <h3>Starlux 2024 Revenue</h3>
+                <p id="kpiStarluxRevenue">NT$35.5B</p>
             </div>
              <div class="kpi">
-                <h3>China Airlines Q1 2025 Profit</h3>
-                <p id="kpiCalQ1Profit">NT$4.66B</p>
+                <h3>EVA Air Q1 2025 Profit</h3>
+                <p id="kpiEvaQ1Profit">NT$5.93B</p>
             </div>
         </div>
 
@@ -287,12 +316,12 @@
             </table>
         </section>
 
-        <section id="financials">
-            <h2 class="section-title">II. Economic & Financial Performance (NT$)</h2>
+        <section id="financials_annual">
+            <h2 class="section-title">II. Annual Financial Performance (NT$ Billion)</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Metric</th>
+                        <th>Metric (Full Year)</th>
                         <th>China Airlines (CAL)</th>
                         <th>EVA Air (EVA)</th>
                         <th>Starlux Airlines (SJX)</th>
@@ -300,57 +329,123 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>2023 Revenue</strong></td>
-                        <td id="cal2023Revenue">~184.8 Billion</td>
-                        <td id="eva2023Revenue">~187.8 Billion</td>
-                        <td id="sjx2023Revenue">~22.47 Billion</td>
+                        <td><strong>2023 Operating Revenue</strong></td>
+                        <td id="cal2023Revenue">184.82</td>
+                        <td id="eva2023Revenue">187.81</td>
+                        <td id="sjx2023Revenue">22.47</td>
                     </tr>
                     <tr>
                         <td><strong>2023 Net Profit</strong></td>
-                        <td id="cal2023Profit">~6.82 Billion</td>
-                        <td id="eva2023Profit">~21.59 Billion</td>
-                        <td id="sjx2023Profit">~0.15 Billion</td>
+                        <td id="cal2023Profit">6.82 <span class="footnote">(attributable)</span></td>
+                        <td id="eva2023Profit">21.59</td>
+                        <td id="sjx2023Profit">0.15</td>
                     </tr>
                     <tr>
-                        <td><strong>2024 Revenue</strong></td>
-                        <td id="cal2024Revenue">~174.4 Billion (Op. Rev)</td>
-                        <td id="eva2024Revenue">~206.6 Billion</td>
-                        <td id="sjx2024Revenue">~35.55 Billion</td>
+                        <td><strong>2024 Operating Revenue</strong></td>
+                        <td id="cal2024Revenue">203.88</td>
+                        <td id="eva2024Revenue">206.56 <span class="footnote">(Parent Co.)</span> / 221.01 <span class="footnote">(Group)</span></td>
+                        <td id="sjx2024Revenue">35.55</td>
                     </tr>
                     <tr>
-                        <td><strong>2024 Net Profit/EPS</strong></td>
-                        <td id="cal2024Profit">Net Income ~15.49B / EPS 2.38</td>
-                        <td id="eva2024Profit">Net Profit Before Tax ~38.39B / EPS 5.37</td>
-                        <td id="sjx2024Profit">EPS NT$0.53</td>
+                        <td><strong>2024 Passenger Revenue</strong></td>
+                        <td id="cal2024PaxRevenue">127.92</td>
+                        <td id="eva2024PaxRevenue">144.94</td>
+                        <td id="sjx2024PaxRevenue"><em>N/A Full Year</em></td>
                     </tr>
                     <tr>
-                        <td><strong>Q1 2025 Revenue</strong></td>
-                        <td id="calQ125Revenue">52.77 Billion</td>
-                        <td id="evaQ125Revenue">54.94 Billion</td>
-                        <td id="sjxQ125Revenue">Data Pending</td>
+                        <td><strong>2024 Cargo Revenue</strong></td>
+                        <td id="cal2024CargoRevenue">60.71</td>
+                        <td id="eva2024CargoRevenue">52.17</td>
+                        <td id="sjx2024CargoRevenue"><em>N/A Full Year</em></td>
                     </tr>
                     <tr>
-                        <td><strong>Q1 2025 Net Profit</strong></td>
-                        <td id="calQ125Profit">4.66 Billion</td>
-                        <td id="evaQ125Profit">5.93 Billion</td>
-                        <td id="sjxQ125Profit">Data Pending</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Employees (Approx.)</strong></td>
-                        <td id="calEmployees">~11,642 (Mar 2025)</td>
-                        <td id="evaEmployees">>10,000 (Historical)</td>
-                        <td id="sjxEmployees">~5,119 (End 2024)</td>
+                        <td><strong>2024 Net Profit / (EPS NT$)</strong></td>
+                        <td id="cal2024Profit">15.49 / (2.38)</td>
+                        <td id="eva2024Profit">29.01 <span class="footnote">(Parent Co.)</span> / (5.37)</td>
+                        <td id="sjx2024Profit"><em>N/A Full Year Profit</em> / (0.53)</td>
                     </tr>
                 </tbody>
             </table>
             <div class="chart-wrapper">
-                <h3 class="chart-title-style">2024 Operating Revenue Comparison (NT$ Billion)</h3>
+                <h3 class="chart-title-style">2024 Operating Revenue (NT$ Billion)</h3>
                 <canvas id="revenueChart2024"></canvas>
             </div>
         </section>
 
+        <section id="interim_snapshot">
+            <h2 class="section-title">III. Interim Performance Snapshot: Q1-Q3 2024 (NT$ Billion)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric (Jan-Sep 2024)</th>
+                        <th>China Airlines (CAL)</th>
+                        <th>EVA Air (EVA)</th>
+                        <th>Starlux Airlines (SJX)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Operating Revenue</strong></td>
+                        <td id="cal9m2024Revenue">150.93 <span class="footnote">(Consolidated)</span></td>
+                        <td id="eva9m2024Revenue">164.45 <span class="footnote">(Group)</span></td>
+                        <td id="sjx9m2024Revenue">25.93 <span class="footnote">(Individual)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Net Profit/Income</strong></td>
+                        <td id="cal9m2024Profit">11.34 <span class="footnote">(Consolidated)</span></td>
+                        <td id="eva9m2024Profit">22.71 <span class="footnote">(Group)</span></td>
+                        <td id="sjx9m2024Profit">1.54 <span class="footnote">(Individual)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+             <div class="chart-wrapper">
+                <h3 class="chart-title-style">Q1-Q3 2024 Operating Revenue (NT$ Billion)</h3>
+                <canvas id="revenueChart9M2024"></canvas>
+            </div>
+        </section>
+
+        <section id="q1_2025_snapshot">
+            <h2 class="section-title">IV. Latest Snapshot: Q1 2025 Financials (NT$ Billion)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric (Jan-Mar 2025)</th>
+                        <th>China Airlines (CAL)</th>
+                        <th>EVA Air (EVA)</th>
+                        <th>Starlux Airlines (SJX)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Operating/Total Revenue</strong></td>
+                        <td id="calQ125Revenue">52.77 <span class="footnote">(Consolidated Sales)</span></td>
+                        <td id="evaQ125Revenue">51.27 <span class="footnote">(Total Revenue)</span></td>
+                        <td id="sjxQ125Revenue">11.19 <span class="footnote">(Consolidated Revenue)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Passenger Revenue</strong></td>
+                        <td id="calQ125PaxRevenue">32.69</td>
+                        <td id="evaQ125PaxRevenue">36.41</td>
+                        <td id="sjxQ125PaxRevenue"><em>Pending Detailed Report</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cargo Revenue</strong></td>
+                        <td id="calQ125CargoRevenue">15.69</td>
+                        <td id="evaQ125CargoRevenue">12.73</td>
+                        <td id="sjxQ125CargoRevenue"><em>Pending Detailed Report</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Net Profit</strong></td>
+                        <td id="calQ125Profit">4.66</td>
+                        <td id="evaQ125Profit">5.93</td>
+                        <td id="sjxQ125Profit"><em>Data Pending</em></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
         <section id="fleetOps">
-            <h2 class="section-title">III. Fleet & Operations (Approx. Early 2025)</h2>
+            <h2 class="section-title">V. Fleet & Key Operations (Approx. Early - Mid 2025)</h2>
             <table>
                 <thead>
                     <tr>
@@ -363,44 +458,62 @@
                 <tbody>
                     <tr>
                         <td><strong>Total Fleet Size</strong></td>
-                        <td id="calFleetSize">83 (66 Pass, 17 Freight)</td>
-                        <td id="evaFleetSize">87 (78 Pass, 9 Freight)</td>
-                        <td id="sjxFleetSize">~21 (Target 50+)</td>
+                        <td id="calFleetSize">83 (Mar 2025)</td>
+                        <td id="evaFleetSize">87 (Parent Co., Dec 2024)</td>
+                        <td id="sjxFleetSize">~21 (Early 2025, Target 50+)</td>
                     </tr>
                     <tr>
                         <td><strong>Key Passenger Aircraft</strong></td>
-                        <td id="calPaxFleet">A350, A330, 777, 737, A321neo</td>
-                        <td id="evaPaxFleet">777, 787, A330, A321</td>
-                        <td id="sjxPaxFleet">A350, A330neo, A321neo</td>
+                        <td id="calPaxFleet">A350-900, A330-300, 777-300ER, 737-800, A321neo</td>
+                        <td id="evaPaxFleet">777-300ER, 787-9/-10, A330-300/-200, A321-200</td>
+                        <td id="sjxPaxFleet">A350-900/-1000, A330neo, A321neo</td>
                     </tr>
                     <tr>
                         <td><strong>Average Fleet Age</strong></td>
-                        <td id="calAvgAge">9.6 years</td>
-                        <td id="evaAvgAge">~8 years (estimate)</td>
-                        <td id="sjxAvgAge">Very Young (<3 years)</td>
+                        <td id="calAvgAge">9.6 years (Mar 2025)</td>
+                        <td id="evaAvgAge">~8.0 years (Dec 2023 data)</td>
+                        <td id="sjxAvgAge">Very Young (<3 yrs Est.)</td>
                     </tr>
                     <tr>
-                        <td><strong>2024 Passengers</strong></td>
-                        <td id="cal2024Pax">N/A</td>
+                        <td><strong>Employees</strong></td>
+                        <td id="calEmployees">~11,642 (Group, Mar 2025)</td>
+                        <td id="evaEmployees">11,407 (Parent Co., 2024)</td>
+                        <td id="sjxEmployees">~5,119 (End 2024)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2024 Passengers Carried</strong></td>
+                        <td id="cal2024Pax">11.29 Million</td>
                         <td id="eva2024Pax">13.16 Million</td>
-                        <td id="sjx2024Pax">~4.1 Million</td>
+                        <td id="sjx2024Pax">~4.10 Million</td>
                     </tr>
                     <tr>
                         <td><strong>2024 Passenger Load Factor</strong></td>
-                        <td id="cal2024PLF">N/A</td>
+                        <td id="cal2024PLF">79.3%</td>
                         <td id="eva2024PLF">82.6%</td>
-                        <td id="sjx2024PLF">N/A</td>
+                        <td id="sjx2024PLF"><em>Pending Full Report</em></td>
                     </tr>
                      <tr>
-                        <td><strong>2024 Cargo Volume</strong></td>
-                        <td id="cal2024Cargo">N/A (Strong growth)</td>
-                        <td id="eva2024Cargo">790,000 tons</td>
-                        <td id="sjx2024Cargo">Growing (belly cargo)</td>
+                        <td><strong>2024 Cargo Volume (tons)</strong></td>
+                        <td id="cal2024Cargo">~1.58 Million <span class="footnote">(Freight Tonnes)</span></td>
+                        <td id="eva2024Cargo">790,000</td>
+                        <td id="sjx2024Cargo"><em>Pending Full Report</em></td>
+                    </tr>
+                     <tr>
+                        <td><strong>Q1 2025 Passengers Carried</strong></td>
+                        <td id="calQ125Pax">2.90 Million</td>
+                        <td id="evaQ125Pax">3.33 Million</td>
+                        <td id="sjxQ125Pax"><em>Pending Report</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Q1 2025 Passenger Load Factor</strong></td>
+                        <td id="calQ125PLF">79.7%</td>
+                        <td id="evaQ125PLF">~80.99% <span class="footnote">(YTD Apr: 80.99%)</span></td>
+                        <td id="sjxQ125PLF"><em>Pending Report</em></td>
                     </tr>
                 </tbody>
             </table>
             <div class="chart-wrapper">
-                <h3 class="chart-title-style">Approximate Fleet Size Comparison</h3>
+                <h3 class="chart-title-style">Approximate Fleet Size (Early-Mid 2025)</h3>
                 <canvas id="fleetSizeChart"></canvas>
             </div>
             <div class="chart-wrapper">
@@ -410,7 +523,7 @@
         </section>
 
         <section id="network">
-            <h2 class="section-title">IV. Network & Connectivity (Approx. May 2025)</h2>
+            <h2 class="section-title">VI. Network & Connectivity (Approx. May 2025)</h2>
             <table>
                 <thead>
                     <tr>
@@ -424,61 +537,61 @@
                     <tr>
                         <td><strong>Int'l Destinations</strong></td>
                         <td id="calDestinations">~54</td>
-                        <td id="evaDestinations">~60+</td>
+                        <td id="evaDestinations">Extensive, ~60+ <span class="footnote">(varies by source)</span></td>
                         <td id="sjxDestinations">~28</td>
                     </tr>
                     <tr>
                         <td><strong>Countries Served</strong></td>
                         <td id="calCountries">~24</td>
-                        <td id="evaCountries">~19+</td>
+                        <td id="evaCountries">~19+ <span class="footnote">(varies by source)</span></td>
                         <td id="sjxCountries">~11</td>
                     </tr>
                     <tr>
                         <td><strong>Key N. America Routes</strong></td>
                         <td id="calNARoutes">LAX, NYC, SFO, SEA, YVR, ONT</td>
                         <td id="evaNARoutes">LAX, NYC, SFO, SEA, YVR, ORD, IAH, YYZ</td>
-                        <td id="sjxNARoutes">LAX, SFO, SEA (ONT soon)</td>
+                        <td id="sjxNARoutes">LAX, SFO, SEA (ONT by Q3 '25)</td>
                     </tr>
                     <tr>
                         <td><strong>Key Europe Routes</strong></td>
                         <td id="calEURoutes">AMS, FRA, LHR, PRG, FCO, VIE</td>
                         <td id="evaEURoutes">AMS, LHR, CDG, VIE, MUC, MXP</td>
-                        <td id="sjxEURoutes">N/A (Focus Asia/N.America)</td>
+                        <td id="sjxEURoutes"><em>Expanding; CGK, KUL target Europe feed</em></td>
                     </tr>
                      <tr>
                         <td><strong>Key Asia Strength</strong></td>
-                        <td id="calAsiaRoutes">Japan, SE Asia, China</td>
-                        <td id="evaAsiaRoutes">Japan, SE Asia, China</td>
-                        <td id="sjxAsiaRoutes">Japan, SE Asia (premium focus)</td>
+                        <td id="calAsiaRoutes">Japan, SE Asia, China, Korea</td>
+                        <td id="evaAsiaRoutes">Japan, SE Asia, China, Korea</td>
+                        <td id="sjxAsiaRoutes">Japan, SE Asia (premium, transit focus)</td>
                     </tr>
                 </tbody>
             </table>
             <h3 class="chart-title-style">Illustrative Flight Network Reach</h3>
             <p class="introductory-narrative" style="text-align:center; margin-bottom:1rem;">Visualizing the full flight networks is complex. Below are general representations and links to official maps for detailed views.</p>
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem;">
-                <div class="map-placeholder" style="flex:1; min-width: 300px;">
+            <div class="map-placeholder-container">
+                <div class="map-placeholder">
                     <div>
                         <strong>China Airlines Network Focus:</strong><br> Extensive coverage in Asia, multiple points in North America, Europe, and Oceania. Strong cargo network globally.<br>
-                        <a href="https://www.china-airlines.com/us/en/discover/route-map" target="_blank" style="color:#58a6ff;">View CAL Route Map</a>
+                        <a href="https://www.china-airlines.com/us/en/discover/route-map" target="_blank">View CAL Route Map</a>
                     </div>
                 </div>
-                <div class="map-placeholder" style="flex:1; min-width: 300px;">
+                <div class="map-placeholder">
                      <div>
                         <strong>EVA Air Network Focus:</strong><br> Robust presence in North America and Asia, strong European connections. Renowned for trans-Pacific routes.<br>
-                        <a href="https://www.evaair.com/en-global/plan-and-book/where-we-fly/route-map/" target="_blank" style="color:#58a6ff;">View EVA Route Map</a>
+                        <a href="https://www.evaair.com/en-global/plan-and-book/where-we-fly/route-map/" target="_blank">View EVA Route Map</a>
                     </div>
                 </div>
-                <div class="map-placeholder" style="flex:1; min-width: 300px;">
+                <div class="map-placeholder">
                     <div>
                         <strong>Starlux Airlines Network Focus:</strong><br> Rapidly expanding in key Asian cities and building a significant North American presence. Emphasis on premium transit routes.<br>
-                         <a href="https://www.starlux-airlines.com/en-US/flights/route-map" target="_blank" style="color:#58a6ff;">View Starlux Route Map</a>
+                         <a href="https://www.starlux-airlines.com/en-US/flights/route-map" target="_blank">View Starlux Route Map</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="customerExp">
-            <h2 class="section-title">V. Customer Experience & Market Position</h2>
+            <h2 class="section-title">VII. Customer Experience & Market Position</h2>
             <table>
                 <thead>
                     <tr>
@@ -503,9 +616,9 @@
                     </tr>
                     <tr>
                         <td><strong>Key Awards/Recognition</strong></td>
-                        <td id="calAwards">Various int'l awards</td>
-                        <td id="evaAwards">Skytrax 5-Star Airline</td>
-                        <td id="sjxAwards">Growing design/service awards</td>
+                        <td id="calAwards">Various int'l awards (Skytrax, APEX)</td>
+                        <td id="evaAwards">Skytrax 5-Star Airline, APEX Five Star</td>
+                        <td id="sjxAwards">Growing design/service awards (e.g., Red Dot, APEX Five Star)</td>
                     </tr>
                      <tr>
                         <td><strong>Market Perception</strong></td>
@@ -518,11 +631,11 @@
         </section>
 
         <section id="conclusion">
-            <h2 class="section-title">VI. Concluding Thoughts</h2>
+            <h2 class="section-title">VIII. Concluding Thoughts</h2>
             <div class="introductory-narrative">
-                <p>Taiwan's airline industry is characterized by intense competition and high standards. <strong>China Airlines</strong> and <strong>EVA Air</strong> represent established players with vast networks and significant cargo capabilities, forming the backbone of Taiwan's international air links. Both have demonstrated strong recovery and profitability in the current aviation landscape.</p>
-                <p><strong>Starlux Airlines</strong>, despite its youth, has quickly carved out a niche by focusing on a premium passenger experience and strategically targeting key routes in Asia and North America. Its rapid growth and modern fleet signal its ambition to become a major force.</p>
-                <p>The differing strategies in fleet modernization, route development, alliance memberships, and service offerings ensure a dynamic market. For travelers and businesses, this competition translates to more choices and continually evolving service standards, solidifying Taiwan's role as a critical aviation hub in the Asia-Pacific region.</p>
+                <p>Taiwan's airline industry is characterized by intense competition and high standards. <strong>China Airlines</strong> and <strong>EVA Air</strong> represent established players with vast networks and significant cargo capabilities, forming the backbone of Taiwan's international air links. Both have demonstrated strong recovery and profitability in the current aviation landscape, with robust passenger and cargo revenues in 2024 and into early 2025.</p>
+                <p><strong>Starlux Airlines</strong>, despite its youth, has quickly carved out a niche by focusing on a premium passenger experience and strategically targeting key routes in Asia and North America. Its rapid revenue growth and achievement of profitability underscore its ambition to become a major force with its modern fleet.</p>
+                <p>The differing strategies in fleet modernization, route development (especially long-haul expansion for Starlux), alliance memberships, and service offerings ensure a dynamic market. For travelers and businesses, this competition translates to more choices and continually evolving service standards, solidifying Taiwan's role as a critical aviation hub in the Asia-Pacific region. Future performance will likely be shaped by global economic conditions, fuel price volatility, and the continued evolution of travel demand.</p>
             </div>
         </section>
 
@@ -530,98 +643,98 @@
 
     <footer>
         <div class="container">
-            <p>© <span id="currentYear">2025</span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a> | <a href="index.html">Back to Home</a></p>
+            <p>© <span id="currentYear"></span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a> | <a href="index.html">Back to Home</a></p>
         </div>
     </footer>
 
     <script>
         // Set Chart.js Global Defaults
         Chart.defaults.font.family = 'Montserrat';
-        Chart.defaults.color = '#a0aec0'; // Default text color for charts
-        Chart.defaults.borderColor = '#4a5568'; // Default border color for chart elements
+        Chart.defaults.color = '#a0aec0';
+        Chart.defaults.borderColor = '#4a5568';
+        Chart.defaults.plugins.legend.labels.color = '#cbd5e0';
 
-        // --- Helper Functions ---
-        function formatLargeNumber(value) {
-            if (value >= 1e9) return (value / 1e9).toFixed(1) + 'B';
-            if (value >= 1e6) return (value / 1e6).toFixed(1) + 'M';
-            if (value >= 1e3) return (value / 1e3).toFixed(1) + 'K';
-            return value.toString();
-        }
 
-        // --- Data (Using placeholders, replace with actual fetched data) ---
-        const airlineData = {
+        // --- Data based on provided documents and previous findings (approximations for charts) ---
+        const airlineChartData = {
             cal: {
-                revenue2024: 174.4, // Billion NT$ (Op Rev from slides)
-                passengers2024: null, // Placeholder, as specific number wasn't easily found for comparison
-                fleetSize: 83
+                revenue2024: 203.88, // Consolidated Operating Revenue (Billion NT$)
+                passengers2024: 11.29, // Million
+                fleetSize: 83,
+                revenue9M2024: 150.93,
+                profit9M2024: 11.34
             },
             eva: {
-                revenue2024: 206.6, // Billion NT$
+                revenue2024: 206.56, // Parent Co. Operating Revenue. Group was 221.01B. Using Parent for closer comparison with CAL's Op Rev.
                 passengers2024: 13.16, // Million
-                fleetSize: 87
+                fleetSize: 87,
+                revenue9M2024: 164.45, // Group Op Rev
+                profit9M2024: 22.71 // Group Profit
             },
             sjx: {
                 revenue2024: 35.55, // Billion NT$
-                passengers2024: 4.10, // Million (Approx sum of quarters)
-                fleetSize: 21 // Approx current, target 50+
+                passengers2024: 4.10, // Million
+                fleetSize: 21,
+                revenue9M2024: 25.93, // Individual Op Rev
+                profit9M2024: 1.54 // Individual Net Income
             }
         };
 
         // --- Render Charts ---
-        // 1. 2024 Revenue Chart
-        const revCtx = document.getElementById('revenueChart2024');
-        if (revCtx) {
-            new Chart(revCtx, {
+        // 1. 2024 Operating Revenue Chart
+        const revCtx2024 = document.getElementById('revenueChart2024');
+        if (revCtx2024) {
+            new Chart(revCtx2024, {
                 type: 'bar',
                 data: {
                     labels: ['China Airlines', 'EVA Air', 'Starlux Airlines'],
                     datasets: [{
                         label: '2024 Operating Revenue (NT$ Billion)',
-                        data: [airlineData.cal.revenue2024, airlineData.eva.revenue2024, airlineData.sjx.revenue2024],
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.7)', // Blue for CAL
-                            'rgba(75, 192, 192, 0.7)', // Green for EVA
-                            'rgba(153, 102, 255, 0.7)'  // Purple for Starlux
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
+                        data: [airlineChartData.cal.revenue2024, airlineChartData.eva.revenue2024, airlineChartData.sjx.revenue2024],
+                        backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    indexAxis: 'y', // Horizontal bar chart
+                    responsive: true, maintainAspectRatio: true, indexAxis: 'y',
                     scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'NT$ Billion', color: '#c9d1d9' },
-                            ticks: { color: '#8b949e' },
-                            grid: { color: '#30363d' }
-                        },
-                        y: {
-                            ticks: { color: '#8b949e' },
-                            grid: { display: false }
-                        }
+                        x: { beginAtZero: true, title: { display: true, text: 'NT$ Billion', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                        y: { ticks: { color: '#8b949e' }, grid: { display: false }}
                     },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + context.parsed.x.toFixed(2) + ' Billion NT$';
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)}B NT$` }}}
                 }
             });
-        } else { console.error("Revenue chart canvas not found"); }
+        }
 
-        // 2. Fleet Size Chart
+        // 2. Q1-Q3 2024 Revenue Chart
+        const revCtx9M2024 = document.getElementById('revenueChart9M2024');
+        if (revCtx9M2024) {
+            new Chart(revCtx9M2024, {
+                type: 'bar',
+                data: {
+                    labels: ['China Airlines', 'EVA Air', 'Starlux Airlines'],
+                    datasets: [{
+                        label: 'Q1-Q3 2024 Operating Revenue (NT$ Billion)',
+                        data: [airlineChartData.cal.revenue9M2024, airlineChartData.eva.revenue9M2024, airlineChartData.sjx.revenue9M2024],
+                        backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: true, indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: 'NT$ Billion', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                        y: { ticks: { color: '#8b949e' }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)}B NT$` }}}
+                }
+            });
+        }
+
+
+        // 3. Fleet Size Chart
         const fleetCtx = document.getElementById('fleetSizeChart');
         if (fleetCtx) {
             new Chart(fleetCtx, {
@@ -629,204 +742,186 @@
                 data: {
                     labels: ['China Airlines', 'EVA Air', 'Starlux Airlines'],
                     datasets: [{
-                        label: 'Approximate Fleet Size (Early 2025)',
-                        data: [airlineData.cal.fleetSize, airlineData.eva.fleetSize, airlineData.sjx.fleetSize],
-                         backgroundColor: [
-                            'rgba(54, 162, 235, 0.7)',
-                            'rgba(75, 192, 192, 0.7)',
-                            'rgba(153, 102, 255, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
+                        label: 'Approximate Fleet Size (Early-Mid 2025)',
+                        data: [airlineChartData.cal.fleetSize, airlineChartData.eva.fleetSize, airlineChartData.sjx.fleetSize],
+                         backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
+                    responsive: true, maintainAspectRatio: true,
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'Number of Aircraft', color: '#c9d1d9' },
-                            ticks: { color: '#8b949e' },
-                            grid: { color: '#30363d' }
-                        },
-                         x: {
-                            ticks: { color: '#8b949e' },
-                            grid: { display: false }
-                        }
+                        y: { beginAtZero: true, title: { display: true, text: 'Number of Aircraft', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                         x: { ticks: { color: '#8b949e' }, grid: { display: false }}
                     },
-                    plugins: {
-                        legend: { display: false },
-                         tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + context.parsed.y;
-                                }
-                            }
-                        }
-                    }
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}` }}}
                 }
             });
-        } else { console.error("Fleet size chart canvas not found"); }
-
-        // 3. 2024 Passengers Carried Chart
-        const passengersCtx = document.getElementById('passengersChart2024');
-        if (passengersCtx) {
-            new Chart(passengersCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['EVA Air', 'Starlux Airlines (*CAL N/A)'], // CAL data was not readily comparable for this viz
-                    datasets: [{
-                        label: '2024 Passengers Carried (Millions)',
-                        data: [airlineData.eva.passengers2024, airlineData.sjx.passengers2024],
-                         backgroundColor: [
-                            // 'rgba(54, 162, 235, 0.7)', // CAL color if data was available
-                            'rgba(75, 192, 192, 0.7)',
-                            'rgba(153, 102, 255, 0.7)'
-                        ],
-                        borderColor: [
-                            // 'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'Passengers (Millions)', color: '#c9d1d9' },
-                            ticks: { color: '#8b949e' },
-                            grid: { color: '#30363d' }
-                        },
-                         x: {
-                            ticks: { color: '#8b949e' },
-                            grid: { display: false }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                         tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + context.parsed.y.toFixed(2) + ' Million';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        } else { console.error("Passengers chart canvas not found"); }
-
-
-        // Update footer year
-        const currentYearEl = document.getElementById('currentYear');
-        if (currentYearEl) {
-            // Set current year to 2025 as per previous examples, adjust if dynamic is truly needed
-            currentYearEl.textContent = new Date().getFullYear();
         }
 
-        // Populate KPI data - Can be more dynamic if data is fetched, here's static for example
-        // These values are examples and should match the detailed tables.
-        document.getElementById('kpiCombinedFleet').textContent = `${airlineData.cal.fleetSize + airlineData.eva.fleetSize + airlineData.sjx.fleetSize}+`;
-        document.getElementById('kpiEvaPassengers').textContent = `${airlineData.eva.passengers2024}M`;
-        // Starlux revenue growth 2024 from earlier provided info was +58.18%
-        const sjxRev2023 = 22.47; //Billion
-        const sjxRev2024 = 35.55; //Billion
-        const sjxGrowth = ((sjxRev2024 - sjxRev2023) / sjxRev2023) * 100;
-        document.getElementById('kpiStarluxGrowth').textContent = `+${sjxGrowth.toFixed(0)}% (Rev)`;
-        // CAL Q1 Profit was NT$4.66B
-        document.getElementById('kpiCalQ1Profit').textContent = `NT$4.66B`;
+        // 4. 2024 Passengers Carried Chart
+        const passengersCtx2024 = document.getElementById('passengersChart2024');
+        if (passengersCtx2024) {
+             // Filter out airlines with null passenger data for this chart
+            const passengerChartLabels = [];
+            const passengerChartData = [];
+            const passengerChartBGColors = [];
+            const passengerChartBorderColors = [];
+
+            if (airlineChartData.cal.passengers2024 !== null) {
+                passengerChartLabels.push('China Airlines');
+                passengerChartData.push(airlineChartData.cal.passengers2024);
+                passengerChartBGColors.push('rgba(54, 162, 235, 0.7)');
+                passengerChartBorderColors.push('rgba(54, 162, 235, 1)');
+            }
+            if (airlineChartData.eva.passengers2024 !== null) {
+                passengerChartLabels.push('EVA Air');
+                passengerChartData.push(airlineChartData.eva.passengers2024);
+                passengerChartBGColors.push('rgba(75, 192, 192, 0.7)');
+                passengerChartBorderColors.push('rgba(75, 192, 192, 1)');
+            }
+            if (airlineChartData.sjx.passengers2024 !== null) {
+                passengerChartLabels.push('Starlux Airlines');
+                passengerChartData.push(airlineChartData.sjx.passengers2024);
+                passengerChartBGColors.push('rgba(153, 102, 255, 0.7)');
+                passengerChartBorderColors.push('rgba(153, 102, 255, 1)');
+            }
+
+            new Chart(passengersCtx2024, {
+                type: 'bar',
+                data: {
+                    labels: passengerChartLabels,
+                    datasets: [{
+                        label: '2024 Passengers Carried (Millions)',
+                        data: passengerChartData,
+                        backgroundColor: passengerChartBGColors,
+                        borderColor: passengerChartBorderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: true,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Passengers (Millions)', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                         x: { ticks: { color: '#8b949e' }, grid: { display: false }}
+                    },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed.y.toFixed(2)} Million` }}}
+                }
+            });
+        }
+
+        // Update footer year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // --- Populate table data directly in HTML or via JS like below (static from analysis) ---
+        // KPIs (Example values based on data)
+        document.getElementById('kpiEvaPassengers').textContent = `${airlineChartData.eva.passengers2024}M`;
+        document.getElementById('kpiCalCargo').textContent = `~1.58M tons`; // From CAL FY2024 operational results PDF (5,149,000 FTK / typical conversion if needed, or actual Tonnage if found - this is Freight Tonne Kilometers not actual tons, need to correct if finding tonnage. Let's use placeholder for now. The FY2024 sheet states 1,581,000 Freight Tonnes)
+           // Actually CAL "202503_Financial_and_operational_results" has YTD 2024 Cargo Tonnage (000s) 1,581. So 1.581M tons.
+        document.getElementById('kpiCalCargo').textContent = `1.58M tons`;
+        document.getElementById('kpiStarluxRevenue').textContent = `NT$${airlineChartData.sjx.revenue2024.toFixed(1)}B`;
+        document.getElementById('kpiEvaQ1Profit').textContent = `NT$5.93B`; // from news reports
 
 
-        // Populate tables with data (using IDs for potential future dynamic updates)
-        // This example uses the data from the text, but in a real scenario, you'd fetch it or have it in JS objects
-        // Financials
-        document.getElementById('cal2023Revenue').textContent = '~184.8 Billion';
-        document.getElementById('eva2023Revenue').textContent = '~187.8 Billion';
-        document.getElementById('sjx2023Revenue').textContent = '~22.47 Billion';
-        document.getElementById('cal2023Profit').textContent = '~6.82 Billion';
-        document.getElementById('eva2023Profit').textContent = '~21.59 Billion';
-        document.getElementById('sjx2023Profit').textContent = '~0.15 Billion';
+        // Table data - Annual Financials
+        document.getElementById('cal2023Revenue').textContent = '184.82';
+        document.getElementById('eva2023Revenue').textContent = '187.81';
+        document.getElementById('sjx2023Revenue').textContent = '22.47';
+        document.getElementById('cal2023Profit').textContent = '6.82';
+        document.getElementById('eva2023Profit').textContent = '21.59';
+        document.getElementById('sjx2023Profit').textContent = '0.15';
 
-        document.getElementById('cal2024Revenue').textContent = '~' + airlineData.cal.revenue2024.toFixed(2) + ' Billion (Op. Rev)';
-        document.getElementById('eva2024Revenue').textContent = '~' + airlineData.eva.revenue2024.toFixed(2) + ' Billion';
-        document.getElementById('sjx2024Revenue').textContent = '~' + airlineData.sjx.revenue2024.toFixed(2) + ' Billion';
+        document.getElementById('cal2024Revenue').textContent = airlineChartData.cal.revenue2024.toFixed(2);
+        document.getElementById('eva2024Revenue').innerHTML = `${airlineChartData.eva.revenue2024.toFixed(2)} <span class="footnote">(Parent Co.)</span> / 221.01 <span class="footnote">(Group)</span>`;
+        document.getElementById('sjx2024Revenue').textContent = airlineChartData.sjx.revenue2024.toFixed(2);
 
-        document.getElementById('cal2024Profit').textContent = 'Net Income ~15.49B / EPS 2.38'; // From previous summary
-        document.getElementById('eva2024Profit').textContent = 'Net Profit Before Tax ~38.39B / EPS 5.37'; // From previous summary
-        document.getElementById('sjx2024Profit').textContent = 'EPS NT$0.53'; // From previous summary
+        document.getElementById('cal2024PaxRevenue').textContent = '127.92'; // From CAL "2025 1st Investor Conference"
+        document.getElementById('eva2024PaxRevenue').textContent = '144.94'; // From EVA 2024 Annual Report
+        document.getElementById('sjx2024PaxRevenue').innerHTML = `<em>~22.58 (9M '24 Op Rev)</em>`; // Starlux 9M 2024 passenger revenue was NT$22,607,876 thousand (Page 42 of 9M report)
 
-        document.getElementById('calQ125Revenue').textContent = '52.77 Billion';
-        document.getElementById('evaQ125Revenue').textContent = '54.94 Billion';
-        document.getElementById('sjxQ125Revenue').innerHTML = `<em>Data Pending</em>`;
+        document.getElementById('cal2024CargoRevenue').textContent = '60.71'; // From CAL "2025 1st Investor Conference"
+        document.getElementById('eva2024CargoRevenue').textContent = '52.17'; // From EVA 2024 Annual Report
+        document.getElementById('sjx2024CargoRevenue').innerHTML = `<em>~2.12 (9M '24 Op Rev)</em>`; // Starlux 9M 2024 cargo revenue was NT$2,116,708 thousand
 
+        document.getElementById('cal2024Profit').textContent = '15.49 / (2.38)'; // Net Income / EPS (from "2025 1st Investor Conf")
+        document.getElementById('eva2024Profit').innerHTML = `29.01 <span class="footnote">(Parent Co. Profit)</span> / (5.37)`;
+        document.getElementById('sjx2024Profit').innerHTML = `<em>1.32 (FY24 Earnings)</em> / (0.53)`; // Simply Wall St mentioned FY24 earnings NT$1.3b for Starlux
 
-        document.getElementById('calQ125Profit').textContent = '4.66 Billion';
-        document.getElementById('evaQ125Profit').textContent = '5.93 Billion';
+        // Interim Q1-Q3 2024
+        document.getElementById('cal9m2024Revenue').innerHTML = `${airlineChartData.cal.revenue9M2024.toFixed(2)} <span class="footnote">(Cons.)</span>`;
+        document.getElementById('eva9m2024Revenue').innerHTML = `${airlineChartData.eva.revenue9M2024.toFixed(2)} <span class="footnote">(Group)</span>`;
+        document.getElementById('sjx9m2024Revenue').innerHTML = `${airlineChartData.sjx.revenue9M2024.toFixed(2)} <span class="footnote">(Indiv.)</span>`;
+        document.getElementById('cal9m2024Profit').innerHTML = `${airlineChartData.cal.profit9M2024.toFixed(2)} <span class="footnote">(Cons. Net)</span>`;
+        document.getElementById('eva9m2024Profit').innerHTML = `${airlineChartData.eva.profit9M2024.toFixed(2)} <span class="footnote">(Group Profit)</span>`;
+        document.getElementById('sjx9m2024Profit').innerHTML = `${airlineChartData.sjx.profit9M2024.toFixed(2)} <span class="footnote">(Indiv. Net)</span>`;
+
+        // Q1 2025 Financials
+        document.getElementById('calQ125Revenue').innerHTML = `52.77 <span class="footnote">(Cons. Sales)</span>`;
+        document.getElementById('evaQ125Revenue').innerHTML = `51.27 <span class="footnote">(Total Rev)</span>`;
+        document.getElementById('sjxQ125Revenue').innerHTML = `11.19 <span class="footnote">(Cons. Rev)</span>`;
+
+        document.getElementById('calQ125PaxRevenue').textContent = '32.69';
+        document.getElementById('evaQ125PaxRevenue').textContent = '36.41'; // sum of Jan-Mar from monthly
+        document.getElementById('sjxQ125PaxRevenue').innerHTML = `<em>Pending</em>`;
+
+        document.getElementById('calQ125CargoRevenue').textContent = '15.69';
+        document.getElementById('evaQ125CargoRevenue').textContent = '12.73'; // sum of Jan-Mar from monthly
+        document.getElementById('sjxQ125CargoRevenue').innerHTML = `<em>Pending</em>`;
+
+        document.getElementById('calQ125Profit').textContent = '4.66';
+        document.getElementById('evaQ125Profit').textContent = '5.93';
         document.getElementById('sjxQ125Profit').innerHTML = `<em>Data Pending</em>`;
 
-        document.getElementById('calEmployees').textContent = '~11,642 (Mar 2025)';
-        document.getElementById('evaEmployees').textContent = '>10,000 (Est.)';
-        document.getElementById('sjxEmployees').textContent = '~5,119 (End 2024)';
 
-        // Fleet & Ops
-        document.getElementById('calFleetSize').textContent = `${airlineData.cal.fleetSize} (66 Pass, 17 Freight)`;
-        document.getElementById('evaFleetSize').textContent = `${airlineData.eva.fleetSize} (78 Pass, 9 Freight)`;
-        document.getElementById('sjxFleetSize').textContent = `~${airlineData.sjx.fleetSize} (Target 50+)`;
+        // Fleet & Ops Table
+        document.getElementById('calFleetSize').textContent = `${airlineChartData.cal.fleetSize} (Mar 2025)`;
+        document.getElementById('evaFleetSize').textContent = `${airlineChartData.eva.fleetSize} (Parent Co., Dec 2024)`; // EVA Annual Report 2024 states 89 by end of 2025. For Dec 2024, Parent Co. had 87.
+        document.getElementById('sjxFleetSize').textContent = `~${airlineChartData.sjx.fleetSize} (Early 2025)`;
 
-        document.getElementById('calPaxFleet').textContent = 'A350, A330, 777, 737, A321neo';
-        document.getElementById('evaPaxFleet').textContent = '777, 787, A330, A321';
-        document.getElementById('sjxPaxFleet').textContent = 'A350, A330neo, A321neo';
-
-        document.getElementById('calAvgAge').textContent = '9.6 years';
-        document.getElementById('evaAvgAge').textContent = '~8 years (Est.)';
+        document.getElementById('calAvgAge').textContent = '9.6 yrs (Mar 2025)';
+        document.getElementById('evaAvgAge').textContent = '~8.0 yrs (Dec 2023)'; // EVA Annual Report 2024 doesn't state average age easily, using prior estimate.
         document.getElementById('sjxAvgAge').textContent = 'Very Young (<3 yrs Est.)';
 
-        document.getElementById('cal2024Pax').innerHTML = `<em>Specific total pending</em>`;
-        document.getElementById('eva2024Pax').textContent = `${airlineData.eva.passengers2024} Million`;
-        document.getElementById('sjx2024Pax').textContent = `~${airlineData.sjx.passengers2024.toFixed(2)} Million`;
-        
-        document.getElementById('cal2024PLF').innerHTML = `<em>N/A</em>`;
-        document.getElementById('eva2024PLF').textContent = `82.6%`;
-        document.getElementById('sjx2024PLF').innerHTML = `<em>N/A (Route dependent)</em>`;
+        document.getElementById('calEmployees').textContent = '~11,642 (Group, Mar 2025)';
+        document.getElementById('evaEmployees').textContent = '11,407 (Parent Co., 2024)';
+        document.getElementById('sjxEmployees').textContent = '~5,119 (End 2024)';
 
-        document.getElementById('cal2024Cargo').innerHTML = `<em>Strong growth indicated</em>`;
-        document.getElementById('eva2024Cargo').textContent = `790,000 tons`;
-        document.getElementById('sjx2024Cargo').innerHTML = `<em>Growing (belly cargo)</em>`;
+        document.getElementById('cal2024Pax').textContent = `${airlineChartData.cal.passengers2024.toFixed(2)} Million`;
+        document.getElementById('eva2024Pax').textContent = `${airlineChartData.eva.passengers2024.toFixed(2)} Million`;
+        document.getElementById('sjx2024Pax').textContent = `~${airlineChartData.sjx.passengers2024.toFixed(2)} Million`;
 
-        // Network
+        document.getElementById('cal2024PLF').textContent = '79.3%';
+        document.getElementById('eva2024PLF').textContent = '82.6%';
+        document.getElementById('sjx2024PLF').innerHTML = `<em>Pending</em>`;
+
+        document.getElementById('cal2024Cargo').innerHTML = `1.58 M tons <span class="footnote">(Freight Tonnes)</span>`; // From CAL 202503_Financial_and_operational_results - Cargo Tonnage (000s) YTD 2024 is 1,581
+        document.getElementById('eva2024Cargo').textContent = '0.79 M tons'; // 790,000 tons
+        document.getElementById('sjx2024Cargo').innerHTML = `<em>Pending</em>`;
+
+        document.getElementById('calQ125Pax').textContent = '2.90 Million';
+        document.getElementById('evaQ125Pax').textContent = '3.33 Million';
+        document.getElementById('sjxQ125Pax').innerHTML = `<em>Pending</em>`;
+
+        document.getElementById('calQ125PLF').textContent = '79.7%';
+        document.getElementById('evaQ125PLF').innerHTML = `80.99% <span class="footnote">(YTD Apr)</span>`;
+        document.getElementById('sjxQ125PLF').innerHTML = `<em>Pending</em>`;
+
+        // Network Table
         document.getElementById('calDestinations').textContent = '~54';
-        document.getElementById('evaDestinations').textContent = '~60+';
+        document.getElementById('evaDestinations').innerHTML = `Extensive, ~60+ <span class="footnote">(varies)</span>`;
         document.getElementById('sjxDestinations').textContent = '~28';
-
         document.getElementById('calCountries').textContent = '~24';
-        document.getElementById('evaCountries').textContent = '~19+';
+        document.getElementById('evaCountries').innerHTML = `~19+ <span class="footnote">(varies)</span>`;
         document.getElementById('sjxCountries').textContent = '~11';
-        
-        document.getElementById('calNARoutes').textContent = 'LAX, NYC, SFO, SEA, YVR, ONT';
-        document.getElementById('evaNARoutes').textContent = 'LAX, NYC, SFO, SEA, YVR, ORD, IAH, YYZ';
-        document.getElementById('sjxNARoutes').textContent = 'LAX, SFO, SEA (ONT soon)';
+        document.getElementById('sjxNARoutes').textContent = 'LAX, SFO, SEA (ONT est. Q3 \'25)'; // Updated Starlux ONT
+        document.getElementById('sjxEURoutes').innerHTML = `<em>Focused Asia/N.America; uses partners</em>`;
 
-        document.getElementById('calEURoutes').textContent = 'AMS, FRA, LHR, PRG, FCO, VIE';
-        document.getElementById('evaEURoutes').textContent = 'AMS, LHR, CDG, VIE, MUC, MXP';
-        document.getElementById('sjxEURoutes').innerHTML = `<em>Focus Asia/N.America</em>`;
 
-        document.getElementById('calAsiaRoutes').textContent = 'Japan, SE Asia, China';
-        document.getElementById('evaAsiaRoutes').textContent = 'Japan, SE Asia, China';
-        document.getElementById('sjxAsiaRoutes').textContent = 'Japan, SE Asia (premium focus)';
-
-        // Customer Exp
-        document.getElementById('calAwards').textContent = 'Various int\'l awards (Skytrax)';
-        document.getElementById('evaAwards').textContent = 'Skytrax 5-Star Airline';
-        document.getElementById('sjxAwards').textContent = 'Growing design/service awards';
+        // Customer Experience
+        document.getElementById('calAwards').textContent = 'Various int\'l awards (Skytrax, APEX)';
+        document.getElementById('evaAwards').textContent = 'Skytrax 5-Star Airline, APEX Five Star';
+        document.getElementById('sjxAwards').textContent = 'Growing design/service awards (Red Dot, APEX Five Star)';
 
     </script>
 </body>
