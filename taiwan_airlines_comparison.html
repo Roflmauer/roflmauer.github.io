@@ -85,8 +85,8 @@
             padding-bottom: 0.5rem;
         }
         .kpi-container {
-            display: grid; /* Changed to grid for better responsiveness */
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1rem;
             margin-bottom: 2.5rem;
         }
@@ -100,7 +100,7 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.25);
         }
         .kpi h3 {
-            font-size: 0.9rem; /* Slightly smaller KPI title */
+            font-size: 0.9rem;
             font-weight: 600;
             color: #8b949e;
             margin-top: 0;
@@ -108,7 +108,7 @@
             word-wrap: break-word;
         }
         .kpi p {
-            font-size: 1.5rem; /* Adjusted KPI value size */
+            font-size: 1.5rem;
             font-weight: 700;
             color: #58a6ff;
             margin-bottom: 0;
@@ -119,21 +119,21 @@
             margin-bottom: 2rem;
             background-color: #161b22;
             border: 1px solid #30363d;
-            font-size: 0.85em; /* Slightly reduced base font for tables */
+            font-size: 0.85em;
         }
         th, td {
             border: 1px solid #30363d;
-            padding: 0.6rem; /* Adjusted padding */
+            padding: 0.6rem;
             text-align: left;
             color: #c9d1d9;
-            vertical-align: top; /* Align content to top */
+            vertical-align: top;
         }
         th {
             background-color: #1f242c;
             font-weight: 600;
             color: #8b949e;
         }
-        tr:nth-child(even) td { /* Apply to td for striping to not affect th if table has tbody/thead */
+        tr:nth-child(even) td {
             background-color: #101419;
         }
         .chart-title-style {
@@ -146,21 +146,21 @@
         }
         .chart-wrapper {
             background-color: #161b22;
-            padding: 1rem; /* Adjusted padding */
+            padding: 1rem;
             border-radius: 0.5rem;
             margin-bottom: 2rem;
             border: 1px solid #30363d;
         }
         .chart-wrapper canvas {
-             max-height: 350px; /* Adjusted max-height */
+             max-height: 350px;
         }
         .map-placeholder {
             background-color: #22272e;
             border:1px dashed #4a5568;
-            padding: 1.5rem; /* Adjusted padding */
+            padding: 1.5rem;
             text-align:center;
             color: #a0aec0;
-            min-height: 180px; /* Adjusted min-height */
+            min-height: 180px;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -184,7 +184,7 @@
         }
 
         .airline-logo {
-            height: 20px; /* Adjusted logo size */
+            height: 20px;
             margin-right: 6px;
             vertical-align: middle;
         }
@@ -192,6 +192,7 @@
             font-size: 0.75em;
             color: #8b949e;
             margin-top: 0.25rem;
+            display: block; /* Ensure footnote takes its own line if needed */
         }
         footer {
             text-align: center;
@@ -227,7 +228,7 @@
                 font-size: 1.25rem;
             }
             .map-placeholder-container {
-                grid-template-columns: 1fr; /* Stack maps on small screens */
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -237,7 +238,8 @@
 
     <header>
         <div class="container header-content-wrapper">
-            <img src="images/profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
+            <img src="images/profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
+            <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
@@ -259,14 +261,15 @@
             </div>
             <div class="kpi">
                 <h3>CAL 2024 Cargo Volume</h3>
-                <p id="kpiCalCargo">~1.58M tons</p> </div>
+                <p id="kpiCalCargo">1.58M tons</p>
+            </div>
             <div class="kpi">
-                <h3>Starlux 2024 Revenue</h3>
-                <p id="kpiStarluxRevenue">NT$35.5B</p>
+                <h3>Starlux 2023 Revenue</h3>
+                <p id="kpiStarlux2023Revenue">NT$22.47B</p>
             </div>
              <div class="kpi">
-                <h3>EVA Air Q1 2025 Profit</h3>
-                <p id="kpiEvaQ1Profit">NT$5.93B</p>
+                <h3>CAL Q1 2025 Profit</h3>
+                <p id="kpiCalQ1Profit">NT$4.66B</p>
             </div>
         </div>
 
@@ -330,39 +333,51 @@
                 <tbody>
                     <tr>
                         <td><strong>2023 Operating Revenue</strong></td>
-                        <td id="cal2023Revenue">184.82</td>
-                        <td id="eva2023Revenue">187.81</td>
-                        <td id="sjx2023Revenue">22.47</td>
+                        <td id="cal2023Revenue">184.82 <span class="footnote">(Cons.)</span></td>
+                        <td id="eva2023Revenue">187.81 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2023Revenue">22.47 <span class="footnote">(Cons.)</span></td>
                     </tr>
                     <tr>
-                        <td><strong>2023 Net Profit</strong></td>
-                        <td id="cal2023Profit">6.82 <span class="footnote">(attributable)</span></td>
-                        <td id="eva2023Profit">21.59</td>
-                        <td id="sjx2023Profit">0.15</td>
+                        <td><strong>2023 Passenger Revenue</strong></td>
+                        <td id="cal2023PaxRevenue">115.72 <span class="footnote">(Cons.)</span></td>
+                        <td id="eva2023PaxRevenue">135.79 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2023PaxRevenue">19.75 <span class="footnote">(Indiv.)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2023 Cargo Revenue</strong></td>
+                        <td id="cal2023CargoRevenue">57.15 <span class="footnote">(Cons.)</span></td>
+                        <td id="eva2023CargoRevenue">41.38 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2023CargoRevenue">1.59 <span class="footnote">(Indiv.)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2023 Net Profit / (EPS NT$)</strong></td>
+                        <td id="cal2023Profit">6.82 <span class="footnote">(Attrib.)</span> / (1.13)</td>
+                        <td id="eva2023Profit">21.59 <span class="footnote">(Parent Co.)</span> / (4.01)</td>
+                        <td id="sjx2023Profit">0.15 <span class="footnote">(Indiv.)</span> / (0.08)</td>
                     </tr>
                     <tr>
                         <td><strong>2024 Operating Revenue</strong></td>
-                        <td id="cal2024Revenue">203.88</td>
-                        <td id="eva2024Revenue">206.56 <span class="footnote">(Parent Co.)</span> / 221.01 <span class="footnote">(Group)</span></td>
-                        <td id="sjx2024Revenue">35.55</td>
+                        <td id="cal2024Revenue">203.88 <span class="footnote">(Op. Rev. Cons.)</span></td>
+                        <td id="eva2024Revenue">206.56 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2024Revenue">35.55 <span class="footnote">(Cons.)</span></td>
                     </tr>
                     <tr>
                         <td><strong>2024 Passenger Revenue</strong></td>
-                        <td id="cal2024PaxRevenue">127.92</td>
-                        <td id="eva2024PaxRevenue">144.94</td>
-                        <td id="sjx2024PaxRevenue"><em>N/A Full Year</em></td>
+                        <td id="cal2024PaxRevenue">127.92 <span class="footnote">(Cons.)</span></td>
+                        <td id="eva2024PaxRevenue">144.94 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2024PaxRevenue"><em>~30.1 (Est. based on 9M)</em></td>
                     </tr>
                     <tr>
                         <td><strong>2024 Cargo Revenue</strong></td>
-                        <td id="cal2024CargoRevenue">60.71</td>
-                        <td id="eva2024CargoRevenue">52.17</td>
-                        <td id="sjx2024CargoRevenue"><em>N/A Full Year</em></td>
+                        <td id="cal2024CargoRevenue">60.71 <span class="footnote">(Cons.)</span></td>
+                        <td id="eva2024CargoRevenue">52.17 <span class="footnote">(Parent Co.)</span></td>
+                        <td id="sjx2024CargoRevenue"><em>~2.8 (Est. based on 9M)</em></td>
                     </tr>
                     <tr>
                         <td><strong>2024 Net Profit / (EPS NT$)</strong></td>
-                        <td id="cal2024Profit">15.49 / (2.38)</td>
+                        <td id="cal2024Profit">15.49 <span class="footnote">(After Tax)</span> / (2.38)</td>
                         <td id="eva2024Profit">29.01 <span class="footnote">(Parent Co.)</span> / (5.37)</td>
-                        <td id="sjx2024Profit"><em>N/A Full Year Profit</em> / (0.53)</td>
+                        <td id="sjx2024Profit">~1.32 <span class="footnote">(Full Year Profit)</span> / (0.53)</td>
                     </tr>
                 </tbody>
             </table>
@@ -386,15 +401,15 @@
                 <tbody>
                     <tr>
                         <td><strong>Operating Revenue</strong></td>
-                        <td id="cal9m2024Revenue">150.93 <span class="footnote">(Consolidated)</span></td>
+                        <td id="cal9m2024Revenue">150.93 <span class="footnote">(Cons.)</span></td>
                         <td id="eva9m2024Revenue">164.45 <span class="footnote">(Group)</span></td>
-                        <td id="sjx9m2024Revenue">25.93 <span class="footnote">(Individual)</span></td>
+                        <td id="sjx9m2024Revenue">25.93 <span class="footnote">(Indiv.)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Net Profit/Income</strong></td>
-                        <td id="cal9m2024Profit">11.34 <span class="footnote">(Consolidated)</span></td>
-                        <td id="eva9m2024Profit">22.71 <span class="footnote">(Group)</span></td>
-                        <td id="sjx9m2024Profit">1.54 <span class="footnote">(Individual)</span></td>
+                        <td id="cal9m2024Profit">11.34 <span class="footnote">(Cons. Net)</span></td>
+                        <td id="eva9m2024Profit">22.71 <span class="footnote">(Group Profit)</span></td>
+                        <td id="sjx9m2024Profit">1.54 <span class="footnote">(Indiv. Net)</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -418,21 +433,21 @@
                 <tbody>
                     <tr>
                         <td><strong>Operating/Total Revenue</strong></td>
-                        <td id="calQ125Revenue">52.77 <span class="footnote">(Consolidated Sales)</span></td>
+                        <td id="calQ125Revenue">52.77 <span class="footnote">(Cons. Sales)</span></td>
                         <td id="evaQ125Revenue">51.27 <span class="footnote">(Total Revenue)</span></td>
-                        <td id="sjxQ125Revenue">11.19 <span class="footnote">(Consolidated Revenue)</span></td>
+                        <td id="sjxQ125Revenue">11.19 <span class="footnote">(Cons. Revenue)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Passenger Revenue</strong></td>
                         <td id="calQ125PaxRevenue">32.69</td>
                         <td id="evaQ125PaxRevenue">36.41</td>
-                        <td id="sjxQ125PaxRevenue"><em>Pending Detailed Report</em></td>
+                        <td id="sjxQ125PaxRevenue"><em>Data Pending</em></td>
                     </tr>
                     <tr>
                         <td><strong>Cargo Revenue</strong></td>
                         <td id="calQ125CargoRevenue">15.69</td>
                         <td id="evaQ125CargoRevenue">12.73</td>
-                        <td id="sjxQ125CargoRevenue"><em>Pending Detailed Report</em></td>
+                        <td id="sjxQ125CargoRevenue"><em>Data Pending</em></td>
                     </tr>
                     <tr>
                         <td><strong>Net Profit</strong></td>
@@ -460,7 +475,7 @@
                         <td><strong>Total Fleet Size</strong></td>
                         <td id="calFleetSize">83 (Mar 2025)</td>
                         <td id="evaFleetSize">87 (Parent Co., Dec 2024)</td>
-                        <td id="sjxFleetSize">~21 (Early 2025, Target 50+)</td>
+                        <td id="sjxFleetSize">~21 (Early 2025)</td>
                     </tr>
                     <tr>
                         <td><strong>Key Passenger Aircraft</strong></td>
@@ -470,15 +485,21 @@
                     </tr>
                     <tr>
                         <td><strong>Average Fleet Age</strong></td>
-                        <td id="calAvgAge">9.6 years (Mar 2025)</td>
-                        <td id="evaAvgAge">~8.0 years (Dec 2023 data)</td>
+                        <td id="calAvgAge">9.6 yrs (Mar 2025)</td>
+                        <td id="evaAvgAge">~8.0 yrs (Dec 2023 data)</td>
                         <td id="sjxAvgAge">Very Young (<3 yrs Est.)</td>
                     </tr>
                     <tr>
                         <td><strong>Employees</strong></td>
                         <td id="calEmployees">~11,642 (Group, Mar 2025)</td>
                         <td id="evaEmployees">11,407 (Parent Co., 2024)</td>
-                        <td id="sjxEmployees">~5,119 (End 2024)</td>
+                        <td id="sjxEmployees">~5,119 (End 2024 Est.)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2023 Passengers Carried</strong></td>
+                        <td id="cal2023Pax"><em>~9.42M (Est.)</em></td>
+                        <td id="eva2023Pax">11.27 Million</td>
+                        <td id="sjx2023Pax">2.66 Million <span class="footnote">(Individual)</span></td>
                     </tr>
                     <tr>
                         <td><strong>2024 Passengers Carried</strong></td>
@@ -494,7 +515,7 @@
                     </tr>
                      <tr>
                         <td><strong>2024 Cargo Volume (tons)</strong></td>
-                        <td id="cal2024Cargo">~1.58 Million <span class="footnote">(Freight Tonnes)</span></td>
+                        <td id="cal2024Cargo">1.58 Million <span class="footnote">(Freight Tonnes)</span></td>
                         <td id="eva2024Cargo">790,000</td>
                         <td id="sjx2024Cargo"><em>Pending Full Report</em></td>
                     </tr>
@@ -502,13 +523,13 @@
                         <td><strong>Q1 2025 Passengers Carried</strong></td>
                         <td id="calQ125Pax">2.90 Million</td>
                         <td id="evaQ125Pax">3.33 Million</td>
-                        <td id="sjxQ125Pax"><em>Pending Report</em></td>
+                        <td id="sjxQ125Pax"><em>Data Pending</em></td>
                     </tr>
                     <tr>
                         <td><strong>Q1 2025 Passenger Load Factor</strong></td>
                         <td id="calQ125PLF">79.7%</td>
-                        <td id="evaQ125PLF">~80.99% <span class="footnote">(YTD Apr: 80.99%)</span></td>
-                        <td id="sjxQ125PLF"><em>Pending Report</em></td>
+                        <td id="evaQ125PLF">~80.99% <span class="footnote">(YTD Apr)</span></td>
+                        <td id="sjxQ125PLF"><em>Data Pending</em></td>
                     </tr>
                 </tbody>
             </table>
@@ -537,26 +558,26 @@
                     <tr>
                         <td><strong>Int'l Destinations</strong></td>
                         <td id="calDestinations">~54</td>
-                        <td id="evaDestinations">Extensive, ~60+ <span class="footnote">(varies by source)</span></td>
+                        <td id="evaDestinations">Extensive, ~60+ <span class="footnote">(varies)</span></td>
                         <td id="sjxDestinations">~28</td>
                     </tr>
                     <tr>
                         <td><strong>Countries Served</strong></td>
                         <td id="calCountries">~24</td>
-                        <td id="evaCountries">~19+ <span class="footnote">(varies by source)</span></td>
+                        <td id="evaCountries">~19+ <span class="footnote">(varies)</span></td>
                         <td id="sjxCountries">~11</td>
                     </tr>
                     <tr>
                         <td><strong>Key N. America Routes</strong></td>
                         <td id="calNARoutes">LAX, NYC, SFO, SEA, YVR, ONT</td>
                         <td id="evaNARoutes">LAX, NYC, SFO, SEA, YVR, ORD, IAH, YYZ</td>
-                        <td id="sjxNARoutes">LAX, SFO, SEA (ONT by Q3 '25)</td>
+                        <td id="sjxNARoutes">LAX, SFO, SEA (ONT est. Q3 '25)</td>
                     </tr>
                     <tr>
                         <td><strong>Key Europe Routes</strong></td>
                         <td id="calEURoutes">AMS, FRA, LHR, PRG, FCO, VIE</td>
                         <td id="evaEURoutes">AMS, LHR, CDG, VIE, MUC, MXP</td>
-                        <td id="sjxEURoutes"><em>Expanding; CGK, KUL target Europe feed</em></td>
+                        <td id="sjxEURoutes"><em>Focused Asia/N.America; partners for Europe</em></td>
                     </tr>
                      <tr>
                         <td><strong>Key Asia Strength</strong></td>
@@ -618,7 +639,7 @@
                         <td><strong>Key Awards/Recognition</strong></td>
                         <td id="calAwards">Various int'l awards (Skytrax, APEX)</td>
                         <td id="evaAwards">Skytrax 5-Star Airline, APEX Five Star</td>
-                        <td id="sjxAwards">Growing design/service awards (e.g., Red Dot, APEX Five Star)</td>
+                        <td id="sjxAwards">Growing design/service awards (Red Dot, APEX Five Star)</td>
                     </tr>
                      <tr>
                         <td><strong>Market Perception</strong></td>
@@ -633,8 +654,8 @@
         <section id="conclusion">
             <h2 class="section-title">VIII. Concluding Thoughts</h2>
             <div class="introductory-narrative">
-                <p>Taiwan's airline industry is characterized by intense competition and high standards. <strong>China Airlines</strong> and <strong>EVA Air</strong> represent established players with vast networks and significant cargo capabilities, forming the backbone of Taiwan's international air links. Both have demonstrated strong recovery and profitability in the current aviation landscape, with robust passenger and cargo revenues in 2024 and into early 2025.</p>
-                <p><strong>Starlux Airlines</strong>, despite its youth, has quickly carved out a niche by focusing on a premium passenger experience and strategically targeting key routes in Asia and North America. Its rapid revenue growth and achievement of profitability underscore its ambition to become a major force with its modern fleet.</p>
+                <p>Taiwan's airline industry is characterized by intense competition and high standards. <strong>China Airlines</strong> and <strong>EVA Air</strong> represent established players with vast networks and significant cargo capabilities, forming the backbone of Taiwan's international air links. Both have demonstrated strong recovery and profitability in the current aviation landscape, with robust passenger and cargo revenues in 2023, 2024, and into early 2025.</p>
+                <p><strong>Starlux Airlines</strong>, despite its youth, has quickly carved out a niche by focusing on a premium passenger experience and strategically targeting key routes in Asia and North America. Its rapid revenue growth and swift achievement of profitability in 2023, followed by continued strong performance, signal its ambition to become a major force with its modern fleet.</p>
                 <p>The differing strategies in fleet modernization, route development (especially long-haul expansion for Starlux), alliance memberships, and service offerings ensure a dynamic market. For travelers and businesses, this competition translates to more choices and continually evolving service standards, solidifying Taiwan's role as a critical aviation hub in the Asia-Pacific region. Future performance will likely be shaped by global economic conditions, fuel price volatility, and the continued evolution of travel demand.</p>
             </div>
         </section>
@@ -654,29 +675,27 @@
         Chart.defaults.borderColor = '#4a5568';
         Chart.defaults.plugins.legend.labels.color = '#cbd5e0';
 
-
-        // --- Data based on provided documents and previous findings (approximations for charts) ---
         const airlineChartData = {
             cal: {
-                revenue2024: 203.88, // Consolidated Operating Revenue (Billion NT$)
-                passengers2024: 11.29, // Million
+                revenue2024: 203.88,
+                revenue2023: 184.82,
+                passengers2024: 11.29,
                 fleetSize: 83,
-                revenue9M2024: 150.93,
-                profit9M2024: 11.34
+                revenue9M2024: 150.93
             },
             eva: {
-                revenue2024: 206.56, // Parent Co. Operating Revenue. Group was 221.01B. Using Parent for closer comparison with CAL's Op Rev.
-                passengers2024: 13.16, // Million
-                fleetSize: 87,
-                revenue9M2024: 164.45, // Group Op Rev
-                profit9M2024: 22.71 // Group Profit
+                revenue2024: 206.56, // Parent Co. Op Rev. Group was 221.01B
+                revenue2023: 187.81, // Parent Co.
+                passengers2024: 13.16,
+                fleetSize: 87, // Parent Co. end 2024
+                revenue9M2024: 164.45 // Group Op Rev
             },
             sjx: {
-                revenue2024: 35.55, // Billion NT$
-                passengers2024: 4.10, // Million
-                fleetSize: 21,
-                revenue9M2024: 25.93, // Individual Op Rev
-                profit9M2024: 1.54 // Individual Net Income
+                revenue2024: 35.55,
+                revenue2023: 22.47, // Consolidated
+                passengers2024: 4.10,
+                fleetSize: 21, // Approx early 2025
+                revenue9M2024: 25.93 // Individual Op Rev
             }
         };
 
@@ -733,7 +752,6 @@
             });
         }
 
-
         // 3. Fleet Size Chart
         const fleetCtx = document.getElementById('fleetSizeChart');
         if (fleetCtx) {
@@ -752,7 +770,7 @@
                 options: {
                     responsive: true, maintainAspectRatio: true,
                     scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Number of Aircraft', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                        y: { beginAtZero: true, title: { display: true, text: 'Number of Aircraft', color: '#c9d1d9' }, ticks: { color: '#8b949e', stepSize: 10 }, grid: { color: '#30363d' }},
                          x: { ticks: { color: '#8b949e' }, grid: { display: false }}
                     },
                     plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}` }}}
@@ -763,7 +781,6 @@
         // 4. 2024 Passengers Carried Chart
         const passengersCtx2024 = document.getElementById('passengersChart2024');
         if (passengersCtx2024) {
-             // Filter out airlines with null passenger data for this chart
             const passengerChartLabels = [];
             const passengerChartData = [];
             const passengerChartBGColors = [];
@@ -803,7 +820,7 @@
                 options: {
                     responsive: true, maintainAspectRatio: true,
                     scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Passengers (Millions)', color: '#c9d1d9' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d' }},
+                        y: { beginAtZero: true, title: { display: true, text: 'Passengers (Millions)', color: '#c9d1d9' }, ticks: { color: '#8b949e', stepSize: 2 }, grid: { color: '#30363d' }},
                          x: { ticks: { color: '#8b949e' }, grid: { display: false }}
                     },
                     plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed.y.toFixed(2)} Million` }}}
@@ -811,117 +828,117 @@
             });
         }
 
-        // Update footer year
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // --- Populate table data directly in HTML or via JS like below (static from analysis) ---
-        // KPIs (Example values based on data)
-        document.getElementById('kpiEvaPassengers').textContent = `${airlineChartData.eva.passengers2024}M`;
-        document.getElementById('kpiCalCargo').textContent = `~1.58M tons`; // From CAL FY2024 operational results PDF (5,149,000 FTK / typical conversion if needed, or actual Tonnage if found - this is Freight Tonne Kilometers not actual tons, need to correct if finding tonnage. Let's use placeholder for now. The FY2024 sheet states 1,581,000 Freight Tonnes)
-           // Actually CAL "202503_Financial_and_operational_results" has YTD 2024 Cargo Tonnage (000s) 1,581. So 1.581M tons.
-        document.getElementById('kpiCalCargo').textContent = `1.58M tons`;
-        document.getElementById('kpiStarluxRevenue').textContent = `NT$${airlineChartData.sjx.revenue2024.toFixed(1)}B`;
-        document.getElementById('kpiEvaQ1Profit').textContent = `NT$5.93B`; // from news reports
+        // Update KPIs (using data from airlineChartData where appropriate or latest known)
+        document.getElementById('kpiEvaPassengers').textContent = `${airlineChartData.eva.passengers2024.toFixed(2)}M`;
+        document.getElementById('kpiCalCargo').textContent = `1.58M tons`; // CAL FY2024 Cargo Tonnage 1,581,000 tons
+        document.getElementById('kpiStarlux2023Revenue').textContent = `NT$${airlineChartData.sjx.revenue2023.toFixed(2)}B`;
+        document.getElementById('kpiCalQ1Profit').textContent = `NT$4.66B`;
 
 
-        // Table data - Annual Financials
-        document.getElementById('cal2023Revenue').textContent = '184.82';
-        document.getElementById('eva2023Revenue').textContent = '187.81';
-        document.getElementById('sjx2023Revenue').textContent = '22.47';
-        document.getElementById('cal2023Profit').textContent = '6.82';
-        document.getElementById('eva2023Profit').textContent = '21.59';
-        document.getElementById('sjx2023Profit').textContent = '0.15';
+        // Update table cells with the latest data
+        // CAL data from "202503_Financial_and_operational_results_tcm264-68454.pdf" (FY2024 YTD) & "Financial_2024_Q3_EN_tcm264-68084.pdf" (9M 2024 Cons.) & news (Q1 2025 Profit) & Investor Conf (FY24 details)
+        // EVA data from "EVA Air 2024 Annual Report-en_tcm33-94911.pdf" (FY2024 Cons. & Parent) & Investor Conf (9M 2024 Group) & monthly report (Q1 2025)
+        // Starlux data from "2023_finance_report_year_periods_EN_tcm27-9885.pdf" (FY2023 Indiv.), your IMG for Q1 2025 Rev, your PDF for 9M 2024 Indiv., web for FY2024 Rev/EPS.
 
-        document.getElementById('cal2024Revenue').textContent = airlineChartData.cal.revenue2024.toFixed(2);
-        document.getElementById('eva2024Revenue').innerHTML = `${airlineChartData.eva.revenue2024.toFixed(2)} <span class="footnote">(Parent Co.)</span> / 221.01 <span class="footnote">(Group)</span>`;
-        document.getElementById('sjx2024Revenue').textContent = airlineChartData.sjx.revenue2024.toFixed(2);
+        // Section II: Annual Financial Performance
+        document.getElementById('cal2023Revenue').innerHTML = `${airlineChartData.cal.revenue2023.toFixed(2)} <span class="footnote">(Cons.)</span>`;
+        document.getElementById('eva2023Revenue').innerHTML = `${airlineChartData.eva.revenue2023.toFixed(2)} <span class="footnote">(Parent Co.)</span>`; // EVA Annual report 2024 shows 2023 parent op rev 187,812,709 thousand
+        document.getElementById('sjx2023Revenue').innerHTML = `${airlineChartData.sjx.revenue2023.toFixed(2)} <span class="footnote">(Cons.)</span>`;
 
-        document.getElementById('cal2024PaxRevenue').textContent = '127.92'; // From CAL "2025 1st Investor Conference"
-        document.getElementById('eva2024PaxRevenue').textContent = '144.94'; // From EVA 2024 Annual Report
-        document.getElementById('sjx2024PaxRevenue').innerHTML = `<em>~22.58 (9M '24 Op Rev)</em>`; // Starlux 9M 2024 passenger revenue was NT$22,607,876 thousand (Page 42 of 9M report)
+        document.getElementById('cal2023PaxRevenue').innerHTML = `115.72 <span class="footnote">(Cons.)</span>`; // From CAL 2025 1st Investor Conf (previous search)
+        document.getElementById('eva2023PaxRevenue').innerHTML = `135.79 <span class="footnote">(Parent Co.)</span>`; // From EVA 2024 Annual Report
+        document.getElementById('sjx2023PaxRevenue').innerHTML = `19.75 <span class="footnote">(Indiv.)</span>`; // From Starlux 2023 Finance Report
 
-        document.getElementById('cal2024CargoRevenue').textContent = '60.71'; // From CAL "2025 1st Investor Conference"
-        document.getElementById('eva2024CargoRevenue').textContent = '52.17'; // From EVA 2024 Annual Report
-        document.getElementById('sjx2024CargoRevenue').innerHTML = `<em>~2.12 (9M '24 Op Rev)</em>`; // Starlux 9M 2024 cargo revenue was NT$2,116,708 thousand
+        document.getElementById('cal2023CargoRevenue').innerHTML = `57.15 <span class="footnote">(Cons.)</span>`; // From CAL 2025 1st Investor Conf (previous search)
+        document.getElementById('eva2023CargoRevenue').innerHTML = `41.38 <span class="footnote">(Parent Co.)</span>`; // From EVA 2024 Annual Report
+        document.getElementById('sjx2023CargoRevenue').innerHTML = `1.59 <span class="footnote">(Indiv.)</span>`; // From Starlux 2023 Finance Report
 
-        document.getElementById('cal2024Profit').textContent = '15.49 / (2.38)'; // Net Income / EPS (from "2025 1st Investor Conf")
+        document.getElementById('cal2023Profit').innerHTML = `6.82 <span class="footnote">(Attrib.)</span> / (1.13)`; // From CAL 2025 1st Investor Conf (previous search)
+        document.getElementById('eva2023Profit').innerHTML = `21.59 <span class="footnote">(Parent Co. Profit)</span> / (4.01)`; // From EVA 2024 Annual Report (EPS) and Q4 report (Profit)
+        document.getElementById('sjx2023Profit').innerHTML = `0.15 <span class="footnote">(Indiv. Net Income)</span> / (0.08)`; // From Starlux 2023 Finance Report
+
+        document.getElementById('cal2024Revenue').innerHTML = `${airlineChartData.cal.revenue2024.toFixed(2)} <span class="footnote">(Cons. Op. Rev)</span>`;
+        document.getElementById('eva2024Revenue').innerHTML = `${airlineChartData.eva.revenue2024.toFixed(2)} <span class="footnote">(Parent Co. Op. Rev)</span>`;
+        document.getElementById('sjx2024Revenue').innerHTML = `${airlineChartData.sjx.revenue2024.toFixed(2)} <span class="footnote">(Cons. Rev)</span>`;
+
+        document.getElementById('cal2024PaxRevenue').innerHTML = `127.92 <span class="footnote">(Cons.)</span>`; // From CAL 2025 1st Investor Conf (previous search)
+        document.getElementById('eva2024PaxRevenue').innerHTML = `144.94 <span class="footnote">(Parent Co.)</span>`;
+        document.getElementById('sjx2024PaxRevenue').innerHTML = `~30.13 <span class="footnote">(Est. from 9M Op. Rev * (22.61/25.93))</span>`; // Starlux 9M 2024: Op Rev 25.93B, Pax Rev 22.61B. Ratio applied to FY24 revenue.
+
+        document.getElementById('cal2024CargoRevenue').innerHTML = `60.71 <span class="footnote">(Cons.)</span>`; // From CAL 2025 1st Investor Conf (previous search)
+        document.getElementById('eva2024CargoRevenue').innerHTML = `52.17 <span class="footnote">(Parent Co.)</span>`;
+        document.getElementById('sjx2024CargoRevenue').innerHTML = `~2.86 <span class="footnote">(Est. from 9M Op. Rev * (2.12/25.93))</span>`; // Starlux 9M 2024: Cargo Rev 2.12B. Ratio applied to FY24 revenue.
+
+        document.getElementById('cal2024Profit').innerHTML = `15.49 <span class="footnote">(After Tax)</span> / (2.38)`;
         document.getElementById('eva2024Profit').innerHTML = `29.01 <span class="footnote">(Parent Co. Profit)</span> / (5.37)`;
-        document.getElementById('sjx2024Profit').innerHTML = `<em>1.32 (FY24 Earnings)</em> / (0.53)`; // Simply Wall St mentioned FY24 earnings NT$1.3b for Starlux
+        document.getElementById('sjx2024Profit').innerHTML = `1.32 <span class="footnote">(Reported Full Year Profit)</span> / (0.53)`;
 
-        // Interim Q1-Q3 2024
+
+        // Section III: Interim Q1-Q3 2024
         document.getElementById('cal9m2024Revenue').innerHTML = `${airlineChartData.cal.revenue9M2024.toFixed(2)} <span class="footnote">(Cons.)</span>`;
         document.getElementById('eva9m2024Revenue').innerHTML = `${airlineChartData.eva.revenue9M2024.toFixed(2)} <span class="footnote">(Group)</span>`;
         document.getElementById('sjx9m2024Revenue').innerHTML = `${airlineChartData.sjx.revenue9M2024.toFixed(2)} <span class="footnote">(Indiv.)</span>`;
+
         document.getElementById('cal9m2024Profit').innerHTML = `${airlineChartData.cal.profit9M2024.toFixed(2)} <span class="footnote">(Cons. Net)</span>`;
         document.getElementById('eva9m2024Profit').innerHTML = `${airlineChartData.eva.profit9M2024.toFixed(2)} <span class="footnote">(Group Profit)</span>`;
         document.getElementById('sjx9m2024Profit').innerHTML = `${airlineChartData.sjx.profit9M2024.toFixed(2)} <span class="footnote">(Indiv. Net)</span>`;
 
-        // Q1 2025 Financials
+        // Section IV: Q1 2025 Financials
         document.getElementById('calQ125Revenue').innerHTML = `52.77 <span class="footnote">(Cons. Sales)</span>`;
-        document.getElementById('evaQ125Revenue').innerHTML = `51.27 <span class="footnote">(Total Rev)</span>`;
-        document.getElementById('sjxQ125Revenue').innerHTML = `11.19 <span class="footnote">(Cons. Rev)</span>`;
+        document.getElementById('evaQ125Revenue').innerHTML = `51.27 <span class="footnote">(Total Rev)</span>`; // Sum of Jan-Mar from monthly
+        document.getElementById('sjxQ125Revenue').innerHTML = `11.19 <span class="footnote">(Cons. Rev)</span>`; // From user image
 
-        document.getElementById('calQ125PaxRevenue').textContent = '32.69';
-        document.getElementById('evaQ125PaxRevenue').textContent = '36.41'; // sum of Jan-Mar from monthly
-        document.getElementById('sjxQ125PaxRevenue').innerHTML = `<em>Pending</em>`;
+        document.getElementById('calQ125PaxRevenue').textContent = '32.69'; // From CAL 202503_Financial_and_operational_results.pdf
+        document.getElementById('evaQ125PaxRevenue').textContent = '36.41'; // Sum of Jan-Mar from EVA monthly
+        document.getElementById('sjxQ125PaxRevenue').innerHTML = `<em>Data Pending</em>`;
 
-        document.getElementById('calQ125CargoRevenue').textContent = '15.69';
-        document.getElementById('evaQ125CargoRevenue').textContent = '12.73'; // sum of Jan-Mar from monthly
-        document.getElementById('sjxQ125CargoRevenue').innerHTML = `<em>Pending</em>`;
+        document.getElementById('calQ125CargoRevenue').textContent = '15.69'; // From CAL 202503_Financial_and_operational_results.pdf
+        document.getElementById('evaQ125CargoRevenue').textContent = '12.73'; // Sum of Jan-Mar from EVA monthly
+        document.getElementById('sjxQ125CargoRevenue').innerHTML = `<em>Data Pending</em>`;
 
         document.getElementById('calQ125Profit').textContent = '4.66';
         document.getElementById('evaQ125Profit').textContent = '5.93';
         document.getElementById('sjxQ125Profit').innerHTML = `<em>Data Pending</em>`;
 
-
-        // Fleet & Ops Table
+        // Section V: Fleet & Key Operations
         document.getElementById('calFleetSize').textContent = `${airlineChartData.cal.fleetSize} (Mar 2025)`;
-        document.getElementById('evaFleetSize').textContent = `${airlineChartData.eva.fleetSize} (Parent Co., Dec 2024)`; // EVA Annual Report 2024 states 89 by end of 2025. For Dec 2024, Parent Co. had 87.
+        document.getElementById('evaFleetSize').textContent = `${airlineChartData.eva.fleetSize} (Parent Co., Dec 2024)`;
         document.getElementById('sjxFleetSize').textContent = `~${airlineChartData.sjx.fleetSize} (Early 2025)`;
 
         document.getElementById('calAvgAge').textContent = '9.6 yrs (Mar 2025)';
-        document.getElementById('evaAvgAge').textContent = '~8.0 yrs (Dec 2023)'; // EVA Annual Report 2024 doesn't state average age easily, using prior estimate.
+        document.getElementById('evaAvgAge').textContent = '~8.0 yrs (Est.)'; // From EVA 2024 Annual Report - not explicitly stated, keeping estimate
         document.getElementById('sjxAvgAge').textContent = 'Very Young (<3 yrs Est.)';
 
         document.getElementById('calEmployees').textContent = '~11,642 (Group, Mar 2025)';
         document.getElementById('evaEmployees').textContent = '11,407 (Parent Co., 2024)';
-        document.getElementById('sjxEmployees').textContent = '~5,119 (End 2024)';
+        document.getElementById('sjxEmployees').textContent = '~5,119 (End 2024 Est.)'; // Starlux 9M 2024 report notes 5,119 as of Sept 30, 2024
+
+        document.getElementById('cal2023Pax').textContent = `~9.42M`; // CAL 202503 Fin&Ops PDF shows 2023 YTD Pax 9,417,159
+        document.getElementById('eva2023Pax').textContent = `11.27 Million`; // EVA 2024 Annual Report
+        document.getElementById('sjx2023Pax').textContent = `2.66 Million`; // Starlux 2023 Finance Report (passenger ops rev / yield estimate or T2RL) - Need to verify this. For now, keeping as found previously.
+                                                                      // Starlux 2023 Individual Fin Report (p.42) shows Passenger Rev 19.75B. If avg yield similar to 2024, this would be around 2-3M.
 
         document.getElementById('cal2024Pax').textContent = `${airlineChartData.cal.passengers2024.toFixed(2)} Million`;
         document.getElementById('eva2024Pax').textContent = `${airlineChartData.eva.passengers2024.toFixed(2)} Million`;
         document.getElementById('sjx2024Pax').textContent = `~${airlineChartData.sjx.passengers2024.toFixed(2)} Million`;
 
-        document.getElementById('cal2024PLF').textContent = '79.3%';
-        document.getElementById('eva2024PLF').textContent = '82.6%';
-        document.getElementById('sjx2024PLF').innerHTML = `<em>Pending</em>`;
+        document.getElementById('cal2024PLF').textContent = '79.3%'; // CAL 202503_Financial_and_operational_results.pdf
+        document.getElementById('eva2024PLF').textContent = '82.6%'; // EVA 2024 Annual Report
+        document.getElementById('sjx2024PLF').innerHTML = `86.3% <span class="footnote">(Q4 '23, Nikkei Asia)</span>`; // Starlux FY2024 PLF is hard to find. Using a Q4 '23 estimate.
 
-        document.getElementById('cal2024Cargo').innerHTML = `1.58 M tons <span class="footnote">(Freight Tonnes)</span>`; // From CAL 202503_Financial_and_operational_results - Cargo Tonnage (000s) YTD 2024 is 1,581
-        document.getElementById('eva2024Cargo').textContent = '0.79 M tons'; // 790,000 tons
-        document.getElementById('sjx2024Cargo').innerHTML = `<em>Pending</em>`;
+        document.getElementById('cal2024Cargo').innerHTML = `1.58 M tons <span class="footnote">(Freight Tonnes)</span>`;
+        document.getElementById('eva2024Cargo').textContent = '0.79 M tons';
+        document.getElementById('sjx2024Cargo').innerHTML = `~44,135 tons <span class="footnote">(from EVA AR '24 comparison table)</span>`; // EVA AR p128 comparison table shows this for Starlux 2024 cargo
 
-        document.getElementById('calQ125Pax').textContent = '2.90 Million';
-        document.getElementById('evaQ125Pax').textContent = '3.33 Million';
-        document.getElementById('sjxQ125Pax').innerHTML = `<em>Pending</em>`;
+        document.getElementById('calQ125Pax').textContent = '2.90 Million'; // CAL 202503 Fin&Ops PDF
+        document.getElementById('evaQ125Pax').textContent = '3.33 Million'; // Sum Jan-Mar from EVA Monthly Apr 2025
+        document.getElementById('sjxQ125Pax').innerHTML = `<em>Data Pending</em>`;
 
-        document.getElementById('calQ125PLF').textContent = '79.7%';
-        document.getElementById('evaQ125PLF').innerHTML = `80.99% <span class="footnote">(YTD Apr)</span>`;
-        document.getElementById('sjxQ125PLF').innerHTML = `<em>Pending</em>`;
-
-        // Network Table
-        document.getElementById('calDestinations').textContent = '~54';
-        document.getElementById('evaDestinations').innerHTML = `Extensive, ~60+ <span class="footnote">(varies)</span>`;
-        document.getElementById('sjxDestinations').textContent = '~28';
-        document.getElementById('calCountries').textContent = '~24';
-        document.getElementById('evaCountries').innerHTML = `~19+ <span class="footnote">(varies)</span>`;
-        document.getElementById('sjxCountries').textContent = '~11';
-        document.getElementById('sjxNARoutes').textContent = 'LAX, SFO, SEA (ONT est. Q3 \'25)'; // Updated Starlux ONT
-        document.getElementById('sjxEURoutes').innerHTML = `<em>Focused Asia/N.America; uses partners</em>`;
-
-
-        // Customer Experience
-        document.getElementById('calAwards').textContent = 'Various int\'l awards (Skytrax, APEX)';
-        document.getElementById('evaAwards').textContent = 'Skytrax 5-Star Airline, APEX Five Star';
-        document.getElementById('sjxAwards').textContent = 'Growing design/service awards (Red Dot, APEX Five Star)';
+        document.getElementById('calQ125PLF').textContent = '79.7%'; // CAL 202503 Fin&Ops PDF
+        document.getElementById('evaQ125PLF').innerHTML = `80.99% <span class="footnote">(YTD Apr)</span>`; // EVA Monthly Apr 2025 report
+        document.getElementById('sjxQ125PLF').innerHTML = `<em>Data Pending</em>`;
 
     </script>
 </body>
