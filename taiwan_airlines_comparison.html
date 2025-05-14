@@ -166,7 +166,7 @@
             margin-bottom: 1rem;
         }
         .airline-logo {
-            height: 24px;
+            height: 24px; /* You can adjust this as needed */
             margin-right: 8px;
             vertical-align: middle;
         }
@@ -207,8 +207,7 @@
 <body>
     <div class="background-animation"></div> <header>
         <div class="container header-content-wrapper">
-            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
-            <div class="header-text">
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
@@ -248,9 +247,9 @@
                 <thead>
                     <tr>
                         <th>Feature</th>
-                        <th><img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/70/China_Airlines_logo.svg/200px-China_Airlines_logo.svg.png" alt="CAL Logo" class="airline-logo">China Airlines (CAL)</th>
-                        <th><img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ed/EVA_Air_logo.svg/200px-EVA_Air_logo.svg.png" alt="EVA Logo" class="airline-logo">EVA Air (EVA)</th>
-                        <th><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Starlux_Airlines_logo.svg/200px-Starlux_Airlines_logo.svg.png" alt="Starlux Logo" class="airline-logo">Starlux Airlines (SJX)</th>
+                        <th><img src="images/china_airlines.svg" alt="CAL Logo" class="airline-logo">China Airlines (CAL)</th>
+                        <th><img src="images/eva_air.svg" alt="EVA Logo" class="airline-logo">EVA Air (EVA)</th>
+                        <th><img src="images/starlux.svg" alt="Starlux Logo" class="airline-logo">Starlux Airlines (SJX)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -730,6 +729,7 @@
         // Update footer year
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) {
+            // Set current year to 2025 as per previous examples, adjust if dynamic is truly needed
             currentYearEl.textContent = new Date().getFullYear();
         }
 
@@ -810,7 +810,7 @@
         document.getElementById('calCountries').textContent = '~24';
         document.getElementById('evaCountries').textContent = '~19+';
         document.getElementById('sjxCountries').textContent = '~11';
-        // ... (populate other table cells similarly if needed)
+        
         document.getElementById('calNARoutes').textContent = 'LAX, NYC, SFO, SEA, YVR, ONT';
         document.getElementById('evaNARoutes').textContent = 'LAX, NYC, SFO, SEA, YVR, ORD, IAH, YYZ';
         document.getElementById('sjxNARoutes').textContent = 'LAX, SFO, SEA (ONT soon)';
@@ -827,7 +827,6 @@
         document.getElementById('calAwards').textContent = 'Various int\'l awards (Skytrax)';
         document.getElementById('evaAwards').textContent = 'Skytrax 5-Star Airline';
         document.getElementById('sjxAwards').textContent = 'Growing design/service awards';
-
 
     </script>
 </body>
