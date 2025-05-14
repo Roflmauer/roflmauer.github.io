@@ -47,34 +47,45 @@
             margin-bottom: 0.4em;
             color: var(--primary-text-color);
         }
-        .image-placeholder {
+        .image-container { /* Renamed from image-placeholder for clarity */
             background-color: var(--card-bg-color);
-            border: 1px dashed var(--border-color);
+            border: 1px solid var(--border-color); 
             color: var(--secondary-text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 120px;
-            margin: 1.2em auto;
-            padding: 0.8em;
+            margin: 1.5em auto; 
+            padding: 10px; /* Reduced padding slightly */
             border-radius: 8px;
-            font-style: italic;
             width: 100%;
-            max-width: 550px;
+            max-width: 650px; /* Adjusted max-width for map */
         }
-         .image-placeholder small {
-            font-size: 0.75em;
-            margin-top: 0.4em;
+        .image-container img {
+            width: 100%; /* Make image responsive within container */
+            max-width: 100%; /* Ensure it doesn't overflow its direct parent */
+            display: block;
+            border-radius: 4px; /* Optional: if you want rounded corners on the image itself */
+        }
+         .image-container .caption { /* Style for image caption */
+            font-size: 0.8em;
+            margin-top: 0.8em;
+            font-style: italic;
+            color: var(--secondary-text-color);
         }
         .data-highlight {
             background-color: var(--card-bg-color);
             border-left: 4px solid var(--accent-color);
             padding: 0.8em 1.2em;
-            margin: 1em 0;
+            margin: 1.5em 0; /* Increased vertical margin */
             font-style: italic;
-            color: var(--narrative-text-color);
+            color: var(--narrative-text-color); /* Using narrative text color for better readability */
+            border-radius: 0 4px 4px 0; /* Optional: slight rounding on right corners */
+        }
+        .data-highlight p { /* Ensure paragraphs inside data-highlight inherit its color */
+            color: inherit;
+            margin: 0.3em 0;
         }
     </style>
 </head>
@@ -115,12 +126,14 @@
             <p>
                 Consequently, major shipping lines were forced to reroute vessels traveling between Asia and Europe. Instead of the direct Suez Canal route, ships were diverted around Africa's Cape of Good Hope. This necessary detour dramatically impacted transit times, extending typical 30-day journeys by an additional 10-14 days, effectively nearly doubling the delivery period for many shipments. For our business, reliant on the timely import of cosmetic packaging from Asian manufacturing hubs to our European clientele, this posed an immediate and severe threat to delivery schedules and client satisfaction.
             </p>
-            <div class="image-placeholder">
-                <div>Visual: Map illustrating the standard Suez Canal route vs. the longer Cape of Good Hope diversion.</div>
-                <small>(Consider adding an illustrative map here)</small>
+            <div class="image-container">
+                <img src="images/shipping_routes.JPG" alt="Map illustrating shipping routes: Suez Canal vs. Cape of Good Hope diversion">
+                <p class="caption">
+                    Standard Asia-Europe route via Suez Canal (approx. 8,440 NM) vs. the significantly longer Cape of Good Hope diversion (approx. 11,720 NM).
+                </p>
             </div>
             <div class="data-highlight">
-                "The volume of trade that passed through the Suez Canal dropped by 50 percent year-over-year in the first two months of [2024]..." (Source: IMF Blog, March 2024)
+                <p>"The volume of trade that passed through the Suez Canal dropped by 50 percent year-over-year in the first two months of [2024]..." (Source: IMF Blog, March 2024)</p>
             </div>
         </section>
 
@@ -135,8 +148,8 @@
                 <li>Recommended immediate engagement with our freight forwarding partners to assess alternative shipping routes, understand revised schedules, secure freight capacity, and mitigate cost increases where possible.</li>
                 <li>Advocated for a rapid review of existing inventory levels against client order books to anticipate and buffer against potential bottlenecks.</li>
             </ul>
-             <div class="image-placeholder">
-                <div>Visual: Conceptual icons representing Global News Monitoring, Internal Alert, Strategic Planning.</div>
+             <div class="image-container" style="min-height: auto; padding: 0.5em;"> {/* Adjusted style for icon placeholder */}
+                <p style="font-style: italic;">[Conceptual Icons: Global News Monitoring → Internal Alert → Strategic Planning]</p>
             </div>
         </section>
 
