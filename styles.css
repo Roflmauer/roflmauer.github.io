@@ -22,7 +22,7 @@ button, select { text-transform: none; }
 [type="button"], [type="reset"], [type="submit"], button { -webkit-appearance: button; }
 [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner, button::-moz-focus-inner { border-style: none; padding: 0; }
 [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring, button:-moz-focusring { outline: 1px dotted ButtonText; }
-fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid var(--border-color); } /* Replaced #30363d */
+fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid var(--border-color); }
 legend { box-sizing: border-box; color: inherit; display: table; max-width: 100%; padding: 0; white-space: normal; }
 progress { vertical-align: baseline; }
 textarea { overflow: auto; resize: vertical; display: block; width: 100%;}
@@ -110,7 +110,7 @@ main > h1 {
 h2 { font-size: 1.8em; text-align: center; margin-bottom: 1.2em; }
 h3 { font-size: 1.3em; text-align: center; margin-bottom: 1em; }
 
-.index-section-title {
+.index-section-title { /* Used for H2 on the index page that need left alignment */
     text-align: left;
 }
 
@@ -188,7 +188,7 @@ header .container.header-content-wrapper {
     border-radius: 10px;
     margin-right: 25px;
     margin-bottom: 15px;
-    border: 2px solid var(--accent-color); /* Using accent color for consistency */
+    border: 2px solid var(--accent-color);
     box-shadow: 0 2px 4px var(--shadow-color-medium);
 }
 
@@ -242,7 +242,40 @@ header .container.header-content-wrapper {
     margin: 40px 0;
 }
 
-/* Styles for Report Pages Elements */
+/* Project Listing Styles (Homepage) */
+.project-subsection-title {
+    font-size: 1.4em;
+    color: var(--accent-color);
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+    text-align: left;
+    /* border-bottom: 1px solid var(--border-color); */ /* Optional underline */
+    /* padding-bottom: 0.2em; */ /* Optional padding for underline */
+}
+
+.project-entry {
+    margin-bottom: 2em; /* Space between project entries */
+    padding: 1em; 
+    background-color: var(--card-bg-color); 
+    border-radius: 8px; 
+    border: 1px solid var(--border-color); 
+}
+
+.project-entry .cv-button { /* Styles for the button within a project entry */
+    margin-bottom: 0.5em; /* Space between button and description */
+    /* The .cv-button class itself should handle other button stylings */
+}
+
+.project-description {
+    font-size: 0.95em;
+    color: var(--primary-text-color); 
+    line-height: 1.5;
+    margin-top: 0.5em; /* Space above description if button is above */
+    text-align: left; 
+}
+
+
+/* Styles for Report Pages Elements (KPIs, Charts, Tables etc.) */
 .kpi-container {
     display: flex;
     justify-content: space-around;
@@ -292,7 +325,7 @@ header .container.header-content-wrapper {
     max-height: 100%; 
 }
 
-.data-section {
+.data-section { /* Used on report pages */
     margin-top: 30px;
     padding-top: 15px;
 }
@@ -302,20 +335,20 @@ header .container.header-content-wrapper {
     margin-bottom: 20px; 
     font-size: 1.7em;
 }
-.data-section > h3 { /* Chart titles */
+.data-section > h3 { /* Chart titles within data sections */
     color: var(--accent-color);
     text-align: center;
     margin-top: 0; 
     margin-bottom: 20px; 
     font-size: 1.25em;
 }
-.data-section p.subtle-text { /* Source line */
+.data-section p.subtle-text { /* Source line for data sections */
     text-align: center;
     margin-top: -0.5em; 
     margin-bottom: 30px; 
 }
 
-.bank-list-section-container {
+.bank-list-section-container { /* Used on Taiwan Banking report */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -356,14 +389,14 @@ table.styled-table th, table.styled-table td {
 }
 table.styled-table th {
     background-color: var(--table-header-bg-color);
-    color: var(--primary-text-color); /* Usually primary or slightly brighter for headers */
+    color: var(--primary-text-color);
     font-weight: 600;
 }
 table.styled-table td:last-child, table.styled-table td:nth-last-child(2) { 
     text-align: right;
 }
 table.styled-table tbody tr:hover {
-    background-color: var(--table-header-bg-color); /* Or a slightly different hover color */
+    background-color: var(--table-header-bg-color);
 }
 
 /* Loading and Error Messages */
@@ -392,7 +425,7 @@ table.styled-table tbody tr:hover {
     color: var(--error-text-color);
 }
 
-/* Market Data Table */
+/* Market Data Table (Homepage) */
 .market-section {
     background-color: var(--card-bg-color);
     padding: 20px;
@@ -400,7 +433,7 @@ table.styled-table tbody tr:hover {
     border: 1px solid var(--border-color);
     margin-bottom: 30px;
 }
-.market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; }
+.market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; } /* Overrides general H2 centering for this section */
 .market-table {
     width: 100%;
     border-collapse: collapse;
@@ -412,19 +445,19 @@ table.styled-table tbody tr:hover {
 }
 .market-table thead th {
     background-color: var(--table-header-bg-color);
-    color: var(--secondary-text-color); /* Or primary-text-color if preferred */
+    color: var(--secondary-text-color);
     padding: 10px 12px;
     text-align: left;
     font-weight: 600;
     border-bottom: 1px solid var(--border-color);
 }
 .market-table tbody tr {
-    background-color: var(--card-bg-color); /* Or transparent to inherit section bg */
+    background-color: var(--card-bg-color); 
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.3s;
 }
 .market-table tbody tr:hover {
-    background-color: var(--table-header-bg-color); /* Darker hover consistent with styled-table */
+    background-color: var(--table-header-bg-color);
 }
 .market-table td {
     padding: 10px 12px;
@@ -458,7 +491,7 @@ table.styled-table tbody tr:hover {
     display: block;
 }
 
-/* Currency Exchange */
+/* Currency Exchange (Homepage) */
 section:has(> #fromCurrency) {
     background-color: var(--card-bg-color);
     padding: 20px 30px 30px 30px;
@@ -468,7 +501,7 @@ section:has(> #fromCurrency) {
     margin-left: auto;
     margin-right: auto;
 }
-section:has(> #fromCurrency) h2 {
+section:has(> #fromCurrency) h2 { /* Overrides general H2 centering for this section */
     text-align: center;
     margin-top: 0;
     margin-bottom: 20px;
@@ -496,7 +529,6 @@ section select, section input[type="number"], section input[type="text"] {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
 }
-/* section select:focus, section input[type="number"]:focus, section input[type="text"]:focus are handled by general :focus styles */
 
 #convert.btn {
     width: 100%;
@@ -530,11 +562,8 @@ textarea:focus,
 [type="submit"]:focus {
     outline: 2px solid var(--focus-outline-color);
     outline-offset: 1px;
-    box-shadow: 0 0 0 3px var(--focus-ring-color); /* Reinforce focus, similar to your input style */
+    box-shadow: 0 0 0 3px var(--focus-ring-color); 
 }
-/* Remove default outline if custom one is sufficient and visually clear */
-/* select:focus, input:focus, textarea:focus { outline: none; } */
-
 
 /* Footer */
 footer {
@@ -573,8 +602,8 @@ footer a:hover {
     background-color: var(--body-bg-color);
 }
 
-/* --- Added/Modified Styles for Trade Report Page Specific Content --- */
-.introductory-narrative {
+/* --- Styles for Trade Report Page Specific Content --- */
+.introductory-narrative { /* Used on trade_report.html and case_study.html */
     line-height: 1.7;
     margin-top: 1.5rem;
     margin-bottom: 2.5rem;
@@ -593,10 +622,10 @@ footer a:hover {
     margin-bottom: 0.5rem;
 }
 .introductory-narrative strong {
-    color: var(--primary-text-color); /* Brighter than narrative-text-color */
+    color: var(--primary-text-color); 
     font-weight: 600;
 }
-.chart-wrapper > h2 {
+.chart-wrapper > h2 { /* Used on trade_report.html */
     color: var(--accent-color);
     text-align: center;
     margin-top: 0;
@@ -605,6 +634,7 @@ footer a:hover {
     font-weight: 600;
 }
 
+/* Commented out banking report styles, as they might be handled by Tailwind or other general classes */
 /*
 .banking-report-chart-container { 
     background-color: #2d3748; 
