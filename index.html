@@ -27,18 +27,23 @@
     <main class="container">
     <section>
         <h2 class="index-section-title">About Me</h2>
+        
+        <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-about-me">
+
         <p>
             Pierre Meyer here – a Business Development Manager with a 7-year track record of building bridges and
             revenue between Asia (Taiwan/China) and Europe/US, specializing in strategic partnerships and navigating 
             global markets. Fluency in German, English, and Mandarin, coupled with experience in regulatory compliance 
-            and project management, forms the bedrock of my professional expertise. </p>
+            and project management, forms the bedrock of my professional expertise.
+        </p>
         <p>
             But I don't just stop at the conventional. I'm an avid adopter of new technologies with a keen interest in
             AI and blockchain. My proactive approach to learning allows me to quickly master and leverage emerging tech
             to create impactful digital solutions, as demonstrated by projects like this very website. I bring a unique
             combination: proven international business development skills and a demonstrated ability to rapidly integrate
             new tools and methodologies to achieve results. If you're looking for someone who can connect with global
-            partners and embrace the future of business, let's talk. </p>
+            partners and embrace the future of business, let's talk.
+        </p>
     </section>
 
     <hr class="divider">
@@ -191,7 +196,6 @@
 
             if (document.getElementById('btc-chart')) fetchAndRenderChart('bitcoin', 'usd', 7, 'btc-chart');
             if (document.getElementById('eth-chart')) fetchAndRenderChart('ethereum', 'usd', 7, 'eth-chart');
-
             } catch (error) {
             console.error('Error fetching market data:', error);
             if(marketTableBody) marketTableBody.innerHTML = '<tr><td colspan="5" class="error-message" style="color:#f85149; text-align:center;">Market data unavailable.</td></tr>';
@@ -207,7 +211,6 @@
                 return;
             }
             if(errorDisplay) errorDisplay.style.display = 'none';
-
             try {
             const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`);
             const historicalData = await response.json();
@@ -223,7 +226,6 @@
             const timestamps = historicalData.prices.map(p => new Date(p[0]).toLocaleDateString());
 
             renderChart(chartId, timestamps, prices, coinId);
-
             } catch (error) {
             console.error(`Error fetching/rendering chart data for ${coinId}:`, error);
             if (errorDisplay) {
@@ -271,7 +273,6 @@
 
         const FCA_API_KEY = 'fca_live_TCzp4mzJTKxEnVhsjPYvb6qKWEmzZLgKqkwFsMkp'; 
         const FCA_BASE_URL = 'https://api.freecurrencyapi.com/v1/latest';
-
         if (convertButton && fromCurrencySelect && toCurrencySelect && amountInput && resultDiv && errorMessageDisplay) {
             convertButton.addEventListener('click', () => {
                 const fromCurrency = fromCurrencySelect.value;
