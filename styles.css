@@ -22,7 +22,7 @@ button, select { text-transform: none; }
 [type="button"], [type="reset"], [type="submit"], button { -webkit-appearance: button; }
 [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner, button::-moz-focus-inner { border-style: none; padding: 0; }
 [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring, button:-moz-focusring { outline: 1px dotted ButtonText; }
-fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid #30363d; }
+fieldset { padding: 0.35em 0.75em 0.625em; border: 1px solid var(--border-color); } /* Replaced #30363d */
 legend { box-sizing: border-box; color: inherit; display: table; max-width: 100%; padding: 0; white-space: normal; }
 progress { vertical-align: baseline; }
 textarea { overflow: auto; resize: vertical; display: block; width: 100%;}
@@ -37,68 +37,103 @@ template, [hidden] { display: none; }
 html { box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
 
+/* CSS Custom Properties (Variables) */
+:root {
+    --primary-font: 'Montserrat', sans-serif;
+    --monospace-font: monospace, monospace;
+
+    --body-bg-color: #0d1117;
+    --card-bg-color: #161b22;
+    --table-header-bg-color: #21262d;
+    --alt-card-bg-color: #1a202c; /* For banking charts section if centralized */
+    --input-bg-color: #0d1117;
+
+    --primary-text-color: #c9d1d9;
+    --secondary-text-color: #8b949e; /* For subtle text, labels */
+    --narrative-text-color: #a0aec0; /* For report intro text */
+    --alt-text-color: #e2e8f0; /* For banking charts text if centralized */
+    --inverted-text-color: #0d1117; /* For text on light/accent backgrounds */
+    --white-text-color: #ffffff;
+
+    --accent-color: #58a6ff;
+    --accent-hover-color: #79c0ff;
+    --success-color: #238636;
+    --success-hover-color: #2ea043;
+    --danger-color: #da3633;
+    --error-text-color: #f85149;
+
+    --border-color: #30363d;
+    --focus-ring-color: rgba(88, 166, 255, 0.3); /* input focus shadow */
+    --focus-outline-color: #79c0ff;
+
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
+    --shadow-color-medium: rgba(0, 0, 0, 0.2);
+    --shadow-color-dark: rgba(0, 0, 0, 0.25);
+    --shadow-color-button: rgba(0, 0, 0, 0.3);
+    --shadow-color-button-hover: rgba(0, 0, 0, 0.5);
+}
+
 /* General Styles */
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #0d1117;
-  color: #c9d1d9;
-  margin: 0;
-  line-height: 1.6;
-  overflow-x: hidden;
+    font-family: var(--primary-font);
+    background-color: var(--body-bg-color);
+    color: var(--primary-text-color);
+    margin: 0;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .container {
-  width: 90%;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+    width: 90%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: #58a6ff;
-  margin-top: 1.5em;
-  margin-bottom: 0.8em;
-  font-weight: 600;
+    color: var(--accent-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    font-weight: 600;
 }
 
-/* Page titles inside <main> container */
 main > h1 { 
     font-size: 2.2em; 
-    margin-top: 1.8em; /* INCREASED top margin further */
-    margin-bottom: 0.8em; /* INCREASED bottom margin slightly */
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
     text-align: center;
 } 
 
-h2 { font-size: 1.8em; text-align: center; margin-bottom: 1.2em; /* INCREASED bottom margin */ }
-h3 { font-size: 1.3em; text-align: center; margin-bottom: 1em; /* INCREASED bottom margin */}
+h2 { font-size: 1.8em; text-align: center; margin-bottom: 1.2em; }
+h3 { font-size: 1.3em; text-align: center; margin-bottom: 1em; }
 
 .index-section-title {
     text-align: left;
 }
 
 p {
-  margin: 1em 0;
-  color: #c9d1d9;
-  text-align: left;
+    margin: 1em 0;
+    color: var(--primary-text-color);
+    text-align: left;
 }
 p.center-text, div.center-text p { text-align: center; }
 p.subtle-text, span.subtle-text { 
-    color: #8b949e; 
+    color: var(--secondary-text-color); 
     font-size: 0.9em; 
     font-style: italic;
-    margin-bottom: 2em; /* INCREASED bottom margin for source lines further */
+    margin-bottom: 2em;
 }
 
-/* Header (using the sleek header version) */
+/* Header */
 header {
-  background: #161b22;
-  padding: 15px 0;
-  margin-bottom: 30px; 
-  border-bottom: 1px solid #30363d;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    background: var(--card-bg-color);
+    padding: 15px 0;
+    margin-bottom: 30px; 
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 5px var(--shadow-color-medium);
 }
 header .container.header-content-wrapper {
     display: flex;
@@ -107,75 +142,104 @@ header .container.header-content-wrapper {
     gap: 20px;
 }
 .profile-pic-header {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid #58a6ff;
-  margin: 0;
-  animation: zoomIn 0.8s ease-out 0.2s;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    margin: 0;
+    animation: zoomIn 0.8s ease-out 0.2s;
 }
 .header-text { text-align: left; }
 .header-text h1 {
-  font-size: 1.8em;
-  margin-top: 0;
-  margin-bottom: 2px;
-  color: #58a6ff;
-  text-align: left;
-  animation: fadeInDown 0.6s ease-out 0.1s;
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 2px;
+    color: var(--accent-color);
+    text-align: left;
+    animation: fadeInDown 0.6s ease-out 0.1s;
 }
 .header-text p {
-  color: #8b949e;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 0.9em;
-  line-height: 1.3;
-  text-align: left;
-  animation: fadeInUp 0.7s ease-out 0.2s;
+    color: var(--secondary-text-color);
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 0.9em;
+    line-height: 1.3;
+    text-align: left;
+    animation: fadeInUp 0.7s ease-out 0.2s;
 }
 @media (max-width: 768px) {
-  header .container.header-content-wrapper {
-    flex-direction: column; 
-    gap: 10px;
-  }
-  .profile-pic-header {
-    margin-bottom: 5px; 
-  }
-  .header-text h1, .header-text p {
-    text-align: center; 
-  }
+    header .container.header-content-wrapper {
+        flex-direction: column; 
+        gap: 10px;
+    }
+    .profile-pic-header {
+        margin-bottom: 5px; 
+    }
+    .header-text h1, .header-text p {
+        text-align: center; 
+    }
 }
 
+/* Profile Picture in "About Me" Section */
+.profile-pic-about-me {
+    float: left;
+    width: 180px;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 25px;
+    margin-bottom: 15px;
+    border: 2px solid var(--accent-color); /* Using accent color for consistency */
+    box-shadow: 0 2px 4px var(--shadow-color-medium);
+}
+
+/* Optional: Clearfix utility for sections with floated elements */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+@media (max-width: 600px) { /* Responsive "About Me" Pic */
+    .profile-pic-about-me {
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+        width: 150px;
+    }
+}
 
 /* Buttons */
 .btn, .cv-button {
-  display: inline-block;
-  padding: 10px 25px;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  margin-top: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-  border: none;
-  cursor: pointer;
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-color-button);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
 }
 .btn:hover, .cv-button:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color-button-hover);
+    transform: translateY(-2px);
 }
-.btn { background-color: #238636; color: #ffffff; }
-.btn:hover { background-color: #2ea043; }
-.cv-button { background-color: #58a6ff; color: #0d1117; }
-.cv-button:hover { background-color: #79c0ff; color: #0d1117; }
+.btn { background-color: var(--success-color); color: var(--white-text-color); }
+.btn:hover { background-color: var(--success-hover-color); }
+.cv-button { background-color: var(--accent-color); color: var(--inverted-text-color); }
+.cv-button:hover { background-color: var(--accent-hover-color); color: var(--inverted-text-color); }
 
 /* Divider */
 .divider {
-  border: 0;
-  height: 1px;
-  background-color: #30363d;
-  margin: 40px 0;
+    border: 0;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 40px 0;
 }
 
 /* Styles for Report Pages Elements */
@@ -186,12 +250,12 @@ header .container.header-content-wrapper {
     margin: 25px 0;
 }
 .kpi {
-    background-color: #161b22;
-    color: #c9d1d9;
+    background-color: var(--card-bg-color);
+    color: var(--primary-text-color);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #30363d;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 6px var(--shadow-color-dark);
     text-align: center;
     margin: 8px;
     min-width: 180px;
@@ -200,24 +264,24 @@ header .container.header-content-wrapper {
 .kpi h3 {
     margin-top: 0;
     font-size: 1em;
-    color: #8b949e;
+    color: var(--secondary-text-color);
     margin-bottom: 6px;
 }
 .kpi p {
     font-size: 1.5em;
     font-weight: 600;
-    color: #58a6ff;
+    color: var(--accent-color);
     margin-bottom: 0;
     text-align: center;
 }
 
 .chart-wrapper, .chart-container-small {
     margin-bottom: 30px;
-    background-color: #161b22;
+    background-color: var(--card-bg-color);
     padding: 25px; 
     border-radius: 8px;
-    border: 1px solid #30363d;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 6px var(--shadow-color-dark);
     position: relative; 
 }
 .chart-container-small { 
@@ -228,19 +292,18 @@ header .container.header-content-wrapper {
     max-height: 100%; 
 }
 
-
 .data-section {
     margin-top: 30px;
     padding-top: 15px;
 }
 .data-section > h2 { 
-    color: #58a6ff;
+    color: var(--accent-color);
     text-align: center;
     margin-bottom: 20px; 
     font-size: 1.7em;
 }
 .data-section > h3 { /* Chart titles */
-    color: #58a6ff;
+    color: var(--accent-color);
     text-align: center;
     margin-top: 0; 
     margin-bottom: 20px; 
@@ -263,11 +326,11 @@ header .container.header-content-wrapper {
     min-width: 300px;
     max-width: 48%;
     margin-bottom: 20px;
-    background-color: #161b22;
+    background-color: var(--card-bg-color);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #30363d;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 6px var(--shadow-color-dark);
 }
 .bank-list-container h3 {
     margin-top: 0;
@@ -276,31 +339,31 @@ header .container.header-content-wrapper {
 .bank-list-container h3 span {
     font-size: 0.8em;
     font-weight: normal;
-    color: #8b949e;
+    color: var(--secondary-text-color);
 }
 
 table.styled-table { 
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9em;
-    color: #c9d1d9;
+    color: var(--primary-text-color);
 }
 table.styled-table th, table.styled-table td {
-    border-bottom: 1px solid #30363d;
+    border-bottom: 1px solid var(--border-color);
     padding: 8px 10px;
     text-align: left;
     vertical-align: middle;
 }
 table.styled-table th {
-    background-color: #21262d;
-    color: #c9d1d9;
+    background-color: var(--table-header-bg-color);
+    color: var(--primary-text-color); /* Usually primary or slightly brighter for headers */
     font-weight: 600;
 }
 table.styled-table td:last-child, table.styled-table td:nth-last-child(2) { 
     text-align: right;
 }
 table.styled-table tbody tr:hover {
-    background-color: #21262d;
+    background-color: var(--table-header-bg-color); /* Or a slightly different hover color */
 }
 
 /* Loading and Error Messages */
@@ -308,181 +371,190 @@ table.styled-table tbody tr:hover {
     text-align: center;
     font-size: 1.1em;
     padding: 15px;
-    color: #8b949e;
-    border: 1px dashed #30363d;
+    color: var(--secondary-text-color);
+    border: 1px dashed var(--border-color);
     border-radius: 5px;
     margin-top: 15px;
 }
 .error-message-placeholder {
-    color: #f85149;
-    border-color: #f85149;
+    color: var(--error-text-color);
+    border-color: var(--error-text-color);
 }
 #loadingMessage, #errorMessage,
 #loadingTaiwanBankingMessagePage, #errorTaiwanBankingMessagePage,
-#loadingTopBanksMessage, #errorTopBanksMessage { /* Note: TopBanks messages no longer used in trade_report.html */
+#loadingTopBanksMessage, #errorTopBanksMessage {
     text-align: center;
     font-size: 1.2em;
     padding: 20px;
-    color: #c9d1d9;
+    color: var(--primary-text-color);
 }
 #errorMessage, #errorTaiwanBankingMessagePage, #errorTopBanksMessage {
-    color: #f85149;
+    color: var(--error-text-color);
 }
 
 /* Market Data Table */
 .market-section {
-    background-color: #161b22;
+    background-color: var(--card-bg-color);
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid #30363d;
+    border: 1px solid var(--border-color);
     margin-bottom: 30px;
 }
 .market-section h2 { text-align: left; margin-top:0; font-size: 1.8em; }
 .market-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-  color: #c9d1d9;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    color: var(--primary-text-color);
 }
 .market-table thead th {
-  background-color: #21262d;
-  color: #8b949e;
-  padding: 10px 12px;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 1px solid #30363d;
+    background-color: var(--table-header-bg-color);
+    color: var(--secondary-text-color); /* Or primary-text-color if preferred */
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
 }
 .market-table tbody tr {
-  background-color: #161b22;
-  border-bottom: 1px solid #30363d;
-  transition: background-color 0.3s;
+    background-color: var(--card-bg-color); /* Or transparent to inherit section bg */
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s;
 }
 .market-table tbody tr:hover {
-  background-color: #21262d;
+    background-color: var(--table-header-bg-color); /* Darker hover consistent with styled-table */
 }
 .market-table td {
-  padding: 10px 12px;
-  text-align: left;
+    padding: 10px 12px;
+    text-align: left;
 }
 .market-table td img {
     vertical-align: middle;
     margin-right: 8px;
 }
 .price-change {
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #fff;
-  display: inline-block;
-  font-size: 0.85em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: var(--white-text-color);
+    display: inline-block;
+    font-size: 0.85em;
 }
-.positive { background-color: #238636; }
-.negative { background-color: #da3633; }
+.positive { background-color: var(--success-color); }
+.negative { background-color: var(--danger-color); }
 
 .graph-container { /* For small crypto charts in table */
-  width: 100%;
-  max-width: 120px; 
-  height: 40px;
-  margin-top: 0;
-  border-radius: 3px;
-  overflow: hidden;
+    width: 100%;
+    max-width: 120px; 
+    height: 40px;
+    margin-top: 0;
+    border-radius: 3px;
+    overflow: hidden;
 }
 .graph-container canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
-
 
 /* Currency Exchange */
-section:has(> #fromCurrency) { /* This targets the currency exchange section specifically */
-  background-color: #161b22;
-  padding: 20px 30px 30px 30px;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-  max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
+section:has(> #fromCurrency) {
+    background-color: var(--card-bg-color);
+    padding: 20px 30px 30px 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
 }
 section:has(> #fromCurrency) h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.8em;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8em;
 }
 .form-group {
-  margin-bottom: 12px;
-  text-align: left;
+    margin-bottom: 12px;
+    text-align: left;
 }
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #8b949e;
-  font-weight: 600;
-  font-size: 0.85em;
+    display: block;
+    margin-bottom: 5px;
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    font-size: 0.85em;
 }
 section select, section input[type="number"], section input[type="text"] {
-  width: 100%; 
-  padding: 8px 10px;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  background-color: #0d1117;
-  color: #c9d1d9;
-  font-size: 0.95em;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box;
+    width: 100%; 
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--input-bg-color);
+    color: var(--primary-text-color);
+    font-size: 0.95em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
-section select:focus, section input[type="number"]:focus, section input[type="text"]:focus {
-  outline: none;
-  border-color: #58a6ff;
-  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
-}
-#convert.btn { /* Specific button styling if needed, already covered by .btn */
-  width: 100%;
-  margin-top: 15px;
-  /* background-color: #238636;  -- Covered by .btn */
-  /* color: #ffffff; -- Covered by .btn */
-  padding: 10px 25px;
-}
-#convert.btn:hover {
-  /* background-color: #2ea043; -- Covered by .btn:hover */
+/* section select:focus, section input[type="number"]:focus, section input[type="text"]:focus are handled by general :focus styles */
+
+#convert.btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px 25px;
 }
 #result { 
-  margin-top: 15px;
-  font-size: 1.1em;
-  color: #c9d1d9;
-  font-weight: bold;
-  text-align: center;
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: var(--primary-text-color);
+    font-weight: bold;
+    text-align: center;
 }
 #error-message.error-message { /* For currency converter errors */
-  color: #f85149;
-  margin-top: 8px;
-  font-size: 0.85em;
-  text-align: center;
-  min-height: 1.2em;
+    color: var(--error-text-color);
+    margin-top: 8px;
+    font-size: 0.85em;
+    text-align: center;
+    min-height: 1.2em;
 }
+
+/* Accessibility: General Focus Styles */
+a:focus,
+button:focus,
+select:focus,
+input[type="number"]:focus,
+input[type="text"]:focus,
+textarea:focus,
+[type="button"]:focus,
+[type="reset"]:focus,
+[type="submit"]:focus {
+    outline: 2px solid var(--focus-outline-color);
+    outline-offset: 1px;
+    box-shadow: 0 0 0 3px var(--focus-ring-color); /* Reinforce focus, similar to your input style */
+}
+/* Remove default outline if custom one is sufficient and visually clear */
+/* select:focus, input:focus, textarea:focus { outline: none; } */
+
 
 /* Footer */
 footer {
-  text-align: center;
-  padding: 20px 0;
-  margin-top: 30px;
-  border-top: 1px solid #30363d;
-  color: #8b949e;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    color: var(--secondary-text-color);
 }
 footer p {
     margin-bottom: 5px;
-    color: #8b949e;
+    color: var(--secondary-text-color);
     text-align: center;
     font-size: 0.85em;
 }
 footer a {
-  color: #58a6ff;
+    color: var(--accent-color);
 }
 footer a:hover {
-  color: #79c0ff;
+    color: var(--accent-hover-color);
 }
 
 /* Animations */
@@ -492,73 +564,53 @@ footer a:hover {
 
 /* Background Animation */
 .background-animation {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-color: #0d1117; /* Ensure it matches body if body bg is transparent or not set */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: var(--body-bg-color);
 }
-
 
 /* --- Added/Modified Styles for Trade Report Page Specific Content --- */
-
-/* Introductory Narrative Text Styling on trade_report.html */
-.introductory-narrative { /* This class is used on a div wrapping the intro text */
+.introductory-narrative {
     line-height: 1.7;
-    margin-top: 1.5rem; /* Space after the main page H1 */
-    margin-bottom: 2.5rem; /* Space before KPIs */
-    /* Assumes Tailwind classes like max-w-4xl mx-auto px-4 are used in HTML for layout */
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
 }
-
-/* Paragraphs within the narrative. Relies on general 'p' for base color but can override. */
 .introductory-narrative p {
-    color: #a0aec0; /* Softer text color for narrative body */
+    color: var(--narrative-text-color); 
     margin-bottom: 1rem; 
-    /* text-align: left; is default for p */
 }
-
 .introductory-narrative ul {
     list-style-type: disc;
     padding-left: 1.75rem; 
     margin-bottom: 1rem;
-    color: #a0aec0; 
+    color: var(--narrative-text-color); 
 }
-
 .introductory-narrative li {
     margin-bottom: 0.5rem;
 }
-
 .introductory-narrative strong {
-    color: #cbd5e0; /* Make emphasized text a bit brighter */
-    font-weight: 600; /* Ensure consistent bolding with Montserrat */
+    color: var(--primary-text-color); /* Brighter than narrative-text-color */
+    font-weight: 600;
 }
-
-/* Chart Titles within .chart-wrapper specifically on trade_report.html (if different from general h2) */
-/* Your .chart-wrapper already provides a background and padding. */
-/* This styles the H2 elements used as titles for the individual charts. */
 .chart-wrapper > h2 {
-    color: #58a6ff; /* Consistent with other section titles/headings */
+    color: var(--accent-color);
     text-align: center;
-    margin-top: 0; /* Assuming h2 is the first element in .chart-wrapper */
-    margin-bottom: 20px; /* Space before the canvas element */
-    font-size: 1.25em; /* Slightly smaller than main section H2s */
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.25em;
     font-weight: 600;
 }
 
-/* Styles for the specific banking_report.html charts (if using Tailwind for layout there) */
-/* These are styles previously suggested for the banking_report.html which had different structure. */
-/* Many of these will be handled by Tailwind classes directly in banking_report.html, */
-/* or by the general .chart-wrapper if you use that class there too. */
-
-/* Example for banking_report.html's .chart-container if NOT using .chart-wrapper from above */
 /*
 .banking-report-chart-container { 
     background-color: #2d3748; 
     padding: 2rem; 
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px var(--shadow-color-light), 0 2px 4px -1px var(--shadow-color-light);
     height: 450px; 
     display: flex;
     flex-direction: column; 
@@ -569,8 +621,7 @@ footer a:hover {
     font-weight: 600; 
     margin-bottom: 1rem;
     text-align: center;
-    color: #cbd5e0; 
+    color: var(--alt-text-color); 
     flex-shrink: 0;
 }
 */
-/* --- End of Added/Modified Styles --- */
