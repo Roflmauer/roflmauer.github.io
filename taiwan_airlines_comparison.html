@@ -84,35 +84,6 @@
             border-bottom: 1px solid #30363d;
             padding-bottom: 0.5rem;
         }
-        .kpi-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-        .kpi {
-            background-color: #161b22;
-            color: #c9d1d9;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            border: 1px solid #30363d;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-        }
-        .kpi h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #8b949e;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            word-wrap: break-word;
-        }
-        .kpi p {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #58a6ff;
-            margin-bottom: 0;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -186,12 +157,6 @@
                 font-size: 0.75em;
                 padding: 0.4rem;
             }
-            .kpi {
-                padding: 1rem;
-            }
-            .kpi p {
-                font-size: 1.3rem;
-            }
             .page-title {
                 font-size: 1.75rem;
             }
@@ -219,25 +184,6 @@
         <div class="introductory-narrative">
             <p>Taiwan, strategically positioned in the heart of East Asia, boasts a dynamic and competitive aviation sector. Its airlines are not just crucial for connecting the island to the world but also play a significant role in global cargo transport and passenger transit. This report delves into a comparative analysis of Taiwan's three prominent full-service carriers: the flag carrier <strong>China Airlines</strong>, the privately-owned powerhouse <strong>EVA Air</strong>, and the ambitious newcomer <strong>Starlux Airlines</strong>.</p>
             <p>We'll explore key operational and financial metrics from 2023, 2024, and early 2025, including fleet compositions, network strategies, and market positioning. This analysis aims to shed light on their individual strengths, competitive dynamics, and collective contribution to Taiwan's global presence as the aviation industry navigates the post-pandemic landscape and new growth phases.</p>
-        </div>
-
-        <div class="kpi-container">
-            <div class="kpi">
-                <h3>EVA Air 2024 Passengers</h3>
-                <p id="kpiEvaPassengers">13.16M</p>
-            </div>
-            <div class="kpi">
-                <h3>CAL 2024 Cargo Volume</h3>
-                <p id="kpiCalCargo">1.58M tons</p>
-            </div>
-            <div class="kpi">
-                <h3>Starlux 2023 Revenue</h3>
-                <p id="kpiStarlux2023Revenue">NT$22.47B</p>
-            </div>
-             <div class="kpi">
-                <h3>CAL Q1 2025 Profit</h3>
-                <p id="kpiCalQ1Profit">NT$4.66B</p>
-            </div>
         </div>
 
         <section id="overview">
@@ -778,14 +724,7 @@
 
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Update KPIs
-        document.getElementById('kpiEvaPassengers').textContent = `${airlineChartData.eva.passengers2024.toFixed(2)}M`;
-        document.getElementById('kpiCalCargo').textContent = `1.58M tons`;
-        document.getElementById('kpiStarlux2023Revenue').textContent = `NT$${airlineChartData.sjx.revenue2023.toFixed(2)}B`;
-        document.getElementById('kpiCalQ1Profit').textContent = `NT$4.66B`;
-
-
-        // Populate table data cells with IDs
+        // Update table data cells with IDs
         // Section II: Annual Financial Performance
         document.getElementById('cal2023Revenue').innerHTML = `${airlineChartData.cal.revenue2023.toFixed(2)} <span class="footnote">(Cons.)</span>`;
         document.getElementById('eva2023Revenue').innerHTML = `${airlineChartData.eva.revenue2023.toFixed(2)} <span class="footnote">(Parent Co.)</span>`;
@@ -883,7 +822,6 @@
         document.getElementById('sjxQ125PLF').innerHTML = `<em>Data Pending</em>`;
 
         // Section VI: Network & Connectivity (Simplified)
-        // IDs for this simplified table are now unique, e.g., calDestinationsS
         document.getElementById('calDestinationsS').textContent = '~54';
         document.getElementById('evaDestinationsS').innerHTML = `Extensive, ~60+ <span class="footnote">(varies)</span>`;
         document.getElementById('sjxDestinationsS').textContent = '~28';
