@@ -206,8 +206,7 @@
 
     <header>
         <div class="container header-content-wrapper">
-            <img src="images/profile.jpeg" alt="Pierre Meyer" class="profile-pic-header">
-            <div class="header-text">
+            <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-header"> <div class="header-text">
                 <h1>Pierre Meyer</h1>
                 <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
             </div>
@@ -461,11 +460,11 @@
                         <td><strong>Employees</strong></td>
                         <td id="calEmployees">~11,642 (Group, Mar 2025)</td>
                         <td id="evaEmployees">11,407 (Parent Co., 2024)</td>
-                        <td id="sjxEmployees">~5,119 (End 2024 Est.)</td>
+                        <td id="sjxEmployees">~5,119 (Sep 2024)</td>
                     </tr>
                     <tr>
                         <td><strong>2023 Passengers Carried</strong></td>
-                        <td id="cal2023Pax">~9.42M <span class="footnote">(Est.)</span></td>
+                        <td id="cal2023Pax">~9.42M <span class="footnote">(CAL Data)</span></td>
                         <td id="eva2023Pax">11.27 Million</td>
                         <td id="sjx2023Pax">2.66 Million <span class="footnote">(Industry sources)</span></td>
                     </tr>
@@ -511,7 +510,8 @@
             </div>
         </section>
 
-        <section id="network_simple"> <h2 class="section-title">VI. Network & Connectivity Overview (Approx. May 2025)</h2>
+        <section id="network_simple">
+            <h2 class="section-title">VI. Network & Connectivity Overview (Approx. May 2025)</h2>
             <table>
                 <thead>
                     <tr>
@@ -551,12 +551,6 @@
                         <td id="calAsiaRoutesS">Japan, SE Asia, China, Korea</td>
                         <td id="evaAsiaRoutesS">Japan, SE Asia, China, Korea</td>
                         <td id="sjxAsiaRoutesS">Japan, SE Asia (premium, transit focus)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Route Map Link</strong></td>
-                        <td><a href="https://www.china-airlines.com/us/en/discover/route-map" target="_blank">View CAL Route Map</a></td>
-                        <td><a href="https://www.evaair.com/en-global/plan-and-book/where-we-fly/route-map/" target="_blank">View EVA Route Map</a></td>
-                        <td><a href="https://www.starlux-airlines.com/en-US/flights/route-map" target="_blank">View Starlux Route Map</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -636,20 +630,20 @@
                 profit9M2024: 11.34
             },
             eva: {
-                revenue2024: 206.56,
-                revenue2023: 187.81,
+                revenue2024: 206.56, 
+                revenue2023: 187.81, 
                 passengers2024: 13.16,
-                fleetSize: 87,
-                revenue9M2024: 164.45,
-                profit9M2024: 22.71
+                fleetSize: 87, 
+                revenue9M2024: 164.45, 
+                profit9M2024: 22.71 
             },
             sjx: {
                 revenue2024: 35.55,
-                revenue2023: 22.47,
+                revenue2023: 22.47, 
                 passengers2024: 4.10,
-                fleetSize: 21,
-                revenue9M2024: 25.93,
-                profit9M2024: 1.54
+                fleetSize: 21, 
+                revenue9M2024: 25.93, 
+                profit9M2024: 1.54 
             }
         };
 
@@ -889,6 +883,7 @@
         document.getElementById('sjxQ125PLF').innerHTML = `<em>Data Pending</em>`;
 
         // Section VI: Network & Connectivity (Simplified)
+        // IDs for this simplified table are now unique, e.g., calDestinationsS
         document.getElementById('calDestinationsS').textContent = '~54';
         document.getElementById('evaDestinationsS').innerHTML = `Extensive, ~60+ <span class="footnote">(varies)</span>`;
         document.getElementById('sjxDestinationsS').textContent = '~28';
