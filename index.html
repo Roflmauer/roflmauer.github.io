@@ -58,8 +58,9 @@
         <p style="margin-bottom: 15px;">
             <a href="taiwan_banking_report.html" class="cv-button">Overview of Taiwan's Domestic Banking Sector</a>
         </p>
-        <p>
-            <a href="trade_report.html" class="cv-button">Taiwan-Germany Trade Report</a>
+        <p style="margin-bottom: 15px;">  <a href="trade_report.html" class="cv-button">Taiwan-Germany Trade Report</a>
+        </p>
+        <p> <a href="taiwan_airlines_comparison.html" class="cv-button">Taiwan Airlines Comparison Report</a>
         </p>
     </section>
 
@@ -149,7 +150,7 @@
 
     <footer>
     <div class="container">
-        <p>© 2025 Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+        <p>© <span id="currentYear"></span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
     </div>
     </footer>
 
@@ -317,6 +318,11 @@
         if (marketTableBody) {
             fetchMarketData();
             setInterval(fetchMarketData, FETCH_INTERVAL);
+        }
+        // Update footer year
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) {
+            currentYearEl.textContent = new Date().getFullYear();
         }
     </script>
 </body>
