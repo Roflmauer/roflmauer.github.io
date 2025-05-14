@@ -47,7 +47,7 @@
             margin-bottom: 0.4em;
             color: var(--primary-text-color);
         }
-        .image-container { /* Renamed from image-placeholder for clarity */
+        .image-container { 
             background-color: var(--card-bg-color);
             border: 1px solid var(--border-color); 
             color: var(--secondary-text-color);
@@ -57,18 +57,18 @@
             justify-content: center;
             text-align: center;
             margin: 1.5em auto; 
-            padding: 10px; /* Reduced padding slightly */
+            padding: 10px; 
             border-radius: 8px;
             width: 100%;
-            max-width: 650px; /* Adjusted max-width for map */
+            max-width: 650px; 
         }
         .image-container img {
-            width: 100%; /* Make image responsive within container */
-            max-width: 100%; /* Ensure it doesn't overflow its direct parent */
+            width: 100%; 
+            max-width: 100%; 
             display: block;
-            border-radius: 4px; /* Optional: if you want rounded corners on the image itself */
+            border-radius: 4px; 
         }
-         .image-container .caption { /* Style for image caption */
+         .image-container .caption { 
             font-size: 0.8em;
             margin-top: 0.8em;
             font-style: italic;
@@ -78,15 +78,49 @@
             background-color: var(--card-bg-color);
             border-left: 4px solid var(--accent-color);
             padding: 0.8em 1.2em;
-            margin: 1.5em 0; /* Increased vertical margin */
+            margin: 1.5em 0; 
             font-style: italic;
-            color: var(--narrative-text-color); /* Using narrative text color for better readability */
-            border-radius: 0 4px 4px 0; /* Optional: slight rounding on right corners */
+            color: var(--narrative-text-color); 
+            border-radius: 0 4px 4px 0; 
         }
-        .data-highlight p { /* Ensure paragraphs inside data-highlight inherit its color */
+        .data-highlight p { 
             color: inherit;
             margin: 0.3em 0;
         }
+
+        /* Styles for the process flow placeholder */
+        .process-flow-placeholder {
+            background-color: var(--card-bg-color); /* Or var(--body-bg-color) if preferred */
+            border: 1px solid var(--border-color);
+            color: var(--primary-text-color);
+            padding: 1em;
+            border-radius: 8px;
+            margin: 1.5em auto;
+            max-width: 550px; /* Adjust width as needed */
+        }
+        .process-flow-placeholder h4 {
+            text-align: center;
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 0.8em;
+            font-size: 1.1em;
+        }
+        .process-flow-placeholder p {
+            margin: 0.3em 0;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .process-flow-placeholder .arrow {
+            font-size: 1.5em;
+            color: var(--accent-color);
+            display: block;
+            margin: 0.1em 0;
+            line-height: 1; /* Adjust line height for arrows */
+        }
+        .process-flow-placeholder strong {
+            color: var(--primary-text-color); /* Ensure strong text is readable */
+        }
+
     </style>
 </head>
 
@@ -148,8 +182,13 @@
                 <li>Recommended immediate engagement with our freight forwarding partners to assess alternative shipping routes, understand revised schedules, secure freight capacity, and mitigate cost increases where possible.</li>
                 <li>Advocated for a rapid review of existing inventory levels against client order books to anticipate and buffer against potential bottlenecks.</li>
             </ul>
-             <div class="image-container" style="min-height: auto; padding: 0.5em;"> {/* Adjusted style for icon placeholder */}
-                <p style="font-style: italic;">[Conceptual Icons: Global News Monitoring → Internal Alert → Strategic Planning]</p>
+            <div class="process-flow-placeholder">
+                <h4>My Proactive Process:</h4>
+                <p><strong>1. Vigilant Monitoring:</strong> Keeping abreast of global news and geopolitical shifts.</p>
+                <p class="arrow">↓</p>
+                <p><strong>2. Rapid Internal Alert:</strong> Immediately communicating potential impacts to relevant departments.</p>
+                <p class="arrow">↓</p>
+                <p><strong>3. Strategic Planning Activation:</strong> Initiating discussions for customer communication and logistical adjustments.</p>
             </div>
         </section>
 
