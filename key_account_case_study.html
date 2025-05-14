@@ -9,90 +9,93 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
-        /* Page-specific styles can be added here or in styles.css */
+        /* Page-specific styles (can be moved to styles.css) */
         .case-study-section {
-            margin-bottom: 2.5em;
+            margin-bottom: 2em; /* Slightly reduced bottom margin for sections */
         }
-        .case-study-section h2 { /* Sub-section titles */
+        .case-study-section h2 {
             text-align: left;
-            font-size: 1.6em; /* Slightly smaller than main page titles */
-            margin-top: 1.5em;
-            margin-bottom: 0.8em;
+            font-size: 1.6em;
+            margin-top: 1.2em; /* Reduced top margin */
+            margin-bottom: 0.6em; /* Reduced bottom margin */
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.3em;
-            color: var(--accent-color); /* Ensure h2 uses accent color */
-        }
-        .case-study-section h3 { /* For smaller headings within sections if needed */
-            text-align: left;
-            font-size: 1.3em;
-            color: var(--primary-text-color); /* Less emphasis than accent color */
-            margin-top: 1em;
-            margin-bottom: 0.5em;
+            color: var(--accent-color);
         }
         .kpi-highlight-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px; /* Reduced gap */
             justify-content: space-around;
-            margin: 1.5em 0;
+            margin: 1.2em 0; /* Reduced margin */
         }
         .kpi-highlight {
             background-color: var(--card-bg-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 15px 20px;
+            padding: 12px 18px; /* Reduced padding */
             text-align: center;
             flex: 1;
-            min-width: 200px; /* Adjust as needed */
+            min-width: 180px; /* Adjusted min-width */
             box-shadow: 0 2px 4px var(--shadow-color-medium);
         }
         .kpi-highlight .value {
-            font-size: 2em;
+            font-size: 1.8em; /* Slightly reduced font size */
             font-weight: 700;
             color: var(--accent-color);
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px; /* Reduced margin */
         }
         .kpi-highlight .label {
-            font-size: 0.9em;
+            font-size: 0.85em; /* Slightly reduced font size */
             color: var(--secondary-text-color);
         }
         .skills-list {
-            list-style-type: disc; /* Or none if you prefer, then style LIs */
-            padding-left: 25px; /* Indent list */
-            margin-top: 0.5em;
+            list-style-type: disc;
+            padding-left: 20px; /* Adjusted padding */
+            margin-top: 0.3em;
         }
         .skills-list li {
-            margin-bottom: 0.6em; /* Space between list items */
-            color: var(--primary-text-color); /* Ensure list items use primary text color */
+            margin-bottom: 0.4em; /* Reduced margin */
+            color: var(--primary-text-color);
         }
-        .image-placeholder { /* Basic placeholder styling */
-            background-color: var(--card-bg-color); /* Match card background */
-            border: 1px dashed var(--border-color); /* Dashed border */
+        .image-placeholder {
+            background-color: var(--card-bg-color);
+            border: 1px dashed var(--border-color);
             color: var(--secondary-text-color);
             display: flex;
-            flex-direction: column; /* Stack text elements */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 150px; /* Adjust as needed */
-            margin: 1.5em auto; /* Centering block element */
-            padding: 1em;
+            min-height: 120px; /* Reduced min-height */
+            margin: 1.2em auto;
+            padding: 0.8em; /* Reduced padding */
             border-radius: 8px;
             font-style: italic;
             width: 100%;
-            max-width: 600px; /* Max width for the placeholder */
+            max-width: 550px; /* Adjusted max-width */
         }
          .image-placeholder small {
-            font-size: 0.8em;
-            margin-top: 0.5em;
+            font-size: 0.75em; /* Reduced font size */
+            margin-top: 0.4em;
         }
-        .case-study-section p, .case-study-section ul { /* Ensure consistent text color */
+        .case-study-section p, .case-study-section ul {
             color: var(--primary-text-color);
+            margin-top: 0.5em; /* Added slight top margin for paragraphs */
+            margin-bottom: 0.8em; /* Consistent bottom margin for paragraphs */
+            line-height: 1.55; /* Slightly adjusted line height for readability */
         }
-        /* Ensure paragraphs in intro summary also use primary text color */
         .intro-summary p {
              color: var(--primary-text-color);
+             font-size: 1.05em; /* Slightly adjusted font size */
+        }
+        /* Main H1 for the page */
+        main > h1 { 
+            text-align: center; 
+            margin-bottom: 1.2em; /* Adjusted margin */
+            color: var(--accent-color);
+            font-size: 2em; /* Adjusted H1 size for case study title */
         }
     </style>
 </head>
@@ -115,60 +118,51 @@
     </header>
 
     <main class="container">
-        <h1 style="text-align: center; margin-bottom: 1.5em; color: var(--accent-color);">Key Account Success: Driving Packaging Innovation for a European Cosmetics Leader</h1>
+        <h1>Key Account Success: Driving Packaging Innovation</h1>
 
         <section class="case-study-section intro-summary">
-            <p class="center-text" style="font-size: 1.1em; max-width: 800px; margin-left:auto; margin-right:auto;">
-                This case study highlights a successful initiative to deepen a key account relationship with a major German cosmetics conglomerate. By proactively identifying a market trend and sourcing an innovative packaging solution, I secured a multi-year, high-volume contract, delivering over a million units annually and showcasing strong business development and strategic thinking.
+            <p class="center-text" style="max-width: 750px; margin-left:auto; margin-right:auto;">
+                This case study outlines how proactive market analysis and strategic sourcing led to a multi-year, high-volume packaging contract with a major German cosmetics leader, significantly expanding a key account relationship and delivering over a million units annually.
             </p>
         </section>
 
         <hr class="divider">
 
         <section class="case-study-section">
-            <h2>The Opportunity: Anticipating Market Needs & Enhancing Client Value</h2>
+            <h2>The Opportunity: Anticipating Market Needs</h2>
             <p>
-                My role involved managing and expanding business with key clients in the EU and US for cosmetic packaging sourced from Asia. A primary objective was to elevate our partnership with a leading German cosmetics company—a household name in the European beauty market—beyond an initial small-scale project.
+                Tasked with growing key EU/US accounts for cosmetic packaging, I aimed to deepen our partnership with a leading German cosmetics firm. Around 2021-2022, I identified the rapidly growing consumer demand for makeup "setting sprays." The global market, valued at USD 873.5 million in 2022, was set to nearly double by 2032, with a strong professional segment CAGR of 5.2% (2023-2032) (Source: GMInsights.com).
             </p>
             <p>
-                Around 2021-2022, I observed a significant emerging trend in the cosmetics industry: the rapid rise in popularity of makeup "fixing sprays" or "setting sprays." These products, designed to enhance makeup longevity, especially in varying climates, were becoming a staple. The global setting spray market was already valued at USD 873.5 million in 2022 and was projected to nearly double to USD 1.676 billion by 2032 (Source: GMInsights.com). This indicated substantial and sustained growth, with the professional application segment alone anticipated to grow at a 5.2% CAGR from 2023-2032 (Source: GMInsights.com).
-            </p>
-            <p>
-                This burgeoning demand was further reflected in Google search trends within Germany. My analysis of this data indicated a significant and sustained rise in consumer interest for "setting spray" beginning around early 2021 and growing consistently through 2022 and 2023, underscoring increasing consumer awareness.
-            </p>
-            <div class="image-placeholder">
-                <div>Visual: Chart derived from Google Trends data for "Setting Spray" & "Fixing Spray" in Germany (2020-2024), highlighting growth in 2021-2023.</div>
-                <small>(Source: Google Trends data, analyzed by Pierre Meyer)</small>
-            </div>
-            <p>
-                While our key German client had an existing product in this category, its packaging was standard. With top European bestsellers in this segment having launched in 2019 and 2020 (Source: CosmeticsBusiness.com), I recognized a strategic opportunity. The market was clearly receptive, and an innovative packaging upgrade could significantly enhance our client's product appeal and market positioning within this rapidly expanding category. My foresight was confirmed by later industry reports indicating that sales of setting sprays and powders across Europe surged by 63% between January and June 2024, with the segment becoming "hot on social," including a 224% increase in TikTok views for setting sprays compared to the previous year (Sources: Circana & Spate, via CosmeticsBusiness.com article published in 2024). This underscored the massive potential I had identified earlier.
+                While our German client offered such a product, its packaging was conventional. With top European brands launching popular setting sprays in 2019-2020 (Source: CosmeticsBusiness.com), I saw a clear chance to propose an innovative packaging upgrade. This would enhance their product's appeal in a booming category, a foresight later confirmed by a 63% European sales surge and a 224% rise in TikTok views for setting sprays in early 2024 (Sources: Circana & Spate, via CosmeticsBusiness.com, 2024).
             </p>
         </section>
 
         <section class="case-study-section">
-            <h2>The Initiative: Proactive Sourcing & Strategic Proposal</h2>
+            <h2>The Initiative: Sourcing Modern Packaging</h2>
             <p>
-                Leveraging insights gained from attending premier industry trade exhibitions such as Cosmoprof in Bologna and Hong Kong, I actively scouted for cutting-edge packaging innovations. It was at one of these events that I identified a unique fixing spray bottle with a distinctly modern and premium design—featuring a snap-fit pump and an unconventional short neck—that stood out significantly from typical offerings.
+                Attending premier industry trade shows like Cosmoprof (Bologna/Hong Kong), I scouted for packaging innovations. I discovered a unique spray bottle with a modern snap-fit pump and distinctive short neck, a significant upgrade from standard designs.
             </p>
             <p>
-                Recognizing its potential, I secured samples and proactively approached the key German client. My proposal was not merely to sell a new component, but to offer a strategic enhancement for their existing fixing spray, transforming its presentation to better capture consumer interest in a booming product segment.
+                I proactively presented this to the client not just as a new component, but as a strategic enhancement for their existing product line, designed to boost its market presence.
             </p>
             <div class="image-placeholder">
-                <div>Conceptual: Visual comparison of a standard spray bottle vs. the proposed modern design</div>
+                <div>Conceptual: Modern vs. Standard Spray Bottle Design</div>
+                 <small>(Illustrative image placeholder)</small>
             </div>
         </section>
 
         <section class="case-study-section">
-            <h2>Execution: Collaborative Development & Quality Assurance</h2>
+            <h2>Execution: Collaborative Development</h2>
             <p>
-                The proposed innovation sparked immediate interest from the client. What followed was a collaborative process involving sample evaluations, rigorous performance testing, and close communication to ensure the new packaging aligned perfectly with their quality standards and brand identity. This phase was crucial in building trust and demonstrating our commitment to delivering a solution that was not only aesthetically superior but also functionally reliable.
+                The proposal generated strong client interest, leading to a collaborative phase of sample evaluations and rigorous testing. Close communication ensured the new packaging met all quality, performance, and brand identity standards, building trust and demonstrating our commitment to a functionally superior and aesthetically pleasing solution.
             </p>
         </section>
 
         <section class="case-study-section">
-            <h2>The Impact: A Multi-Year, High-Volume Success</h2>
+            <h2>The Impact: Multi-Year, High-Volume Success</h2>
             <p>
-                Our proactive approach and the distinct advantages of the new packaging solution led to a successful adoption by the client for their flagship fixing spray. This strategic win translated into significant and sustained business results:
+                The client adopted the innovative packaging for their flagship fixing spray. This strategic win yielded significant, sustained business:
             </p>
             <div class="kpi-highlight-container">
                 <div class="kpi-highlight">
@@ -185,27 +179,27 @@
                 </div>
             </div>
             <p>
-                This project not only solidified our position as a key strategic partner but also showcased our ability to anticipate market needs and deliver innovative, high-value solutions. The modern packaging contributed to the product's continued success in a competitive, trend-driven market.
+                This success solidified our role as a key strategic partner, highlighting our ability to anticipate market trends and deliver impactful, innovative solutions that enhanced the client's product in a competitive market.
             </p>
         </section>
 
         <section class="case-study-section">
             <h2>Key Skills Demonstrated</h2>
             <ul class="skills-list">
-                <li>Strategic Account Management & Growth</li>
+                <li>Strategic Account Growth</li>
                 <li>Market Trend Analysis & Foresight</li>
-                <li>Proactive Business Development & Solution Selling</li>
-                <li>International Product Sourcing & Vendor Management</li>
-                <li>Cross-Cultural Communication & Negotiation (with Asian suppliers & German client)</li>
-                <li>Project Management (from concept to mass production)</li>
-                <li>Understanding of Cosmetics Packaging & Industry Standards</li>
-                <li>Client Relationship Building & Long-Term Partnership Development</li>
+                <li>Proactive Business Development</li>
+                <li>Solution Selling & Consultative Approach</li>
+                <li>International Product Sourcing</li>
+                <li>Cross-Cultural Communication & Negotiation</li>
+                <li>Project Management (Concept to Production)</li>
+                <li>Cosmetics Packaging Industry Expertise</li>
             </ul>
         </section>
 
         <div style="text-align: center; margin-top: 2em; margin-bottom: 2em;">
             <a href="index.html#projects" class="cv-button">Back to Projects Overview</a>
-             </div>
+        </div>
 
     </main>
 
