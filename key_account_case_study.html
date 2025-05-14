@@ -20,6 +20,7 @@
             margin-bottom: 0.8em;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.3em;
+            color: var(--accent-color); /* Ensure h2 uses accent color */
         }
         .case-study-section h3 { /* For smaller headings within sections if needed */
             text-align: left;
@@ -57,25 +58,41 @@
             color: var(--secondary-text-color);
         }
         .skills-list {
-            list-style-type: disc;
-            padding-left: 20px;
+            list-style-type: disc; /* Or none if you prefer, then style LIs */
+            padding-left: 25px; /* Indent list */
+            margin-top: 0.5em;
         }
         .skills-list li {
-            margin-bottom: 0.5em;
+            margin-bottom: 0.6em; /* Space between list items */
+            color: var(--primary-text-color); /* Ensure list items use primary text color */
         }
         .image-placeholder { /* Basic placeholder styling */
-            background-color: var(--border-color);
-            border: 1px dashed var(--secondary-text-color);
+            background-color: var(--card-bg-color); /* Match card background */
+            border: 1px dashed var(--border-color); /* Dashed border */
             color: var(--secondary-text-color);
             display: flex;
+            flex-direction: column; /* Stack text elements */
             align-items: center;
             justify-content: center;
             text-align: center;
             min-height: 150px; /* Adjust as needed */
-            margin: 1em 0;
+            margin: 1.5em auto; /* Centering block element */
             padding: 1em;
             border-radius: 8px;
             font-style: italic;
+            width: 100%;
+            max-width: 600px; /* Max width for the placeholder */
+        }
+         .image-placeholder small {
+            font-size: 0.8em;
+            margin-top: 0.5em;
+        }
+        .case-study-section p, .case-study-section ul { /* Ensure consistent text color */
+            color: var(--primary-text-color);
+        }
+        /* Ensure paragraphs in intro summary also use primary text color */
+        .intro-summary p {
+             color: var(--primary-text-color);
         }
     </style>
 </head>
@@ -98,7 +115,7 @@
     </header>
 
     <main class="container">
-        <h1 style="text-align: center; margin-bottom: 1.5em;">Key Account Success: Driving Packaging Innovation for a European Cosmetics Leader</h1>
+        <h1 style="text-align: center; margin-bottom: 1.5em; color: var(--accent-color);">Key Account Success: Driving Packaging Innovation for a European Cosmetics Leader</h1>
 
         <section class="case-study-section intro-summary">
             <p class="center-text" style="font-size: 1.1em; max-width: 800px; margin-left:auto; margin-right:auto;">
@@ -114,9 +131,18 @@
                 My role involved managing and expanding business with key clients in the EU and US for cosmetic packaging sourced from Asia. A primary objective was to elevate our partnership with a leading German cosmetics company—a household name in the European beauty market—beyond an initial small-scale project.
             </p>
             <p>
-                Around 2021-2022, I observed a significant emerging trend in the cosmetics industry: the rapid rise in popularity of makeup "fixing sprays." While our key German client had an existing product in this category, its packaging was standard and lacked modern appeal. I recognized a strategic opportunity to propose an upgrade that could enhance their product's market presence and align with contemporary design aesthetics.
+                Around 2021-2022, I observed a significant emerging trend in the cosmetics industry: the rapid rise in popularity of makeup "fixing sprays" or "setting sprays." These products, designed to enhance makeup longevity, especially in varying climates, were becoming a staple. The global setting spray market was already valued at USD 873.5 million in 2022 and was projected to nearly double to USD 1.676 billion by 2032 (Source: GMInsights.com). This indicated substantial and sustained growth, with the professional application segment alone anticipated to grow at a 5.2% CAGR from 2023-2032 (Source: GMInsights.com).
             </p>
-            <div class="image-placeholder">Optional: Chart showing fixing spray market growth (e.g., "European Fixing Spray Market Growth 2021-2023")<br><small>(Source: Industry Report/Market Analysis, Year)</small></div>
+            <p>
+                This burgeoning demand was further reflected in Google search trends within Germany. My analysis of this data indicated a significant and sustained rise in consumer interest for "setting spray" beginning around early 2021 and growing consistently through 2022 and 2023, underscoring increasing consumer awareness.
+            </p>
+            <div class="image-placeholder">
+                <div>Visual: Chart derived from Google Trends data for "Setting Spray" & "Fixing Spray" in Germany (2020-2024), highlighting growth in 2021-2023.</div>
+                <small>(Source: Google Trends data, analyzed by Pierre Meyer)</small>
+            </div>
+            <p>
+                While our key German client had an existing product in this category, its packaging was standard. With top European bestsellers in this segment having launched in 2019 and 2020 (Source: CosmeticsBusiness.com), I recognized a strategic opportunity. The market was clearly receptive, and an innovative packaging upgrade could significantly enhance our client's product appeal and market positioning within this rapidly expanding category. My foresight was confirmed by later industry reports indicating that sales of setting sprays and powders across Europe surged by 63% between January and June 2024, with the segment becoming "hot on social," including a 224% increase in TikTok views for setting sprays compared to the previous year (Sources: Circana & Spate, via CosmeticsBusiness.com article published in 2024). This underscored the massive potential I had identified earlier.
+            </p>
         </section>
 
         <section class="case-study-section">
@@ -127,15 +153,17 @@
             <p>
                 Recognizing its potential, I secured samples and proactively approached the key German client. My proposal was not merely to sell a new component, but to offer a strategic enhancement for their existing fixing spray, transforming its presentation to better capture consumer interest in a booming product segment.
             </p>
-            <div class="image-placeholder">Conceptual: Visual comparison of a standard spray bottle vs. the proposed modern design</div>
-             </section>
+            <div class="image-placeholder">
+                <div>Conceptual: Visual comparison of a standard spray bottle vs. the proposed modern design</div>
+            </div>
+        </section>
 
         <section class="case-study-section">
             <h2>Execution: Collaborative Development & Quality Assurance</h2>
             <p>
                 The proposed innovation sparked immediate interest from the client. What followed was a collaborative process involving sample evaluations, rigorous performance testing, and close communication to ensure the new packaging aligned perfectly with their quality standards and brand identity. This phase was crucial in building trust and demonstrating our commitment to delivering a solution that was not only aesthetically superior but also functionally reliable.
             </p>
-            </section>
+        </section>
 
         <section class="case-study-section">
             <h2>The Impact: A Multi-Year, High-Volume Success</h2>
@@ -183,7 +211,7 @@
 
     <footer>
         <div class="container">
-            <p>© <span id="currentYear">2025</span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a> | <a href="index.html">Back to Home</a></p>
+            <p>© <span id="currentYear"></span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a> | <a href="index.html">Back to Home</a></p>
         </div>
     </footer>
 
@@ -191,7 +219,6 @@
         // Update footer year
         const currentYearEl = document.getElementById('currentYear');
         if (currentYearEl) {
-            // Use the current year for the copyright
             currentYearEl.textContent = new Date().getFullYear();
         }
     </script>
