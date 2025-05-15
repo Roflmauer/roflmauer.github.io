@@ -7,6 +7,7 @@
     <title>Pierre Meyer - Personal Website</title>
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -40,55 +41,43 @@
             color: var(--primary-text-color);
         }
 
-        /* Styles for Core Competencies section (Add to your styles.css) */
-        .skills-subsection-title {
-            font-size: 1.4em;
-            color: var(--accent-color);
-            margin-top: 1.8em;
-            margin-bottom: 0.8em;
-            text-align: left;
-        }
-        .core-competencies-grid {
+        /* Styles for Core Competencies section (NEW LIST FORMAT) - Add to your styles.css */
+        .skills-list-compact {
+            list-style-type: none;
+            padding-left: 0;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+            gap: 15px 25px; /* Row and column gap */
             margin-top: 1em;
         }
-        .competency-card {
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.2em;
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        .skills-list-compact li {
+            display: flex; /* Align icon and text */
+            align-items: flex-start; /* Align items to the top if text wraps */
+            color: var(--primary-text-color);
+            font-size: 0.95em;
+            margin-bottom: 0.8em; /* Space between items in the same column */
+            background-color: var(--card-bg-color); /* Optional: slight background for items */
+            padding: 10px; /* Optional: padding for items */
+            border-radius: 6px; /* Optional: rounded corners for items */
+            border: 1px solid var(--border-color); /* Optional: border for items */
         }
-        .competency-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px var(--shadow-color-medium);
-        }
-        .competency-card h4 {
-            font-size: 1.1em;
+        .skills-list-compact .skill-icon {
             color: var(--accent-color);
-            margin-top: 0;
-            margin-bottom: 0.5em;
-            text-align: left;
+            margin-right: 12px; /* Space between icon and text */
+            font-size: 1.2em; /* Icon size */
+            width: 20px; /* Fixed width for alignment */
+            text-align: center;
+            margin-top: 2px; /* Fine-tune vertical alignment with text */
         }
-        .competency-card p {
+        .skills-list-compact .skill-text strong {
+            font-weight: 600;
+            color: var(--primary-text-color); /* Or var(--accent-color) if you want titles to pop more */
+        }
+        .skills-list-compact .skill-text span {
             font-size: 0.9em;
-            color: var(--primary-text-color);
-            line-height: 1.5;
-            margin-bottom: 0;
-            text-align: left;
-        }
-        .competency-card ul {
-            font-size: 0.9em;
-            color: var(--primary-text-color);
-            line-height: 1.5;
-            margin-bottom: 0;
-            text-align: left;
-            padding-left: 20px; /* Add some padding for bullet points */
-        }
-        .competency-card ul li {
-            margin-bottom: 0.3em;
+            color: var(--secondary-text-color);
+            display: block; /* Makes the description appear on a new line */
+            margin-top: 2px;
         }
 
     </style>
@@ -148,40 +137,40 @@
 
     <section id="core-competencies">
         <h2 class="index-section-title">Core Competencies</h2>
-        <div class="core-competencies-grid">
-            <div class="competency-card">
-                <h4>Business Development & Sales</h4>
-                <p>Proven ability to identify new market opportunities, develop strategic partnerships, and drive revenue growth. Experienced in full-cycle sales, from lead generation to closing multi-year, high-value contracts.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Key Account Management</h4>
-                <p>Skilled in building and maintaining strong, long-term relationships with major clients, ensuring satisfaction and retention. Adept at understanding client needs and tailoring solutions to meet strategic objectives.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Market Analysis & Strategy</h4>
-                <p>Proficient in conducting market research, analyzing trends (as showcased in my analytical projects), and developing effective market entry and expansion strategies for global markets.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Cross-Cultural Communication</h4>
-                <p>Fluent in German, English, and Mandarin (Advanced B2/C1), facilitating seamless communication and negotiation with international stakeholders. Experienced in navigating diverse business cultures.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Project Management & Execution</h4>
-                <p>Successfully managed projects from concept to completion, coordinating with cross-functional teams (R&D, marketing, production) to ensure timely delivery and alignment with business goals.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Negotiation & Persuasion</h4>
-                <p>Strong negotiation skills honed through securing favorable terms in complex deals and partnerships. Capable of presenting compelling arguments and achieving mutually beneficial outcomes.</p>
-            </div>
-             <div class="competency-card">
-                <h4>Regulatory Affairs & Compliance</h4>
-                <p>Experience in ensuring product compliance with EU/US standards (e.g., EMA, FDA) and conducting factory inspections, critical for international trade.</p>
-            </div>
-            <div class="competency-card">
-                <h4>Tech Adaptability & Digital Solutions</h4>
-                <p>Rapidly learn and apply new technologies (e.g., AI, Blockchain concepts, web development basics) to solve problems and create value, as demonstrated by personal projects.</p>
-            </div>
-        </div>
+        <ul class="skills-list-compact">
+            <li>
+                <span class="skill-icon"><i class="fas fa-briefcase"></i></span>
+                <div class="skill-text"><strong>Business Development & Sales:</strong> <span>Identifying new markets, strategic partnerships, and driving revenue growth.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-users"></i></span>
+                <div class="skill-text"><strong>Key Account Management:</strong> <span>Building & nurturing strong, long-term client relationships for satisfaction and retention.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-chart-line"></i></span>
+                <div class="skill-text"><strong>Market Analysis & Strategy:</strong> <span>Researching trends and developing effective market entry & expansion strategies.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-globe"></i></span>
+                <div class="skill-text"><strong>Cross-Cultural Communication:</strong> <span>Fluent in German, English, and Mandarin for seamless international stakeholder engagement.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-tasks"></i></span>
+                <div class="skill-text"><strong>Project Management & Execution:</strong> <span>Coordinating cross-functional teams from concept to completion for on-time delivery.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-handshake"></i></span>
+                <div class="skill-text"><strong>Negotiation & Persuasion:</strong> <span>Securing favorable terms in complex deals and achieving mutually beneficial outcomes.</span></div>
+            </li>
+             <li>
+                <span class="skill-icon"><i class="fas fa-balance-scale"></i></span>
+                <div class="skill-text"><strong>Regulatory Affairs & Compliance:</strong> <span>Ensuring product compliance with EU/US standards, vital for international trade.</span></div>
+            </li>
+            <li>
+                <span class="skill-icon"><i class="fas fa-laptop-code"></i></span>
+                <div class="skill-text"><strong>Tech Adaptability & Digital Solutions:</strong> <span>Rapidly learning and applying new tech (AI, Web Dev) to create value.</span></div>
+            </li>
+        </ul>
     </section>
 
     <hr class="divider">
@@ -326,7 +315,7 @@
 
     <footer>
     <div class="container">
-        <p>© <span id="currentYear"></span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
+        <p>© <span id="currentYear">2025</span> Pierre Meyer | <a href="mailto:pierremeyer@outlook.de">Contact Me</a></p>
     </div>
     </footer>
 
