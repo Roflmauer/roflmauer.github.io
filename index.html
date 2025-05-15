@@ -35,10 +35,62 @@
         }
         .about-me-lang-section div[lang="zh-TW"] p {
             font-size: 0.95em; /* Adjust if needed for Chinese characters */
-            line-height: 1.7;  /* Often good for Chinese text readability */
+            line-height: 1.7; /* Often good for Chinese text readability */
             text-align: left;
             color: var(--primary-text-color);
         }
+
+        /* Styles for Core Competencies section (Add to your styles.css) */
+        .skills-subsection-title {
+            font-size: 1.4em;
+            color: var(--accent-color);
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            text-align: left;
+        }
+        .core-competencies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 1em;
+        }
+        .competency-card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2em;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .competency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color-medium);
+        }
+        .competency-card h4 {
+            font-size: 1.1em;
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            text-align: left;
+        }
+        .competency-card p {
+            font-size: 0.9em;
+            color: var(--primary-text-color);
+            line-height: 1.5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+        .competency-card ul {
+            font-size: 0.9em;
+            color: var(--primary-text-color);
+            line-height: 1.5;
+            margin-bottom: 0;
+            text-align: left;
+            padding-left: 20px; /* Add some padding for bullet points */
+        }
+        .competency-card ul li {
+            margin-bottom: 0.3em;
+        }
+
     </style>
 </head>
 
@@ -53,7 +105,7 @@
         <a href="index.html" class="header-text-link">
             <div class="header-text">
                 <h1>Pierre Meyer</h1>
-                <p>Business Development Manager | Multilingual Professional | Based in Taipei</p>
+                <p>Business Development Manager | Key Account Management | Multilingual Professional | Based in Taipei</p>
             </div>
         </a>
     </div>
@@ -66,18 +118,13 @@
         <img src="profile.jpeg" alt="Pierre Meyer" class="profile-pic-about-me">
 
         <p>
-            Pierre Meyer here – a Business Development Manager with a 7-year track record of building bridges and
-            revenue between Asia (Taiwan/China) and Europe/US, specializing in strategic partnerships and navigating 
-            global markets. Fluency in German, English, and Mandarin, coupled with experience in regulatory compliance 
-            and project management, forms the bedrock of my professional expertise.
+            Pierre Meyer here – a results-driven <strong>Business Development and Key Account Manager</strong> with a <strong>7-year track record</strong> of forging profitable connections and driving revenue growth between Asia (Taiwan/China) and international markets (Europe/US). My expertise lies in identifying strategic partnership opportunities, nurturing long-term client relationships, and adeptly navigating the complexities of global commerce.
         </p>
         <p>
-            But I don't just stop at the conventional. I'm an avid adopter of new technologies with a keen interest in
-            AI and blockchain. My proactive approach to learning allows me to quickly master and leverage emerging tech
-            to create impactful digital solutions, as demonstrated by projects like this very website. I bring a unique
-            combination: proven international business development skills and a demonstrated ability to rapidly integrate
-            new tools and methodologies to achieve results. If you're looking for someone who can connect with global
-            partners and embrace the future of business, let's talk.
+            I bring a potent combination of <strong>cross-cultural communication</strong> (fluent in German, English, and advanced Mandarin), robust <strong>project management</strong> skills, and a keen understanding of <strong>regulatory compliance</strong> (e.g., EU/US standards). This foundation has enabled me to successfully negotiate large-scale deals, including a <strong>$1M+ multi-year contract</strong>, and contribute to <strong>double-digit revenue growth</strong> through strategic account development.
+        </p>
+        <p>
+            Beyond traditional business acumen, I am an enthusiastic adopter of new technologies, with a particular interest in AI and blockchain. This proactive approach to learning allows me to quickly master and leverage emerging tech to create impactful digital solutions—this very website being a testament to that. If you're seeking a professional who not only excels in established business development practices but also embraces future-forward tools and methodologies to achieve outstanding results, let's connect.
         </p>
         
         <div class="about-me-lang-section">
@@ -85,10 +132,13 @@
             <h3>關於我 <span class="lang-tag">(Traditional Chinese)</span></h3>
             <div lang="zh-TW">
                  <p>
-                    您好，我是馬彥和 (Pierre Meyer)。作為一名業務開發經理，我擁有七年經驗，致力於透過策略夥伴關係，連結亞洲（台灣／中國）與歐美市場。我能流利使用德文及英文，中文則具備進階溝通能力，並且擅長法規遵循與專案管理。
+                    您好，我是馬彥和 (Pierre Meyer)。作為一名業務開發暨大客戶管理經理，我擁有七年經驗，致力於透過策略夥伴關係，連結亞洲（台灣／中國）與歐美市場，並成功推動營收增長。我擅長發掘合作機會、維護長期客戶關係，並熟稔全球商業動態。
+                 </p>
+                <p>
+                    我能流利使用德文、英文，中文則達進階溝通程度（B2/C1），兼具跨文化溝通、專案管理以及歐美法規遵循的專業知識。這些能力使我成功促成多項重要合約（包含價值超過百萬美元的多年期合約），並透過卓越的客戶拓展策略，為公司帶來雙位數的營收成長。
                 </p>
                 <p>
-                    我對人工智慧（AI）及區塊鏈等新興科技抱持濃厚興趣，能迅速學習並將其應用於打造數位解決方案，本網站的建置便是一個實例。我具備紮實的國際業務拓展能力，並能快速整合新技術。如果您正在尋找能夠串連全球夥伴、掌握未來商機的專業人士，期待與您進一步交流。
+                    除了商業敏銳度，我對人工智慧（AI）及區塊鏈等新興科技抱持濃厚興趣，能迅速學習並將其應用於打造數位解決方案，本網站的建置便是一個實例。如果您正在尋找能夠串連全球夥伴、掌握未來商機的專業人士，期待與您進一步交流。
                 </p>
             </div>
         </div>
@@ -96,10 +146,50 @@
 
     <hr class="divider">
 
+    <section id="core-competencies">
+        <h2 class="index-section-title">Core Competencies</h2>
+        <div class="core-competencies-grid">
+            <div class="competency-card">
+                <h4>Business Development & Sales</h4>
+                <p>Proven ability to identify new market opportunities, develop strategic partnerships, and drive revenue growth. Experienced in full-cycle sales, from lead generation to closing multi-year, high-value contracts.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Key Account Management</h4>
+                <p>Skilled in building and maintaining strong, long-term relationships with major clients, ensuring satisfaction and retention. Adept at understanding client needs and tailoring solutions to meet strategic objectives.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Market Analysis & Strategy</h4>
+                <p>Proficient in conducting market research, analyzing trends (as showcased in my analytical projects), and developing effective market entry and expansion strategies for global markets.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Cross-Cultural Communication</h4>
+                <p>Fluent in German, English, and Mandarin (Advanced B2/C1), facilitating seamless communication and negotiation with international stakeholders. Experienced in navigating diverse business cultures.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Project Management & Execution</h4>
+                <p>Successfully managed projects from concept to completion, coordinating with cross-functional teams (R&D, marketing, production) to ensure timely delivery and alignment with business goals.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Negotiation & Persuasion</h4>
+                <p>Strong negotiation skills honed through securing favorable terms in complex deals and partnerships. Capable of presenting compelling arguments and achieving mutually beneficial outcomes.</p>
+            </div>
+             <div class="competency-card">
+                <h4>Regulatory Affairs & Compliance</h4>
+                <p>Experience in ensuring product compliance with EU/US standards (e.g., EMA, FDA) and conducting factory inspections, critical for international trade.</p>
+            </div>
+            <div class="competency-card">
+                <h4>Tech Adaptability & Digital Solutions</h4>
+                <p>Rapidly learn and apply new technologies (e.g., AI, Blockchain concepts, web development basics) to solve problems and create value, as demonstrated by personal projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
     <section>
         <h2 class="index-section-title">My CV</h2>
         <p>
-            <a href="CV.pdf" target="_blank" class="cv-button">Download My CV</a>
+            <a href="Pierre_Meyer_CV.pdf" target="_blank" class="cv-button">Download My CV</a>
         </p>
     </section>
 
